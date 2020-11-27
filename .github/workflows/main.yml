@@ -36,4 +36,4 @@ jobs:
           git commit -am "deployed: '$(git log -1 --pretty=%B)'"
      
       - name: deploy
-        run: git push --all https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
+        run: git push --all
