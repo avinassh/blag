@@ -75,7 +75,7 @@ unsafe= true
   [languages.en]
     languageName = "English"
     title = "blag"
-    subtitle = "A simple, retro theme for Hugo"
+    subtitle = "a blog about blag about a blog"
     owner = ""
     keywords = ""
     copyright = ""
