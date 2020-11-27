@@ -1,8 +1,9 @@
 name: build-deploy-hugo
 
-on: [push, pull_request, workflow_dispatch]
-#  push:
-#    branches: [ master ]
+on:
+ - push:
+     branches: [ master ]
+   workflow_dispatch
 
 jobs:
   build:
