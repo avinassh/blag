@@ -27,6 +27,7 @@ jobs:
 
       - name: setup
         run: |
+          echo ::set-output name=commit_msg::$(git log -1 --pretty=%B)
           git worktree add public gh-pages
 
       - name: build
@@ -38,7 +39,7 @@ jobs:
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           git add --all
-          git commit -am "deployed: '$(git log -1 --pretty=%B origin/master)'"
+          git commit -am "deployed: ${{ steps.vars.outputs.commit_msg }}"
      
       - name: deploy
         run: git push --all
