@@ -28,7 +28,7 @@ jobs:
       - name: setup
         id: vars
         run: |
-          echo ::set-output name={commit_msg}::$(git log -1 --pretty=%B)
+          echo "::set-output name=commit_msg::$(git log -1 --pretty=%B)"
           git worktree add public gh-pages
 
       - name: build

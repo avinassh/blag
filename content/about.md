@@ -3,7 +3,7 @@ title: "About"
 description: "Some Stuff About Me"
 ---
 
-Hey there! This is Avinash. I am a programmer from India. I mostly code in Python but learning Swift these days. I have dabbled little in Web Development using PythonTornado. 
+Hey there! This is Avinash. I am a programmer from India. I mostly code in Python but learning Swift these days. I have dabbled little in Web Development using Python Tornado. 
 
 <!-- And I am available for hire. If you have new job opportunities, [get in touch with me](http://scr.im/avii). Thanks! -->
 
