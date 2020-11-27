@@ -28,11 +28,12 @@ jobs:
       - name: build
         run: hugo --minify # config.toml has setup publish directory as `docs` 
 
-      - name: deploy
+      - name: commit
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
           git add docs
           git commit -am "deployed: '$(git log -1 --pretty=%B)'"
-          git push --all -f https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
      
+      - name: deploy
+        run: git push --all https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
