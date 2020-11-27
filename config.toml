@@ -74,7 +74,7 @@ unsafe= true
 [languages]
   [languages.en]
     languageName = "English"
-    title = "Terminal"
+    title = "blag"
     subtitle = "A simple, retro theme for Hugo"
     owner = ""
     keywords = ""
