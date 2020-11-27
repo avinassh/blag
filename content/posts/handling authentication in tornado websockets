@@ -1,0 +1,3 @@
+According Ben Darnell, its better to handle authentication in `open` or `prepare`: 
+
+https://groups.google.com/forum/#!topic/python-tornado/JX4vzV8_R3w
