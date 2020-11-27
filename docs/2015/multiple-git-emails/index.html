@@ -1,168 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  
-    <title>How I Am Maintaining Multiple Emails For Git On A Same Machine :: Terminal</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Every git commit is associated with two important data: your name and email. I don&amp;rsquo;t want my personal email address associated with work related git commits and vice versa. First, to set the git email address system wide, you would run following:
-$git config --global user.email &amp;quot;your_global@email.com&amp;quot; $git config --global user.name &amp;quot;Your Name&amp;quot;  and every commits will have above info. To set the email address for individual repo, just drop the global." />
-<meta name="keywords" content="" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="http://avi.im/blag/2015/multiple-git-emails/" />
-
-
-
-
-<link rel="stylesheet" href="http://avi.im/blag/assets/style.css">
-
-  <link rel="stylesheet" href="http://avi.im/blag/assets/blue.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon" href="http://avi.im/blag/img/apple-touch-icon-192x192.png">
-
-  <link rel="shortcut icon" href="http://avi.im/blag/img/favicon/blue.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  
-    <meta name="twitter:site" content="" />
-  
-    <meta name="twitter:creator" content="" />
-
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="How I Am Maintaining Multiple Emails For Git On A Same Machine">
-<meta property="og:description" content="In this simple tutorial I will show how to maintain multiple git emails on a same machine. And how to configure git emails per directory or per project." />
-<meta property="og:url" content="http://avi.im/blag/2015/multiple-git-emails/" />
-<meta property="og:site_name" content="Terminal" />
-
-  
-    <meta property="og:image" content="http://avi.im/blag/img/favicon/blue.png">
-  
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
-
-  <meta property="article:section" content="tutorial" />
-
-
-  <meta property="article:published_time" content="2015-08-01 22:20:00 &#43;0530 IST" />
-
-
-
-
-
-
-
-
-
-
-
-
-</head>
-<body class="blue">
-
-
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/blag">
-  <div class="logo">
-    blag
-  </div>
-</a>
-
-    </div>
-    
-      <div class="menu-trigger">menu</div>
-    
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
-    
-      
-        
-          <li><a href="/blag/about">About</a></li>
-        
-      
-        
-          <li><a href="/blag/projects">Projects</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/blag/about">About</a></li>
-      
-    
-      
-        <li><a href="/blag/projects">Projects</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="http://avi.im/blag/2015/multiple-git-emails/">How I Am Maintaining Multiple Emails For Git On A Same Machine</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2015-08-01 
-      </span>
-    
-    
-  </div>
-
-  
-  <span class="post-tags">
-    
-    #<a href="http://avi.im/blag/tags/git/">git</a>&nbsp;
-    
-  </span>
-  
-
-  
-
-  
-
-  <div class="post-content"><div>
-        <p>Every git commit is associated with two important data: your name and email. I don&rsquo;t want my personal email address associated with work related git commits and vice versa. First, to set the git email address system wide, you would run following:</p>
-<pre><code>$git config --global user.email &quot;your_global@email.com&quot;
+<!doctype html><html lang=en><head><title>How I Am Maintaining Multiple Emails For Git On A Same Machine :: Terminal</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Every git commit is associated with two important data: your name and email. I don&amp;rsquo;t want my personal email address associated with work related git commits and vice versa. First, to set the git email address system wide, you would run following:
+$git config --global user.email &amp;quot;your_global@email.com&amp;quot; $git config --global user.name &amp;quot;Your Name&amp;quot;  and every commits will have above info. To set the email address for individual repo, just drop the global."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=http://avi.im/blag/2015/multiple-git-emails/><link rel=stylesheet href=http://avi.im/blag/assets/style.css><link rel=stylesheet href=http://avi.im/blag/assets/blue.css><link rel=apple-touch-icon href=http://avi.im/blag/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=http://avi.im/blag/img/favicon/blue.png><meta name=twitter:card content="summary"><meta name=twitter:site content><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="How I Am Maintaining Multiple Emails For Git On A Same Machine"><meta property="og:description" content="In this simple tutorial I will show how to maintain multiple git emails on a same machine. And how to configure git emails per directory or per project."><meta property="og:url" content="http://avi.im/blag/2015/multiple-git-emails/"><meta property="og:site_name" content="Terminal"><meta property="og:image" content="http://avi.im/blag/img/favicon/blue.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:section" content="tutorial"><meta property="article:published_time" content="2015-08-01 22:20:00 +0530 +0530"></head><body class=blue><div class="container center headings--one-size"><header class=header><div class=header__inner><div class=header__logo><a href=/blag><div class=logo>blag</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/blag/about>About</a></li><li><a href=/blag/projects>Projects</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/blag/about>About</a></li><li><a href=/blag/projects>Projects</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=http://avi.im/blag/2015/multiple-git-emails/>How I Am Maintaining Multiple Emails For Git On A Same Machine</a></h1><div class=post-meta><span class=post-date>2015-08-01</span></div><span class=post-tags>#<a href=http://avi.im/blag/tags/git/>git</a>&nbsp;</span><div class=post-content><div><p>Every git commit is associated with two important data: your name and email. I don&rsquo;t want my personal email address associated with work related git commits and vice versa. First, to set the git email address system wide, you would run following:</p><pre><code>$git config --global user.email &quot;your_global@email.com&quot;
 $git config --global user.name &quot;Your Name&quot;
-</code></pre>
-<p>and every commits will have above info. To set the email address for individual repo, just drop the <code>global</code>. <code>cd</code> into your repository and run the following:</p>
-<pre><code>$git config user.email &quot;your_project@email.com&quot;
+</code></pre><p>and every commits will have above info. To set the email address for individual repo, just drop the <code>global</code>. <code>cd</code> into your repository and run the following:</p><pre><code>$git config user.email &quot;your_project@email.com&quot;
 $git config user.name &quot;Your Name&quot;
-</code></pre>
-<p>Now every commit for <em>this</em> repository will have above email. There is another way, by modifying <code>.git/config</code> of your repository and including a <code>[user]</code> block, something like:</p>
-<pre><code>[core]
+</code></pre><p>Now every commit for <em>this</em> repository will have above email. There is another way, by modifying <code>.git/config</code> of your repository and including a <code>[user]</code> block, something like:</p><pre><code>[core]
     ...
 [remote &quot;origin&quot;]
     ...
@@ -171,18 +12,7 @@ $git config user.name &quot;Your Name&quot;
 [user]
     name = Your Name
     email = your_project@email.com
-</code></pre>
-<h2 id="problems">Problems<a href="#problems" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<p>Though above mentioned methods work, there are two major issues (at least for me):</p>
-<ol>
-<li>You have to run the above command everytime you create a new repository.</li>
-<li>You have to remember #1.</li>
-</ol>
-<p>#2 is actually difficult for me.</p>
-<h2 id="solution">Solution<a href="#solution" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<p>Use <a href="http://direnv.net/"><code>direnv</code></a>. <code>direnv</code> is one nifty tool which lets you have different environment variables based on directories/path. The best part is, as soon as you enter into a directory, <code>direnv</code> does it&rsquo;s magic, so you don&rsquo;t have to remember that you have to run <code>direnv</code>. For <code>direnv</code> to work, you have to create a file called <code>.envrc</code> where you can specify what all environment variables you want and place it the directory.</p>
-<p>This is how I have organized my repositories:</p>
-<pre><code>~/
+</code></pre><h2 id=problems>Problems<a href=#problems class=hanchor arialabel=Anchor>&#8983;</a></h2><p>Though above mentioned methods work, there are two major issues (at least for me):</p><ol><li>You have to run the above command everytime you create a new repository.</li><li>You have to remember #1.</li></ol><p>#2 is actually difficult for me.</p><h2 id=solution>Solution<a href=#solution class=hanchor arialabel=Anchor>&#8983;</a></h2><p>Use <a href=http://direnv.net/><code>direnv</code></a>. <code>direnv</code> is one nifty tool which lets you have different environment variables based on directories/path. The best part is, as soon as you enter into a directory, <code>direnv</code> does it&rsquo;s magic, so you don&rsquo;t have to remember that you have to run <code>direnv</code>. For <code>direnv</code> to work, you have to create a file called <code>.envrc</code> where you can specify what all environment variables you want and place it the directory.</p><p>This is how I have organized my repositories:</p><pre><code>~/
 |- work # all work related repos go here
     |-- .envrc
     |-- repo-1
@@ -193,82 +23,12 @@ $git config user.name &quot;Your Name&quot;
     |-- repo-1
     |-- ...
     |-- repo_X
-</code></pre>
-<p>So, my <code>~/work/.envrc</code> contains:</p>
-<pre><code>export GIT_AUTHOR_EMAIL=&quot;avi@work.com&quot;
+</code></pre><p>So, my <code>~/work/.envrc</code> contains:</p><pre><code>export GIT_AUTHOR_EMAIL=&quot;avi@work.com&quot;
 export GIT_COMMITTER_EMAIL=&quot;avi@work.com&quot;
-</code></pre>
-<p>similarly, my <code>~/Documents/code/.envrc</code> contains:</p>
-<pre><code>export GIT_AUTHOR_EMAIL=&quot;avi@personal.com&quot;
+</code></pre><p>similarly, my <code>~/Documents/code/.envrc</code> contains:</p><pre><code>export GIT_AUTHOR_EMAIL=&quot;avi@personal.com&quot;
 export GIT_COMMITTER_EMAIL=&quot;avi@personal.com&quot;
-</code></pre>
-<p>Before each prompt <code>direnv</code> checks for <code>.envrc</code> in current directory and parent directories. And when the file is found, it applies those and those variables will be present in your shell. You can also add <code>GIT_AUTHOR_NAME</code> or <code>GIT_COMMITTER_NAME</code> if you want to use different names in git commits.</p>
-<h3 id="references">References:<a href="#references" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
-<ul>
-<li>Pro Git book on <a href="https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables">environment variables</a>.</li>
-<li><a href="http://direnv.net"><code>direnv</code></a></li>
-</ul>
-
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="http://avi.im/blag/2015/amazon-treasure-hunt/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Staying Ahead of Amazon, in Amazon Treasure Hunt Contest</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="http://avi.im/blag/2015/hacking-gaana/">
-                <span class="button__text">I discovered a vulnerability on Gaana.com before the main POC hack</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
-  </div>
-
-  
-    <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright">
-        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
-    
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-</footer>
-
-<script src="http://avi.im/blag/assets/main.js"></script>
-<script src="http://avi.im/blag/assets/prism.js"></script>
-
-
-
-
-
-
-
-  
-</div>
-
-</body>
-</html>
+</code></pre><p>Before each prompt <code>direnv</code> checks for <code>.envrc</code> in current directory and parent directories. And when the file is found, it applies those and those variables will be present in your shell. You can also add <code>GIT_AUTHOR_NAME</code> or <code>GIT_COMMITTER_NAME</code> if you want to use different names in git commits.</p><h3 id=references>References:<a href=#references class=hanchor arialabel=Anchor>&#8983;</a></h3><ul><li>Pro Git book on <a href=https://git-scm.com/book/en/v2/Git-Internals-Environment-Variables>environment variables</a>.</li><li><a href=http://direnv.net><code>direnv</code></a></li></ul></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=http://avi.im/blag/2015/amazon-treasure-hunt/><span class=button__icon>←</span>
+<span class=button__text>Staying Ahead of Amazon, in Amazon Treasure Hunt Contest</span></a></span>
+<span class="button next"><a href=http://avi.im/blag/2015/hacking-gaana/><span class=button__text>I discovered a vulnerability on Gaana.com before the main POC hack</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2020 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=http://avi.im/blag/assets/main.js></script><script src=http://avi.im/blag/assets/prism.js></script></div></body></html>

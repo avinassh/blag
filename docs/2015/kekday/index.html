@@ -1,292 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  
-    <title>When is my Cake Day? :: Terminal</title>
-  
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Reddit gives all the user info in a handy JSON at this URL: https://www.reddit.com/user/&amp;lt;username here&amp;gt;/about.json
+<!doctype html><html lang=en><head><title>When is my Cake Day? :: Terminal</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Reddit gives all the user info in a handy JSON at this URL: https://www.reddit.com/user/&amp;lt;username here&amp;gt;/about.json
 example: https://www.reddit.com/user/spez/about.json
 The created_utc field in data is the date of user&amp;rsquo;s registration aka Cake Day in unix epoch format (in UTC) and we can easily convert that to readable format:
 &amp;gt;&amp;gt;&amp;gt; import time &amp;gt;&amp;gt;&amp;gt; time.strftime(&amp;#34;%D&amp;#34;, time.gmtime(1118030400)) &amp;#39;06/06/05&amp;#39; Using Python Requests, we can turn this into a handy function:
-import time import requests def get_my_cake_day(username): url = &amp;#34;https://www." />
-<meta name="keywords" content="" />
-<meta name="robots" content="noodp" />
-<link rel="canonical" href="http://avi.im/blag/2015/kekday/" />
+import time import requests def get_my_cake_day(username): url = &amp;#34;https://www."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=http://avi.im/blag/2015/kekday/><link rel=stylesheet href=http://avi.im/blag/assets/style.css><link rel=stylesheet href=http://avi.im/blag/assets/blue.css><link rel=apple-touch-icon href=http://avi.im/blag/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=http://avi.im/blag/img/favicon/blue.png><meta name=twitter:card content="summary"><meta name=twitter:site content><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="When is my Cake Day?"><meta property="og:description" content="Using `praw` and `prawoauth2` to find when is my cake day on Reddit."><meta property="og:url" content="http://avi.im/blag/2015/kekday/"><meta property="og:site_name" content="Terminal"><meta property="og:image" content="http://avi.im/blag/img/favicon/blue.png"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:section" content="tutorial"><meta property="article:published_time" content="2015-11-20 22:20:00 +0530 +0530"></head><body class=blue><div class="container center headings--one-size"><header class=header><div class=header__inner><div class=header__logo><a href=/blag><div class=logo>blag</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/blag/about>About</a></li><li><a href=/blag/projects>Projects</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/blag/about>About</a></li><li><a href=/blag/projects>Projects</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=http://avi.im/blag/2015/kekday/>When is my Cake Day?</a></h1><div class=post-meta><span class=post-date>2015-11-20</span></div><span class=post-tags>#<a href=http://avi.im/blag/tags/python/>python</a>&nbsp;
+#<a href=http://avi.im/blag/tags/reddit/>reddit</a>&nbsp;
+#<a href=http://avi.im/blag/tags/praw/>praw</a>&nbsp;
+#<a href=http://avi.im/blag/tags/prawoauth2/>prawoauth2</a>&nbsp;</span><div class=post-content><div><p><a href=https://kekday.herokuapp.com><img src={filename}/images/2015/kekday/kekday.png alt=kek style=width:90%></a></p><p>Reddit gives all the user info in a handy JSON at this URL: <code>https://www.reddit.com/user/&lt;username here>/about.json</code></p><p>example: <a href=https://www.reddit.com/user/spez/about.json>https://www.reddit.com/user/spez/about.json</a></p><p>The <code>created_utc</code> field in <code>data</code> is the date of user&rsquo;s registration aka Cake Day in <a href=https://en.wikipedia.org/wiki/Unix_time>unix epoch</a> format (in UTC) and we can easily convert that to readable format:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>import</span> time
+<span style=color:#f92672>&gt;&gt;&gt;</span> time<span style=color:#f92672>.</span>strftime(<span style=color:#e6db74>&#34;%D&#34;</span>, time<span style=color:#f92672>.</span>gmtime(<span style=color:#ae81ff>1118030400</span>))
+<span style=color:#e6db74>&#39;06/06/05&#39;</span>
+</code></pre></div><p>Using <a href=http://python-requests.org>Python Requests</a>, we can turn this into a handy function:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> time
+<span style=color:#f92672>import</span> requests
 
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>get_my_cake_day</span>(username):
+    url <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;https://www.reddit.com/user/{}/about.json&#34;</span><span style=color:#f92672>.</span>format(username)
+    r <span style=color:#f92672>=</span> requests<span style=color:#f92672>.</span>get(url)
+    created_at <span style=color:#f92672>=</span> r<span style=color:#f92672>.</span>json()[<span style=color:#e6db74>&#39;data&#39;</span>][<span style=color:#e6db74>&#39;created_utc&#39;</span>]
+    <span style=color:#66d9ef>return</span> time<span style=color:#f92672>.</span>strftime(<span style=color:#e6db74>&#34;%D&#34;</span>, time<span style=color:#f92672>.</span>gmtime(created_at))
+</code></pre></div><p>Though above function will work, but soon it will start throwing HTTP 429 error i.e Too Many Requests. Thing is, Reddit doesn&rsquo;t really like when someone tries to fetch the data like this. The requests are made directly on Reddit servers without using the API. Now if you have want to find cake day of hundreds of users, you cannot use this method.</p><p>Solution? Use <a href=https://www.reddit.com/dev/api>Reddit&rsquo;s API</a>. In Python, we will use <a href=https://github.com/praw-dev/praw>praw</a> and <a href=https://github.com/avinassh/prawoauth2>prawoauth2</a>. praw is a Python wrapper for Reddit&rsquo;s API and prawoauth2 helps dealing with <a href=https://github.com/reddit/reddit/wiki/OAuth2>OAuth2</a>.</p><p>Let&rsquo;s start by installing praw:</p><pre><code>pip install praw
+</code></pre><p>Now we can convert the <code>get_my_cake_day</code> to praw version and get the user details like this:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> time
+<span style=color:#f92672>import</span> praw
 
+reddit_client <span style=color:#f92672>=</span> praw<span style=color:#f92672>.</span>Reddit(user_agent<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;my amazing cake day bot&#39;</span>)
 
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>get_my_cake_day</span>(username):
+    redditor <span style=color:#f92672>=</span> reddit_client<span style=color:#f92672>.</span>get_redditor(username)
+    <span style=color:#66d9ef>return</span> time<span style=color:#f92672>.</span>strftime(<span style=color:#e6db74>&#34;%D&#34;</span>, time<span style=color:#f92672>.</span>gmtime(redditor<span style=color:#f92672>.</span>created_utc))
+</code></pre></div><p>Above code pretty much self explanatory. What if the user doesn&rsquo;t exist or shadowbanned? In such cases, praw throws an exception: <code>praw.errors.NotFound</code>. Lets modify <code>get_my_cake_day</code> to catch this:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>get_my_cake_day</span>(username):
+    <span style=color:#66d9ef>try</span>:
+        redditor <span style=color:#f92672>=</span> reddit_client<span style=color:#f92672>.</span>get_redditor(username)
+        <span style=color:#66d9ef>return</span> time<span style=color:#f92672>.</span>strftime(<span style=color:#e6db74>&#34;%D&#34;</span>, time<span style=color:#f92672>.</span>gmtime(redditor<span style=color:#f92672>.</span>created_utc))
+    <span style=color:#66d9ef>except</span> praw<span style=color:#f92672>.</span>errors<span style=color:#f92672>.</span>NotFound:
+        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;User does not exist or shadowbanned&#39;</span>
+</code></pre></div><p>This is better compared to earlier version and we will stop getting rate limit errors often. Also, praw will handle such cases and makes requests again to fetch the data. But what if we want to increase the limit?</p><p>The above requests are not authenticated, meaning Reddit does not recognise your app. However, if we register this app in Reddit and let Reddit know, then requests limits will increase. So to authenticate our app over Oauth2, we will use prawoauth2. Lets install it first:</p><pre><code>pip install prawoauth2
+</code></pre><p>Follow the simple steps <a href=https://prawoauth2.readthedocs.org/usage_guide.html>here</a> to register your app on Reddit. Once done, you will get <code>app_token</code> and <code>app_secret</code>. Then you need to get <code>access_token</code> and <code>refresh_token</code>. You could use this handy <a href=https://github.com/avinassh/prawoauth2/blob/master/examples/halflife3-bot/onetime.py><code>onetime.py</code></a> script. For detailed instructions check the documentation of <a href=https://prawoauth2.readthedocs.org>prawoauth2</a>. You should never make <code>app_token</code>, <code>app_secret</code>, <code>access_token</code> and <code>refresh_token</code> public and never commit them to version control. Keep them always secret.</p><p>Here is the complete script using prawoauth2:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> time
+<span style=color:#f92672>import</span> praw
 
-<link rel="stylesheet" href="http://avi.im/blag/assets/style.css">
-
-  <link rel="stylesheet" href="http://avi.im/blag/assets/blue.css">
-
-
-
-
-
-
-<link rel="apple-touch-icon" href="http://avi.im/blag/img/apple-touch-icon-192x192.png">
-
-  <link rel="shortcut icon" href="http://avi.im/blag/img/favicon/blue.png">
-
-
-
-<meta name="twitter:card" content="summary" />
-
-  
-    <meta name="twitter:site" content="" />
-  
-    <meta name="twitter:creator" content="" />
-
-
-
-<meta property="og:locale" content="en" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="When is my Cake Day?">
-<meta property="og:description" content="Using `praw` and `prawoauth2` to find when is my cake day on Reddit." />
-<meta property="og:url" content="http://avi.im/blag/2015/kekday/" />
-<meta property="og:site_name" content="Terminal" />
-
-  
-    <meta property="og:image" content="http://avi.im/blag/img/favicon/blue.png">
-  
-
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="1024">
-
-  <meta property="article:section" content="tutorial" />
-
-
-  <meta property="article:published_time" content="2015-11-20 22:20:00 &#43;0530 IST" />
-
-
-
-
-
-
-
-
-
-
-
-
-</head>
-<body class="blue">
-
-
-<div class="container center headings--one-size">
-
-  <header class="header">
-  <div class="header__inner">
-    <div class="header__logo">
-      <a href="/blag">
-  <div class="logo">
-    blag
-  </div>
-</a>
-
-    </div>
-    
-      <div class="menu-trigger">menu</div>
-    
-  </div>
-  
-    <nav class="menu">
-  <ul class="menu__inner menu__inner--desktop">
-    
-      
-        
-          <li><a href="/blag/about">About</a></li>
-        
-      
-        
-          <li><a href="/blag/projects">Projects</a></li>
-        
-      
-      
-    
-
-    
-  </ul>
-
-  <ul class="menu__inner menu__inner--mobile">
-    
-      
-        <li><a href="/blag/about">About</a></li>
-      
-    
-      
-        <li><a href="/blag/projects">Projects</a></li>
-      
-    
-    
-  </ul>
-</nav>
-
-  
-</header>
-
-
-  <div class="content">
-    
-<div class="post">
-  <h1 class="post-title">
-    <a href="http://avi.im/blag/2015/kekday/">When is my Cake Day?</a></h1>
-  <div class="post-meta">
-    
-      <span class="post-date">
-        2015-11-20 
-      </span>
-    
-    
-  </div>
-
-  
-  <span class="post-tags">
-    
-    #<a href="http://avi.im/blag/tags/python/">python</a>&nbsp;
-    
-    #<a href="http://avi.im/blag/tags/reddit/">reddit</a>&nbsp;
-    
-    #<a href="http://avi.im/blag/tags/praw/">praw</a>&nbsp;
-    
-    #<a href="http://avi.im/blag/tags/prawoauth2/">prawoauth2</a>&nbsp;
-    
-  </span>
-  
-
-  
-
-  
-
-  <div class="post-content"><div>
-        <p><a href="https://kekday.herokuapp.com"><img src="{filename}/images/2015/kekday/kekday.png" alt="kek" style="width: 90%;"/></a></p>
-<p>Reddit gives all the user info in a handy JSON at this URL: <code>https://www.reddit.com/user/&lt;username here&gt;/about.json</code></p>
-<p>example: <a href="https://www.reddit.com/user/spez/about.json">https://www.reddit.com/user/spez/about.json</a></p>
-<p>The <code>created_utc</code> field in <code>data</code> is the date of user&rsquo;s registration aka Cake Day in <a href="https://en.wikipedia.org/wiki/Unix_time">unix epoch</a> format (in UTC) and we can easily convert that to readable format:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> time
-<span style="color:#f92672">&gt;&gt;&gt;</span> time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%D&#34;</span>, time<span style="color:#f92672">.</span>gmtime(<span style="color:#ae81ff">1118030400</span>))
-<span style="color:#e6db74">&#39;06/06/05&#39;</span>
-</code></pre></div><p>Using <a href="http://python-requests.org">Python Requests</a>, we can turn this into a handy function:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> time
-<span style="color:#f92672">import</span> requests
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_my_cake_day</span>(username):
-    url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.reddit.com/user/{}/about.json&#34;</span><span style="color:#f92672">.</span>format(username)
-    r <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url)
-    created_at <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span>json()[<span style="color:#e6db74">&#39;data&#39;</span>][<span style="color:#e6db74">&#39;created_utc&#39;</span>]
-    <span style="color:#66d9ef">return</span> time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%D&#34;</span>, time<span style="color:#f92672">.</span>gmtime(created_at))
-</code></pre></div><p>Though above function will work, but soon it will start throwing HTTP 429 error i.e Too Many Requests. Thing is, Reddit doesn&rsquo;t really like when someone tries to fetch the data like this. The requests are made directly on Reddit servers without using the API. Now if you have want to find cake day of hundreds of users, you cannot use this method.</p>
-<p>Solution? Use <a href="https://www.reddit.com/dev/api">Reddit&rsquo;s API</a>. In Python, we will use <a href="https://github.com/praw-dev/praw">praw</a> and <a href="https://github.com/avinassh/prawoauth2">prawoauth2</a>. praw is a Python wrapper for Reddit&rsquo;s API and prawoauth2 helps dealing with <a href="https://github.com/reddit/reddit/wiki/OAuth2">OAuth2</a>.</p>
-<p>Let&rsquo;s start by installing praw:</p>
-<pre><code>pip install praw
-</code></pre>
-<p>Now we can convert the <code>get_my_cake_day</code> to praw version and get the user details like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> time
-<span style="color:#f92672">import</span> praw
-
-reddit_client <span style="color:#f92672">=</span> praw<span style="color:#f92672">.</span>Reddit(user_agent<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;my amazing cake day bot&#39;</span>)
-
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_my_cake_day</span>(username):
-    redditor <span style="color:#f92672">=</span> reddit_client<span style="color:#f92672">.</span>get_redditor(username)
-    <span style="color:#66d9ef">return</span> time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%D&#34;</span>, time<span style="color:#f92672">.</span>gmtime(redditor<span style="color:#f92672">.</span>created_utc))
-</code></pre></div><p>Above code pretty much self explanatory. What if the user doesn&rsquo;t exist or shadowbanned? In such cases, praw throws an exception: <code>praw.errors.NotFound</code>. Lets modify <code>get_my_cake_day</code> to catch this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_my_cake_day</span>(username):
-    <span style="color:#66d9ef">try</span>:
-        redditor <span style="color:#f92672">=</span> reddit_client<span style="color:#f92672">.</span>get_redditor(username)
-        <span style="color:#66d9ef">return</span> time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%D&#34;</span>, time<span style="color:#f92672">.</span>gmtime(redditor<span style="color:#f92672">.</span>created_utc))
-    <span style="color:#66d9ef">except</span> praw<span style="color:#f92672">.</span>errors<span style="color:#f92672">.</span>NotFound:
-        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;User does not exist or shadowbanned&#39;</span>
-</code></pre></div><p>This is better compared to earlier version and we will stop getting rate limit errors often. Also, praw will handle such cases and makes requests again to fetch the data. But what if we want to increase the limit?</p>
-<p>The above requests are not authenticated, meaning Reddit does not recognise your app. However, if we register this app in Reddit and let Reddit know, then requests limits will increase. So to authenticate our app over Oauth2, we will use prawoauth2. Lets install it first:</p>
-<pre><code>pip install prawoauth2
-</code></pre>
-<p>Follow the simple steps <a href="https://prawoauth2.readthedocs.org/usage_guide.html">here</a> to register your app on Reddit. Once done, you will get <code>app_token</code> and <code>app_secret</code>. Then you need to get <code>access_token</code> and <code>refresh_token</code>. You could use this handy <a href="https://github.com/avinassh/prawoauth2/blob/master/examples/halflife3-bot/onetime.py"><code>onetime.py</code></a> script. For detailed instructions check the documentation of <a href="https://prawoauth2.readthedocs.org">prawoauth2</a>. You should never make <code>app_token</code>, <code>app_secret</code>, <code>access_token</code> and <code>refresh_token</code> public and never commit them to version control. Keep them always secret.</p>
-<p>Here is the complete script using prawoauth2:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> time
-<span style="color:#f92672">import</span> praw
-
-<span style="color:#f92672">from</span> secret <span style="color:#f92672">import</span> (app_key, app_secret, access_token, refresh_token,
+<span style=color:#f92672>from</span> secret <span style=color:#f92672>import</span> (app_key, app_secret, access_token, refresh_token,
                     user_agent, scopes)
 
-reddit_client <span style="color:#f92672">=</span> praw<span style="color:#f92672">.</span>Reddit(user_agent<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;my amazing cakeday bot&#39;</span>)
-oauth_helper <span style="color:#f92672">=</span> PrawOAuth2Mini(reddit_client, app_key<span style="color:#f92672">=</span>app_key,
-                              app_secret<span style="color:#f92672">=</span>app_secret,
-                              access_token<span style="color:#f92672">=</span>access_token,
-                              refresh_token<span style="color:#f92672">=</span>refresh_token, scopes<span style="color:#f92672">=</span>scopes)
+reddit_client <span style=color:#f92672>=</span> praw<span style=color:#f92672>.</span>Reddit(user_agent<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;my amazing cakeday bot&#39;</span>)
+oauth_helper <span style=color:#f92672>=</span> PrawOAuth2Mini(reddit_client, app_key<span style=color:#f92672>=</span>app_key,
+                              app_secret<span style=color:#f92672>=</span>app_secret,
+                              access_token<span style=color:#f92672>=</span>access_token,
+                              refresh_token<span style=color:#f92672>=</span>refresh_token, scopes<span style=color:#f92672>=</span>scopes)
 
 
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_my_cake_day</span>(username):
-    <span style="color:#66d9ef">try</span>:
-        redditor <span style="color:#f92672">=</span> reddit_client<span style="color:#f92672">.</span>get_redditor(username)
-        <span style="color:#66d9ef">return</span> time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%D&#34;</span>, time<span style="color:#f92672">.</span>gmtime(redditor<span style="color:#f92672">.</span>created_utc))
-    <span style="color:#66d9ef">except</span> praw<span style="color:#f92672">.</span>errors<span style="color:#f92672">.</span>NotFound:
-        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#39;User does not exists or shadowbanned&#39;</span>
-</code></pre></div><p>Again, pretty much self explanatory. If your tokens are correct and once <code>PrawOAuth2Mini</code> is initialized properly, there will be no issues with the app and you will have twice as many requests as compared to unauthenticated version.</p>
-<p>Want to see above app in action? Check this - <a href="https://kekday.herokuapp.com">kekday</a>. The <a href="https://github.com/avinassh/kekday">app is open source</a> and released under MIT License.</p>
-
-      </div></div>
-
-  
-  
-<div class="pagination">
-    <div class="pagination__title">
-        <span class="pagination__title-h">Read other posts</span>
-        <hr />
-    </div>
-    <div class="pagination__buttons">
-        
-        <span class="button previous">
-            <a href="http://avi.im/blag/2015/uwsgi-python3/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Using uWSGI with Python 3</span>
-            </a>
-        </span>
-        
-        
-        <span class="button next">
-            <a href="http://avi.im/blag/2015/amazon-treasure-hunt/">
-                <span class="button__text">Staying Ahead of Amazon, in Amazon Treasure Hunt Contest</span>
-                <span class="button__icon">→</span>
-            </a>
-        </span>
-        
-    </div>
-</div>
-
-  
-
-  
-
-</div>
-
-  </div>
-
-  
-    <footer class="footer">
-  <div class="footer__inner">
-    
-      <div class="copyright">
-        <span>© 2020 Powered by <a href="http://gohugo.io">Hugo</a></span>
-    
-        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
-      </div>
-  </div>
-</footer>
-
-<script src="http://avi.im/blag/assets/main.js"></script>
-<script src="http://avi.im/blag/assets/prism.js"></script>
-
-
-
-
-
-
-
-  
-</div>
-
-</body>
-</html>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>get_my_cake_day</span>(username):
+    <span style=color:#66d9ef>try</span>:
+        redditor <span style=color:#f92672>=</span> reddit_client<span style=color:#f92672>.</span>get_redditor(username)
+        <span style=color:#66d9ef>return</span> time<span style=color:#f92672>.</span>strftime(<span style=color:#e6db74>&#34;%D&#34;</span>, time<span style=color:#f92672>.</span>gmtime(redditor<span style=color:#f92672>.</span>created_utc))
+    <span style=color:#66d9ef>except</span> praw<span style=color:#f92672>.</span>errors<span style=color:#f92672>.</span>NotFound:
+        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#39;User does not exists or shadowbanned&#39;</span>
+</code></pre></div><p>Again, pretty much self explanatory. If your tokens are correct and once <code>PrawOAuth2Mini</code> is initialized properly, there will be no issues with the app and you will have twice as many requests as compared to unauthenticated version.</p><p>Want to see above app in action? Check this - <a href=https://kekday.herokuapp.com>kekday</a>. The <a href=https://github.com/avinassh/kekday>app is open source</a> and released under MIT License.</p></div></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=http://avi.im/blag/2015/uwsgi-python3/><span class=button__icon>←</span>
+<span class=button__text>Using uWSGI with Python 3</span></a></span>
+<span class="button next"><a href=http://avi.im/blag/2015/amazon-treasure-hunt/><span class=button__text>Staying Ahead of Amazon, in Amazon Treasure Hunt Contest</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2020 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=http://avi.im/blag/assets/main.js></script><script src=http://avi.im/blag/assets/prism.js></script></div></body></html>
