@@ -1,6 +1,6 @@
 name: build-deploy-hugo
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 #  push:
 #    branches: [ master ]
 
