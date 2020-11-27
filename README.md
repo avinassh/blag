@@ -1,2 +1,2 @@
 # blag
-hosts my blog -- avi.im/blag
+hosts my blog

@@ -1,32 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>golang on Terminal</title>
-    <link>http://avi.im/blag/tags/golang/</link>
-    <description>Recent content in golang on Terminal</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 06 Dec 2016 19:03:00 +0530</lastBuildDate><atom:link href="http://avi.im/blag/tags/golang/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Install Go / Golang on macOS Sierra (10.12.x) using Homebrew</title>
-      <link>http://avi.im/blag/2016/install-go-sierra/</link>
-      <pubDate>Tue, 06 Dec 2016 19:03:00 +0530</pubDate>
-      
-      <guid>http://avi.im/blag/2016/install-go-sierra/</guid>
-      <description>Do the following:
-$ brew update $ brew install go ... ==&amp;gt; Caveats As of go 1.2, a valid GOPATH is required to use the `go get` command: https://golang.org/doc/code.html#GOPATH You may wish to add the GOROOT-based install location to your PATH: export PATH=$PATH:/usr/local/opt/go/libexec/bin ==&amp;gt; Summary 🍺 /usr/local/Cellar/go/1.7.4: 6,438 files, 250.7M  As it says we need to set GOPATH and also GOROOT:
-$ mkdir $HOME/.go  If then add this to your profile, .</description>
-    </item>
-    
-    <item>
-      <title>Install Go / Golang on OS X El Capitan (10.11.x) using Homebrew</title>
-      <link>http://avi.im/blag/2016/install-go-el-capitan/</link>
-      <pubDate>Thu, 12 May 2016 19:20:00 +0530</pubDate>
-      
-      <guid>http://avi.im/blag/2016/install-go-el-capitan/</guid>
-      <description>Do the following:
-$ brew update $ brew install go --with-cc-all ==&amp;gt; Downloading https://homebrew.bintray.com/bottles/go-1.6.2.el_capitan.bottle.tar.gz Already downloaded: /Users/avi/Library/Caches/Homebrew/go-1.6.2.el_capitan.bottle.tar.gz ==&amp;gt; Pouring go-1.6.2.el_capitan.bottle.tar.gz ==&amp;gt; Caveats As of go 1.2, a valid GOPATH is required to use the `go get` command: https://golang.org/doc/code.html#GOPATH You may wish to add the GOROOT-based install location to your PATH: export PATH=$PATH:/usr/local/opt/go/libexec/bin ==&amp;gt; Summary 🍺 /usr/local/Cellar/go/1.6.2: 5,778 files, 325.3M  As it says we need to set GOPATH and also GOROOT:</description>
-    </item>
-    
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>golang on Terminal</title><link>http://avi.im/blag/tags/golang/</link><description>Recent content in golang on Terminal</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 06 Dec 2016 19:03:00 +0530</lastBuildDate><atom:link href="http://avi.im/blag/tags/golang/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Go / Golang on macOS Sierra (10.12.x) using Homebrew</title><link>http://avi.im/blag/2016/install-go-sierra/</link><pubDate>Tue, 06 Dec 2016 19:03:00 +0530</pubDate><guid>http://avi.im/blag/2016/install-go-sierra/</guid><description>Do the following:
+$ brew update $ brew install go ... ==&amp;gt; Caveats As of go 1.2, a valid GOPATH is required to use the `go get` command: https://golang.org/doc/code.html#GOPATH You may wish to add the GOROOT-based install location to your PATH: export PATH=$PATH:/usr/local/opt/go/libexec/bin ==&amp;gt; Summary 🍺 /usr/local/Cellar/go/1.7.4: 6,438 files, 250.7M As it says we need to set GOPATH and also GOROOT:
+$ mkdir $HOME/.go If then add this to your profile, .</description></item><item><title>Install Go / Golang on OS X El Capitan (10.11.x) using Homebrew</title><link>http://avi.im/blag/2016/install-go-el-capitan/</link><pubDate>Thu, 12 May 2016 19:20:00 +0530</pubDate><guid>http://avi.im/blag/2016/install-go-el-capitan/</guid><description>Do the following:
+$ brew update $ brew install go --with-cc-all ==&amp;gt; Downloading https://homebrew.bintray.com/bottles/go-1.6.2.el_capitan.bottle.tar.gz Already downloaded: /Users/avi/Library/Caches/Homebrew/go-1.6.2.el_capitan.bottle.tar.gz ==&amp;gt; Pouring go-1.6.2.el_capitan.bottle.tar.gz ==&amp;gt; Caveats As of go 1.2, a valid GOPATH is required to use the `go get` command: https://golang.org/doc/code.html#GOPATH You may wish to add the GOROOT-based install location to your PATH: export PATH=$PATH:/usr/local/opt/go/libexec/bin ==&amp;gt; Summary 🍺 /usr/local/Cellar/go/1.6.2: 5,778 files, 325.3M As it says we need to set GOPATH and also GOROOT:</description></item></channel></rss>
