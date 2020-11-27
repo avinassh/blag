@@ -4,7 +4,6 @@ title = "blag"
 theme = "terminal"
 paginate = 8
 
-publishDir = "docs"
 
 [permalinks]
   posts = "/:year/:slug/"
