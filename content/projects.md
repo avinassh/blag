@@ -5,7 +5,7 @@ description: "Some of the projects I have done."
 
 I am learning Python and Swift these days. You can find some of my code on my [GitHub](https://github.com/avinassh).
 
-Some of the (mini)projects I hav done:
+Some of the (mini)projects I have done:
 
 - [Rockstar](https://github.com/avinassh/rockstar) - Makes you a Rockstar C++ Programmer in 2 minutes.
 - [status](github.com/avinassh/status) - HTTP Status for Humans.
