@@ -10,9 +10,6 @@
 [submodule "themes/hugo-PaperMod"]
 	path = themes/hugo-PaperMod
 	url = https://github.com/adityatelange/hugo-PaperMod.git
-[submodule "themes/journal"]
-	path = themes/journal
-	url = https://github.com/dashdashzako/hugo-journal.git
 [submodule "themes/skyfall"]
 	path = themes/skyfall
 	url = https://github.com/avinassh/hugo-skyfall.git
