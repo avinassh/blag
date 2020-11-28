@@ -1,7 +1,7 @@
 baseURL = "http://avi.im/blag"
 languageCode = "en-us"
 title = "blag"
-theme = "terminal"
+theme = "skyfall"
 paginate = 8
 
 
