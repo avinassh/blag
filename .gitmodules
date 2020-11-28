@@ -3,16 +3,16 @@
 	url = https://github.com/avinassh/basics.git
 [submodule "themes/yinyang"]
 	path = themes/yinyang
-	url = git@github.com:joway/hugo-theme-yinyang.git
+	url = https://github.com/joway/hugo-theme-yinyang.git
 [submodule "themes/hemingway"]
 	path = themes/hemingway
-	url = git@github.com:perryao/hemingway.git
+	url = https://github.com/perryao/hemingway.git
 [submodule "themes/hugo-PaperMod"]
 	path = themes/hugo-PaperMod
 	url = https://github.com/adityatelange/hugo-PaperMod.git
 [submodule "themes/journal"]
 	path = themes/journal
-	url = git@github.com:dashdashzako/hugo-journal.git
+	url = https://github.com/dashdashzako/hugo-journal.git
 [submodule "themes/skyfall"]
 	path = themes/skyfall
-	url = git@github.com:avinassh/hugo-skyfall.git
+	url = https://github.com/avinassh/hugo-skyfall.git
