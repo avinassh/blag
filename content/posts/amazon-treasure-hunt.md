@@ -4,7 +4,7 @@ date: "2015-10-31T22:20:00+05:30"
 categories: ["code"]
 tags: ["hacking"]
 slug: "amazon-treasure-hunt"
-description: "With a simple Man In The Middle (MITM) attack, I tried to cheat(?) one of Amazon India's contest."
+summary: "With a simple Man In The Middle (MITM) attack, I tried to cheat(?) one of Amazon India's contest."
 ---
 
 Last week Amazon India had a Treasure Hunt contest which ran for a whole week. The contest was simple, from 10am to 6pm, every hour Amazon would display a clue (image) and you had to guess the product. That particular product would be on sale for ₹1, which also included shipping cost anywhere in India. The contest was app only i.e. image also would be displayed in the app and you had to buy using the app.

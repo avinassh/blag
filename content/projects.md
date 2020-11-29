@@ -1,6 +1,6 @@
 ---
 title: "Projects"
-description: "Some of the projects I have done."
+summary: "Some of the projects I have done."
 ---
 
 I am learning Python and Swift these days. You can find some of my code on my [GitHub](https://github.com/avinassh).

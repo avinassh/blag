@@ -4,7 +4,7 @@ date: "2016-02-19T23:03:00+05:30"
 categories: ["code"]
 tags: ["git", "github", "open-source"]
 slug: "git-fork-cycle-github"
-description: "When contributing to Open Source Projects, new contributors often run into problems of having multiple merge commits and issues with keeping the forked repo in sync. This post addresses solutions for some of the problems."
+summary: "When contributing to Open Source Projects, new contributors often run into problems of having multiple merge commits and issues with keeping the forked repo in sync. This post addresses solutions for some of the problems."
 ---
 
 Lets say there is a project called `python` and you want to contribute. So you should fork `python` project and ALWAYS create a separate branch for the patch/feature you are working on and NEVER commit on the master branch of forked repo.

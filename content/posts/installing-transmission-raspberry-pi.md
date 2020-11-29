@@ -5,7 +5,7 @@ lastmod: "2014-09-02T19:30:00+05:30"
 categories: ["tutorial"]
 tags: ["raspberry-pi", "transmission"]
 slug: "installing-transmission-raspberry-pi"
-description: "This tutorial will explain you how to install Transmission client on Raspberry Pi running Raspbian."
+summary: "This tutorial will explain you how to install Transmission client on Raspberry Pi running Raspbian."
 ---
 
 I have found [Transmission](http://www.transmissionbt.com/) to be best client to run on Raspberry Pi. In this tutorial I will explain how to install Transmission and access it using it's web interface over browser. 

@@ -1,6 +1,6 @@
 ---
 title: "About"
-description: "Some Stuff About Me"
+summary: "Some Stuff About Me"
 ---
 
 Hey there! This is Avinash. I am a programmer from India. I mostly code in Python but learning Swift these days. I have dabbled little in Web Development using Python Tornado. 

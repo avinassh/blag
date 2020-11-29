@@ -4,7 +4,7 @@ date: "2016-12-06T19:03:00+05:30"
 categories: ["code"]
 tags: ["golang"]
 slug: "install-go-sierra"
-description: "Install Go v1.7.x on OS X 10.12.x with Homebrew."
+summary: "Install Go v1.7.x on OS X 10.12.x with Homebrew."
 ---
 
 Do the following:

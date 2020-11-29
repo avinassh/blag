@@ -4,7 +4,7 @@ date: "2014-10-18T14:03:00+05:30"
 categories: ["code"]
 tags: ["python", "scraping"]
 slug: "scraping-javascript-website-python"
-description: "Simple code example to illustrate scraping a javascript driven website, using Python and Dryscape."
+summary: "Simple code example to illustrate scraping a javascript driven website, using Python and Dryscape."
 ---
 
 Python library [dryscape][1] can be used to scrape javascript driven websites. 

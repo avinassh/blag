@@ -4,7 +4,7 @@ date: "2014-12-28T16:20:00+05:30"
 categories: ["tutorial"]
 tags: ["hackintosh", "osx", "uefi"]
 slug: "install-uefi-windows-yosemite-dualboot"
-description: "This tutorial will help you install Windows 8 on a Legacy BIOS in UEFI mode using Clover and dual boot with Yosemite."
+summary: "This tutorial will help you install Windows 8 on a Legacy BIOS in UEFI mode using Clover and dual boot with Yosemite."
 ---
 
 In this tutorial I am going to explain how to install Windows 8 on a Legacy BIOS in UEFI mode (Yes! It's possible!!) using Clover and dual boot with Yosemite. Technically this tutorial should work for Windows 7 and Mavericks also, but I haven't tried. 
