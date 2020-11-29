@@ -7,7 +7,7 @@ theme = "skyfall"
   posts = "/:year/:slug/"
 
 [markup.goldmark.renderer]
-unsafe= true
+  unsafe = true
 
 [params]
   githubUsername = "avinassh"
