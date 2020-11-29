@@ -1,7 +1,7 @@
 baseURL = "http://avi.im/blag"
 languageCode = "en-us"
 title = "blag"
-theme = "terminal"
+theme = "skyfall"
 paginate = 8
 
 
@@ -31,6 +31,11 @@ unsafe= true
     pygmentsUseClasses=true
 
 [params]
+
+  githubUsername = "avinassh"
+
+  goatSiteName = "avi"
+
   # dir name of your main content (default is `content/posts`).
   # the list of set content will show up on your index page (baseurl).
   contentTypeName = "posts"

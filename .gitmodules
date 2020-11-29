@@ -1,0 +1,15 @@
+[submodule "themes/basics"]
+	path = themes/basics
+	url = https://github.com/avinassh/basics.git
+[submodule "themes/yinyang"]
+	path = themes/yinyang
+	url = https://github.com/joway/hugo-theme-yinyang.git
+[submodule "themes/hemingway"]
+	path = themes/hemingway
+	url = https://github.com/perryao/hemingway.git
+[submodule "themes/hugo-PaperMod"]
+	path = themes/hugo-PaperMod
+	url = https://github.com/adityatelange/hugo-PaperMod.git
+[submodule "themes/skyfall"]
+	path = themes/skyfall
+	url = https://github.com/avinassh/hugo-skyfall.git
