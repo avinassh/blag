@@ -19,4 +19,9 @@ I decided to migrate to Hugo from Pelican and here are some of the changes I mad
 
 2. Next task was moving static assets like images, gifs which I had used. Since they were very few, I just moved them manually and updated my markdown.
 
+3. I had used raw HTML to insert images, with markdown I couldn't specify the width or apply inline styles. Hugo disables rendering of raw HTML, so I had to explicitly enable it by adding following to the `config.toml`:
+
+		[markup.goldmark.renderer]
+		  unsafe = true	
+
 I setup [Github Actions](https://github.com/avinassh/blag/blob/9883271408233130eb4e7b8ba6aab25d954ab55a/.github/workflows/development.yml) to automate the publishing process.
