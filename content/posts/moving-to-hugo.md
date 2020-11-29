@@ -24,4 +24,4 @@ I decided to migrate to Hugo from Pelican and here are some of the changes I mad
 		[markup.goldmark.renderer]
 		  unsafe = true	
 
-I setup [Github Actions](https://github.com/avinassh/blag/blob/9883271408233130eb4e7b8ba6aab25d954ab55a/.github/workflows/development.yml) to automate the publishing process.
+I setup [Github Actions](https://github.com/avinassh/blag/blob/9883271408233130eb4e7b8ba6aab25d954ab55a/.github/workflows/production.yml) to automate the publishing process.
