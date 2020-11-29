@@ -50,20 +50,20 @@ Before installing Yosemite/Clover, it's better to test Clover on currently insta
 
 1. Plug in the 200MB (or more) pen drive. Open disk utility, select this drive, under `Erase` tab choose `Format` as `MS-DOS(FAT)` and give name `CLOVER`(or whatever you want) and hit `Erase`:
 
-    ![Erasing test usb](http://i.imgur.com/Bc2948b.png)
+    ![Erasing test usb](//i.imgur.com/Bc2948b.png)
 
 2. Go to `Partition` tab, select `1 Partition` in `Partition Layout`, Give name as `CLOVER`, format as `MS-DOS(FAT)`. Click `Options` at the bottom and select `Master Boot Record`. Hit `Apply`.
 
-    ![Partition](http://i.imgur.com/sDcdcik.png)
-    ![Master Boot Record](http://i.imgur.com/9UoOKPK.png)
+    ![Partition](//i.imgur.com/sDcdcik.png)
+    ![Master Boot Record](//i.imgur.com/9UoOKPK.png)
 
     Your drive is formatted properly now. It can have Clover installed for test USB drive.
 
 3. Run Clover and change install location to this drive, `CLOVER` and customize by selecting `Bootloader` > `Install boot0ss in MBR`, `CloverEFI` > `CloverEFI 64-bits SATA` and `Drivers64UEFI` > `EmuVariableUefi-64`. Perform installation:
 
-    ![install location](http://i.imgur.com/cOtGzUY.png)
-    ![boot0ss and SATA](http://i.imgur.com/ZPpE5h5.png)
-    ![drivers](http://i.imgur.com/Otd8odM.png)  
+    ![install location](//i.imgur.com/cOtGzUY.png)
+    ![boot0ss and SATA](//i.imgur.com/ZPpE5h5.png)
+    ![drivers](//i.imgur.com/Otd8odM.png)  
 
 4. Clover is installed to the drive. However you need to copy few more files. You will need `config.plist`, `DSDT.aml` which are specific to your system.
 
@@ -81,16 +81,16 @@ We will prepare a single USB drive which can be used to install Yosemite, Window
 
 1. Erase the USB drive, using Disk Utility. Make 3 partitions for OS X (call it `Yosemite`), Windows (call it `WIN81`) and Ubuntu. Select OS X Partition as `Mac OS Extended Journaled`,  Windows partition as `MS-DOS(FAT)` and Ubuntu partition as `ext4`. (If you don't want Ubuntu, make only two partitions). Make sure you are giving 7GB (or more) for each OS X and Windows installation partitions. Select ‘GPT (GUID Partition Table)’ under `Options`.
 
-    ![partition](http://i.imgur.com/BcE2FG5.png)
-    ![GUID](http://i.imgur.com/lH2FkxY.png)
+    ![partition](//i.imgur.com/BcE2FG5.png)
+    ![GUID](//i.imgur.com/lH2FkxY.png)
 
 2. Mount Windows 8 installation ISO and copy Windows 8 installation files to this FAT32 Windows Partition, `WIN81`. 
 
 3. Install Clover into the EFI partition of this USB by targeting the `OSX` partition and customize by selecting `Install Clover in the ESP`, `Bootloader` > `Install boot0ss in MBR`, `CloverEFI` > `CloverEFI 64-bits SATA` and `Drivers64UEFI` > `EmuVariableUefi-64`. Perform installation:
 
-    ![Yosemite drive](http://i.imgur.com/7p2hE0w.png)
-    ![ESP, boot0ss](http://i.imgur.com/7aLwnHZ.png)
-    ![drivers etc](http://i.imgur.com/Kk0xNm6.png)
+    ![Yosemite drive](//i.imgur.com/7p2hE0w.png)
+    ![ESP, boot0ss](//i.imgur.com/7aLwnHZ.png)
+    ![drivers etc](//i.imgur.com/Kk0xNm6.png)
 
     Once clover is installed EFI partition will be mounted automatically. Open it and now you need put few more files. You will need `config.plist`, `DSDT.aml` which are specific to your system.
 
@@ -130,9 +130,9 @@ So far I have covered installation of Yosemite. Now post installation, we will i
 
 2. Install Clover into the EFI partition of the HDD by targeting the `Yosemite` partition (or whatever you called it) and customize by selecting `Install Clover in the ESP`, `Bootloader` > `Install boot0ss in MBR`, `CloverEFI` > `CloverEFI 64-bits SATA`, `Drivers64UEFI` > `EmuVariableUefi-64`, `Install RC Scripts on target volume` and `Install Clover Preference Pane`. Perform installation:
 
-    ![Yosemite drive](http://i.imgur.com/3nLmQKE.png)
-    ![ESP, boot0ss](http://i.imgur.com/9g6ZuVM.png)
-    ![drivers etc](http://i.imgur.com/KKUFAqa.png)
+    ![Yosemite drive](//i.imgur.com/3nLmQKE.png)
+    ![ESP, boot0ss](//i.imgur.com/9g6ZuVM.png)
+    ![drivers etc](//i.imgur.com/KKUFAqa.png)
 
 3. Once clover is installed, EFI partition will be mounted automatically. Open it and now you need put few more files. You will need `config.plist`, `DSDT.aml` which are specific to your system.
 
@@ -146,8 +146,8 @@ So far I have covered installation of Yosemite. Now post installation, we will i
 
 Boot into your machine with HDD's Clover and select `Boot UEFI external from WIN81`, hit spacebar, select and enter `Run bootx64.efi`. It should load into Windows installation. (*image credits: fusion71au*)
 
-![clover bootmenu](http://i.imgur.com/essjmDT.png)
-![boot windows 8](http://i.imgur.com/Ja4W7c1.png)
+![clover bootmenu](//i.imgur.com/essjmDT.png)
+![boot windows 8](//i.imgur.com/Ja4W7c1.png)
 
 
 Proceed Windows installation and complete it. Now you have Windows 8 UEFI on a Legacy BIOS!
@@ -162,7 +162,7 @@ Proceed Windows installation and complete it. Now you have Windows 8 UEFI on a L
 
     Then you should see an extra Debug Menu in the Disk Utility:
 
-    ![debug menu](http://i.imgur.com/emmNXYn.png)
+    ![debug menu](//i.imgur.com/emmNXYn.png)
 
 2. If the Windows ISO size is more than 4GB, then most probably `/source/install.wim` size will be more than 4GB and copying it to FAT partition will fail. For this we have to split this file. 
 
