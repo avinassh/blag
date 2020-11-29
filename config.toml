@@ -2,8 +2,6 @@ baseURL = "http://avi.im/blag"
 languageCode = "en-us"
 title = "blag"
 theme = "skyfall"
-paginate = 8
-
 
 [permalinks]
   posts = "/:year/:slug/"
@@ -11,94 +9,17 @@ paginate = 8
 [markup.goldmark.renderer]
 unsafe= true
 
-[taxonomies]
-  category = "categories"
-  tag = "tags"
-
-[markup]
-  [markup.highlight]
-    anchorLineNos = false
-    codeFences = true
-    guessSyntax = true
-    hl_Lines = ""
-    lineAnchors = ""
-    lineNoStart = 1
-    lineNos = false
-    lineNumbersInTable = true
-    noClasses = true
-    style = "monokai"
-    tabWidth = 4
-    pygmentsUseClasses=true
-
 [params]
-
   githubUsername = "avinassh"
-
   goatSiteName = "avi"
 
-  # dir name of your main content (default is `content/posts`).
-  # the list of set content will show up on your index page (baseurl).
-  contentTypeName = "posts"
+[menu]
+  [[menu.main]]
+  identifier = "about"
+  name = "About"
+  url = "/about"
 
-  # ["orange", "blue", "red", "green", "pink"]
-  themeColor = "blue"
-
-  # if you set this to 0, only submenu trigger will be visible
-  showMenuItems = 2
-
-  # show selector to switch language
-  showLanguageSelector = false
-
-  # set theme to full screen width
-  fullWidthTheme = false
-
-  # center theme with default width
-  centerTheme = true
-
-  # set a custom favicon (default is a `themeColor` square)
-  # favicon = "favicon.ico"
-
-  # set post to show the last updated
-  # If you use git, you can set `enableGitInfo` to `true` and then post will automatically get the last updated
-  showLastUpdated = false
-  # Provide a string as a prefix for the last update date. By default, it looks like this: 2020-xx-xx [Updated: 2020-xx-xx] :: Author
-  # updatedDatePrefix = "Updated"
-
-  # set all headings to their default size (depending on browser settings)
-  # it's set to `true` by default
-  # oneHeadingSize = false
-
-[params.twitter]
-  # set Twitter handles for Twitter cards
-  # see https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started#card-and-content-attribution
-  # do not include @
-  creator = ""
-  site = ""
-
-[languages]
-  [languages.en]
-    languageName = "English"
-    title = "blag"
-    subtitle = "a blog about blag about a blog"
-    owner = ""
-    keywords = ""
-    copyright = ""
-    menuMore = "Show more"
-    readMore = "Read more"
-    readOtherPosts = "Read other posts"
-    missingContentMessage = "Page not found..."
-    missingBackButtonLabel = "Back to home page"
-
-    [languages.en.params.logo]
-      logoText = "blag"
-      logoHomeLink = "/blag"
-
-    [languages.en.menu]
-      [[languages.en.menu.main]]
-        identifier = "about"
-        name = "About"
-        url = "/about"
-      [[languages.en.menu.main]]
-        identifier = "projects"
-        name = "Projects"
-        url = "/projects"
+  [[menu.main]]
+  identifier = "projects"
+  name = "Projects"
+  url = "/projects"
