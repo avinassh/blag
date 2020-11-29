@@ -7,7 +7,7 @@ slug: "gh-actions-hugo"
 summary: "Github Actions for Hugo but with particular requirements"
 ---
 
-I setup Github Actions workflow for this blog to automate the publishing. Actions were new to me, this was a fun learning activity. 
+I setup [Github Actions workflow](https://github.com/avinassh/blag/blob/9883271408233130eb4e7b8ba6aab25d954ab55a/.github/workflows/development.yml) for this blog to automate the publishing. Actions were new to me, this was a fun learning activity.
 
 I had to write a new one because I could not find an existing action which filled my needs. Here is how it is setup:
 
@@ -19,4 +19,4 @@ I had to write a new one because I could not find an existing action which fille
 
 4. Since every commit on `gh-pages` reflects a commit from `master`, I wanted each of these commits to have the same commit message which triggered the build.
 
-I have made this Github Action available here - [actions-hugo](https://github.com/avinassh/actions-hugo)
+I have made this Github Action available here - [hugo-publish](https://github.com/avinassh/hugo-publish)
