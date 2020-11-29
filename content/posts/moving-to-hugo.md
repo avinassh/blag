@@ -1,7 +1,7 @@
 ---
 title: "Moving to Hugo"
 date: "2020-11-29T10:58:48+05:30"
-categories: ["", ""]
+categories: ["hugo"]
 tags: ["pelican", "hugo", "notes"]
 slug: "moving-to-hugo"
 summary: "some personal notes to remember the migration effort from Pelican to Hugo"
