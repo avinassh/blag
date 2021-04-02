@@ -6,7 +6,6 @@ tags: ["database", "mongodb", "replication"]
 slug: "mongo-dupes-in-unique-index"
 summary: "how my curiosity lead me to discover a weird inconsistency with MongoDB where I was able to insert records which conflicted the index constraints"
 thumbnail: "images/2021/mongo-unique-index-oops.png"
-draft: true
 ---
 
 <small>Note: The intention of this post is not to shit on MongoDB. They specifically forbid the steps I am about to explain. This post is a chronicle of my curiosity, exploration, and a fun learning experience. If you still find it interestng, then continue to read on (:</small>
