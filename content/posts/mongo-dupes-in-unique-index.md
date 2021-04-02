@@ -130,7 +130,9 @@ rs0:SECONDARY> db.records.getIndexes()
 
 ### Bonus
 
-<script id="asciicast-cHfzvlc3Rpkd6JqSJCLetgZTM" src="https://asciinema.org/a/cHfzvlc3Rpkd6JqSJCLetgZTM.js" async></script>
+<script id="asciicast-404598" src="https://asciinema.org/a/404598.js" async></script>
+
+<small><i>Thanks to Piyush Mishra for reading a draft of this.</i></small>
 
 ---
 
