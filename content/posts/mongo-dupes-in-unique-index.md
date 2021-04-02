@@ -22,9 +22,9 @@ Yet, I ended up breaking these set rules and bringing my MongoDB in a weird stat
 
 ## The Problem
 
-I have a three node cluster, where one is a primary and two others are secondaries. If you want to create an index on a large collection, MongoDB docs suggest you do something called [Rolling Index Builds](https://docs.mongodb.com/v4.0/tutorial/build-indexes-on-replica-sets/):
+I have a three node cluster, with a primary and two secondaries. If you want to create an index on a large collection, MongoDB docs suggest you do something called [Rolling Index Builds](https://docs.mongodb.com/v4.0/tutorial/build-indexes-on-replica-sets/):
 
-1. Take out one of the followers from the replica set
+1. Remove a member from the replica set
 2. Create the index
 3. Add the follower back to the replica set
 4. Repeat for all the followers
