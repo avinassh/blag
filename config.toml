@@ -1,4 +1,4 @@
-baseURL = "http://avi.im/blag"
+baseURL = "https://avi.im/blag"
 languageCode = "en-us"
 title = "blag"
 theme = "skyfall"
