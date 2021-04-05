@@ -10,7 +10,3 @@ summary: "In May, 2015 I found an exploit on Gaana.com, which let me access thei
 ---
 
 **Update**: I have removed the blog post. <!--of course you can find it if you look deep enough. can you ever remove anything from the internet?-->TLDR; On 12th of May I had discovered a vulnerability on Gaana.com. I contacted their team and it was fixed recently. I had written blog post in detail about it, now I think it's best I remove everything. Thanks for reading!
-
-<script data-isso="//comments.example.tld/" src="//comments.example.tld/js/embed.min.js"></script>
-
-<section id="isso-thread"></section>
