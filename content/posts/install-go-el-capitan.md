@@ -6,6 +6,7 @@ categories: ["code"]
 tags: ["golang"]
 slug: "install-go-el-capitan"
 summary: "Install Go v1.6.2. on OS X 10.11.x with Homebrew."
+draft: true
 ---
 
 Do the following:
