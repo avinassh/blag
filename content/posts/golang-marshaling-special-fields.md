@@ -140,7 +140,7 @@ func main() {
 
 ### Note
 
-If you are passing around this request object, then the next method won't be able to read the body. In that case buffer needs to be refilled:
+If you are passing around this request object, then the next method won't be able to read the body. In that case, buffer needs to be refilled:
 
 ```go
 body, _ := ioutil.ReadAll(req.Body)
