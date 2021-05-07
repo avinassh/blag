@@ -35,12 +35,14 @@ type Request struct {
 }
 ```
 
-I [wrote a wrapper struct](https://play.golang.org/p/84b1fFkUzLM) in which I embedded the `http.Request` object, redefined these fields. Do note that the json struct tags need to match with the corresponding fields from `http.Request`:
+I [wrote a wrapper struct](https://play.golang.org/p/YfT5XOuHAu2) in which I embedded the `http.Request` object, redefined these fields. Do note that the json struct tags need to match with the corresponding fields from `http.Request`:
 
 ```go
 type RequestWrapper struct {
-    GetBody string `json:"GetBody,omitempty"` // the type doesn't really matter, since I
-    Cancel  string `json:"Cancel,omitempty"` // don't want them in my final json output
+    // the types of variables `GetBody` and `Cancel` do not
+    // really matter since I don't want them in my final json output
+    GetBody string `json:"GetBody,omitempty"`
+    Cancel  string `json:"Cancel,omitempty"`
     *http.Request
 }
 
@@ -52,7 +54,19 @@ func main() {
 }
 ```
 
-This works nicely! But lets test the same with an HTTP request containing body:
+This works nicely! Since we don't care about `GetBody`, `Cancel` fields, you might be tempted to use `-` struct tag instead of explicit mention of `omitempty`:
+
+```go
+type RequestWrapper struct {
+    GetBody string `json:"-"`
+    Cancel  string `json:"-"`
+    *http.Request
+}
+```
+
+Unfortunately, [this doesn't work](https://play.golang.org/p/HG2k8CdlU5_p) and we ran into the same error which we had encountered earlier. That is because, the wrapper struct fields gets ignored for json marshaling, but embedded struct's fields get considered.
+
+Now, lets test our code with an HTTP request containing body:
 
 ```go
 func main() {
@@ -77,9 +91,12 @@ Uh oh! we see that request body isn't marshaled correctly:
 
 ```go
 type RequestWrapper struct {
-    Body    string `json:"Body,omitempty"`   // this assumes body is always string
-    GetBody string `json:"GetBody,omitempty"` // the type doesn't really matter, since I
-    Cancel  string `json:"Cancel,omitempty"` // don't want them in my final json output
+    // this assumes Body is always a string
+    Body    string `json:"Body,omitempty"`
+    // the types of variables `GetBody` and `Cancel` do not
+    // really matter since I don't want them in my final json output
+    GetBody string `json:"GetBody,omitempty"`
+    Cancel  string `json:"Cancel,omitempty"`
     *http.Request
 }
 ```
@@ -96,7 +113,7 @@ func main() {
 }
 ```
 
-[This](https://play.golang.org/p/lq9touQZq_F) works perfectly!
+[This](https://play.golang.org/p/hR8p27oGs_E) works perfectly!
 
 ## Bonus
 
