@@ -5,7 +5,6 @@ categories: ["database"]
 tags: ["database", "sqlite", "optimisation", "performance"]
 slug: "fast-sqlite-inserts"
 summary: "This is a chronicle of my experiment where I set out to insert 1B rows in SQLite"
-draft: true
 ---
 
 you can check the source code here - https://github.com/avinassh/fast-sqlite3-inserts
