@@ -78,12 +78,12 @@ Here are some of the articles I read on the internet which helped me with these 
 
 I rewrote the Python script again, this time including the fine-tuned SQLite parameters which gave a huge boost and the running time was reduced drastically.
 
-- The naive for loop version took about 10 minutes to insert 100M rows.
-- The batched version took about 8.5 minutes to insert 100M rows. 
+- The [naive for loop version](https://github.com/avinassh/fast-sqlite3-inserts/blob/3b9850a/sqlite3_opt.py) took about 10 minutes to insert 100M rows.
+- The [batched version](https://github.com/avinassh/fast-sqlite3-inserts/blob/e126bd6/sqlite3_opt_batched.py) took about 8.5 minutes to insert 100M rows. 
 
 # PyPy
 
-I have never used PyPy and PyPy homepage highlight that it is 4x faster than CPython, I felt this is a good opportunity to try it and test out their claims. I was also wondering if I had to make changes to make it run, however, my existing code ran smoothly. 
+I have never used PyPy and [PyPy homepage](https://www.pypy.org/) highlight that it is 4x faster than CPython, I felt this is a good opportunity to try it and test out their claims. I was also wondering if I had to make changes to make it run, however, my existing code ran smoothly. 
 
 All I had to do was run my existing code, without any change, using PyPy. It worked and the speed bump was phenomenal. The batched version took only 2.5 minutes to insert 100M rows. I got close to 3.5x speed :)
 
@@ -91,28 +91,28 @@ All I had to do was run my existing code, without any change, using PyPy. It wor
 
 # Busy Loop(?)
 
-I wanted to get some idea of how much time Python is spending just in loops. So I removed the SQL instructions and ran the code:
+I wanted to get some idea of how much time Python is spending just in loops. So I removed the SQL instructions and ran [the code](https://github.com/avinassh/fast-sqlite3-inserts/blob/d27601a/busy_loop.py):
 
 - The batched version took 5.5 minutes in CPython
 - The batched version took 1.5 minutes in PyPy (again a 3.5x speed bump)
 
-I rewrote the same in Rust, the loop took only 17 seconds. I decided to move from Python and experiment further in Rust.
+I [rewrote the same in Rust](https://github.com/avinassh/fast-sqlite3-inserts/blob/47fd81f/src/bin/busy.rs), the loop took only 17 seconds. I decided to move from Python and experiment further in Rust.
 
 (Note: This is NOT a speed comparison post between Python and Rust. Both have very different goals and places in your toolkit.)
 
 
 # Rust
 
-Just like Python, I wrote a naive Rust version where I inserted each row in a loop. However, I included all the SQLite optimisations. This version took about 3 minutes. Then I did further experiments:
+Just like Python, I wrote a [naive Rust version](https://github.com/avinassh/fast-sqlite3-inserts/blob/bdda921/src/bin/basic.rs) where I inserted each row in a loop. However, I included all the SQLite optimisations. This version took about 3 minutes. Then I did further experiments:
 
-- The previous version had used `rusqlite`, I switched to `sqlx` which runs asynchronously. This version took about 14 mins. I was expecting this degraded performance. But it is worth noting that it performed worse than any of the Python iterations I had come up with so far. 
-- I was executing raw SQL statements, switched to prepared statements and inserted the rows in a loop, but reusing the prepared statement. This version took about only a minute.
-- Also tried creating a long string with an insert statement, I don't think this performed any better. The [repository](https://github.com/avinassh/fast-sqlite3-inserts) has few other versions as well.
+- The previous version had used `rusqlite`, I [switched to](https://github.com/avinassh/fast-sqlite3-inserts/blob/ebce33f/src/bin/basic_async.rs) `sqlx` which runs asynchronously. This version took about 14 mins. I was expecting this degraded performance. But it is worth noting that it performed worse than any of the Python iterations I had come up with so far. 
+- I was executing raw SQL statements, [switched to prepared statements](https://github.com/avinassh/fast-sqlite3-inserts/blob/cbe53fd/src/bin/basic_prep.rs) and inserted the rows in a loop, but reusing the prepared statement. This version took about only a minute.
+- Also tried creating a [long string with an insert statement](https://github.com/avinassh/fast-sqlite3-inserts/blob/9cc1ea1/src/bin/basic_batched_wp.rs), I don't think this performed any better. The [repository](https://github.com/avinassh/fast-sqlite3-inserts) has few other versions as well.
 
 # The (Current) Best Version
 
-- I used prepared statements and inserted them in a batch of 50 rows. To insert 100M rows, took 34.3 seconds
-- I created a threaded version, where I had one writer thread that received data from a channel and four other threads which pushed data to the channel. This is the current best version which took about 32.37 seconds.
+- I used prepared statements and inserted them in a batch of 50 rows. To insert 100M rows, took 34.3 seconds. [source code](https://github.com/avinassh/fast-sqlite3-inserts/blob/009694f/src/bin/basic_batched.rs)
+- I created a threaded version, where I had one writer thread that received data from a channel and four other threads which pushed data to the channel. This is the current best version which took about 32.37 seconds. [source code](https://github.com/avinassh/fast-sqlite3-inserts/blob/bd8414f/src/bin/threaded_batched.rs)
 
 # IO Time
 
@@ -132,11 +132,12 @@ Here are a few directions I plan to explore next to improve performance:
 
 1. I haven't run the code through a profiler. It might give us hints about the slow parts and help us optimising the code further.
 2. The second fastest version runs single threaded, on a single process. Since I have a four-core machine, I could launch 4 processes, get up to 800M rows under a minute. Then I would have to merge these in few seconds, so that the overall time taken is still less than a minute.
-3. Write a go version with the garbage collector completely disabled. 
+3. Write a go version with the garbage collector completely disabled.
+4. It is entirely possible that rust compiler might have optimised the busy loop code and removed the allocations, calls to random functions since it had no side effects. Analysis of the generated binary might shed more light.
 
 Looking forward to discussions and/or collaborations with curious souls in my quest to generate a billion record SQLite DB quickly. If this sounds interesting to you, reach out to me on [Twitter](https://twitter.com/iavins) or [submit a PR](https://github.com/avinassh/fast-sqlite3-inserts).
 
-<small><i>Thanks to Bhargav, Rishi, Saad, and Sumesh for reading a draft of this.</i></small>
+<small><i>Thanks to Bhargav, Rishi, Saad, Sumesh, and Archana for reading a draft of this.</i></small>
 
 ---
 
