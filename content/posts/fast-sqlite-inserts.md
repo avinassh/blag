@@ -7,18 +7,7 @@ slug: "fast-sqlite-inserts"
 summary: "This is a chronicle of my experiment where I set out to insert 1B rows in SQLite"
 ---
 
-**Current Best**: 100M rows inserts in 33 seconds.
-
-Leaderboard:
-
-| Variant           | Time             |
-| ------------------| -----------------|
-| Rust              | 33 seconds       |
-| PyPy              | 150 seconds      |
-| CPython           | 510 seconds      |
-
-
-(you can check the [source code on Github](https://github.com/avinassh/fast-sqlite3-inserts))
+**Current Best**: 100M rows inserts in 33 seconds. (you can check the [source code on Github](https://github.com/avinassh/fast-sqlite3-inserts))
 
 ---
 
@@ -122,16 +111,34 @@ Just like Python, I wrote a naive Rust version where I inserted each row in a lo
 
 # The (Current) Best Version
 
-- Used prepared statements and inserted them in a batch of 50 rows. To insert 100M rows, took 34.3 seconds
-- Created a threaded version, where I had one writer thread that received data from a channel and four other threads which were pushing data to the channel. This is the current best version and it took about 32.37 seconds.
+- I used prepared statements and inserted them in a batch of 50 rows. To insert 100M rows, took 34.3 seconds
+- I created a threaded version, where I had one writer thread that received data from a channel and four other threads which pushed data to the channel. This is the current best version which took about 32.37 seconds.
 
+# IO Time
+
+Good folks at the SQLite forum gave me an interesting idea, measure the time it takes for in-memory DB. I ran the code again giving the DB location as `:memory:`, the rust version took two seconds less to complete (29 seconds). 
+
+# Leaderboard
+
+| Variant           | Time             |
+| ------------------| -----------------|
+| Rust              | 33 seconds       |
+| PyPy              | 150 seconds      |
+| CPython           | 510 seconds      |
 
 # Further Ideas
 
 Here are a few directions I plan to explore next to improve performance:
 
-1. I haven't run the code through a profiler. It might hint us slow parts and help us optimising the code further.
+1. I haven't run the code through a profiler. It might give us hints about the slow parts and help us optimising the code further.
 2. The second fastest version runs single threaded, on a single process. Since I have a four-core machine, I could launch 4 processes, get up to 800M rows under a minute. Then I would have to merge these in few seconds, so that the overall time taken is still less than a minute.
 3. Write a go version with the garbage collector completely disabled. 
 
-Looking forward for any curious souls to join me on my quest for fastly generating a billion record SQLite DB. If this sounds interested to you, reach out to me on [Twitter](https://twitter.com/iavins) or [submit a PR](https://github.com/avinassh/fast-sqlite3-inserts).
+Looking forward to discussions and/or collaborations with curious souls in my quest to generate a billion record SQLite DB quickly. If this sounds interesting to you, reach out to me on [Twitter](https://twitter.com/iavins) or [submit a PR](https://github.com/avinassh/fast-sqlite3-inserts).
+
+<small><i>Thanks to Bhargav, Rishi, Saad, and Sumesh for reading a draft of this.</i></small>
+
+---
+
+<small>1. Why? In [a telegram bot](https://github.com/avinassh/cowin-assist), I wrote, one of the SQL queries required a partial index. I have used partial indexes in Postgres/Mongo, but I was pleasantly surprised to know that SQLite also supported them. I decided to write a blog post (spoiler: which I never did), with numbers showing the effectiveness of partial indexes. I wrote a quick script and generated a DB, but the data was too small to show the power of partial indexes and queries were fast without them. The larger DB required more than 30 minutes to generate. So I spent 30+ hours to reduce the 30 mins of running time :p</small><br>
+<small>2. If you liked this post, then you may like [my experiment with MongoDB](https://avi.im/blag/2021/mongo-dupes-in-unique-index/) where I inserted duplicate records in a collection with a unique index - [link](https://avi.im/blag/2021/mongo-dupes-in-unique-index/).</small><br>
