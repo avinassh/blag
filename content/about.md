@@ -3,9 +3,21 @@ title: "About"
 summary: "Some Stuff About Me"
 ---
 
-Hey there! This is Avinash. I am a programmer from India. I mostly code in Python but learning Swift these days. I have dabbled little in Web Development using Python Tornado. 
+Hey there! This is Avinash. I am a backend developer who mostly codes in Go, and Python. I am interested in distributed systems, message queues, and messaging infrastructure in general. I am also learning Rust these days.
 
 <!-- And I am available for hire. If you have new job opportunities, [get in touch with me](http://scr.im/avii). Thanks! -->
+
+## Open Source
+
+I contribute to open source a lot and following projects are my current focus:
+
+- [gRPC Errors](https://github.com/avinassh/grpc-errors)
+- [twirpy](https://github.com/verloop/twirpy)
+- [Fast SQLite Inserts](https://github.com/avinassh/fast-sqlite3-inserts)
+- [fluvio-go](https://github.com/avinassh/fluvio-go)
+- [pastry](https://github.com/avinassh/pastry)
+- [grusto](https://github.com/avinassh/grusto)
+
 
 ## On Interwebz
 
