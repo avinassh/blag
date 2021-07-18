@@ -126,6 +126,14 @@ Good folks at the SQLite forum gave me an interesting idea, measure the time it 
 | PyPy              | 150 seconds      |
 | CPython           | 510 seconds      |
 
+# Learnings and Key Takeaways
+
+- Make use of SQLite [PRAGMA statements](https://www.sqlite.org/pragma.html) when possible
+- Use prepared statements
+- Do a batched insertions
+- PyPy is actually 4x faster than CPython
+- Threads / async may not be faster always
+
 # Further Ideas
 
 Here are a few directions I plan to explore next to improve performance:
@@ -137,7 +145,7 @@ Here are a few directions I plan to explore next to improve performance:
 
 Looking forward to discussions and/or collaborations with curious souls in my quest to generate a billion record SQLite DB quickly. If this sounds interesting to you, reach out to me on [Twitter](https://twitter.com/iavins) or [submit a PR](https://github.com/avinassh/fast-sqlite3-inserts).
 
-<small><i>Thanks to Bhargav, Rishi, Saad, Sumesh, and Archana for reading a draft of this.</i></small>
+<small><i>Thanks to Bhargav, Rishi, Saad, Sumesh, Archana, and Aarush for reading a draft of this.</i></small><!--Also thanks to Mishraji, who promised to read-->
 
 ---
 
