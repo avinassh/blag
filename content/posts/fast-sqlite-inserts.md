@@ -30,7 +30,7 @@ create table IF NOT EXISTS user
 ```
 
 The generated data would be random with following constraints: 
- The `area` column would hold six digits area code (any six digits would do, no validation). 
+The `area` column would hold six digits area code (any six digits would do, no validation).
 The `age` would be any of 5, 10, or 15. 
 The `active` column is either 0 or 1.
 
@@ -72,7 +72,7 @@ What do these do?
 
 The SQLite docs have a [full page dedicated on these parameters](https://www.sqlite.org/pragma.html), they also list a bunch of other parameters. I haven't tried all of them, the ones I selected provided a decent running time.
 
-Here are some of the articles I read on the internet which helped me with these optimisation parameters.
+Here are some of the articles I read on the internet which helped me with these optimisation parameters: [1](https://remusao.github.io/posts/few-tips-sqlite-perf.html), [2](https://stackoverflow.com/Questions/364017/faster-bulk-inserts-in-sqlite3), [3](https://stackoverflow.com/questions/1711631/improve-insert-per-second-performance-of-sqlite), [4](https://github.com/the-lean-crate/criner/issues/1), [5](https://stackoverflow.com/questions/25427769/how-does-executemany-work).
 
 # Python Revisited
 
@@ -116,7 +116,7 @@ Just like Python, I wrote a [naive Rust version](https://github.com/avinassh/fas
 
 # IO Time
 
-Good folks at the SQLite forum gave me an interesting idea, measure the time it takes for in-memory DB. I ran the code again giving the DB location as `:memory:`, the rust version took two seconds less to complete (29 seconds). 
+Good folks at the SQLite forum gave me an interesting idea, measure the time it takes for in-memory DB. I ran the code again giving the DB location as `:memory:`, the rust version took two seconds less to complete (29 seconds). I guess it is fair to assume that it takes 2 seconds to flush 100M rows to disk. This also shows that there might not be any more SQLite optimisations possible to write to disk in a faster way, since 99% of time is being spent in generating and adding rows.
 
 # Leaderboard
 
