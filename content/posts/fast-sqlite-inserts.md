@@ -1,6 +1,6 @@
 ---
 title: "Inserting One Billion Rows in SQLite Under A Minute"
-date: "2021-07-06T22:10:44+05:30"
+date: "2021-07-17T22:10:44+05:30"
 categories: ["database"]
 tags: ["database", "sqlite", "optimisation", "performance"]
 slug: "fast-sqlite-inserts"
@@ -119,6 +119,8 @@ Just like Python, I wrote a [naive Rust version](https://github.com/avinassh/fas
 Good folks at the SQLite forum gave me an interesting idea, measure the time it takes for in-memory DB. I ran the code again giving the DB location as `:memory:`, the rust version took two seconds less to complete (29 seconds). I guess it is fair to assume that it takes 2 seconds to flush 100M rows to disk. This also shows that there might not be any more SQLite optimisations possible to write to disk in a faster way, since 99% of time is being spent in generating and adding rows.
 
 # Leaderboard
+
+(\*at the time of writing. The repo has the upto date numbers)
 
 | Variant           | Time             |
 | ------------------| -----------------|
