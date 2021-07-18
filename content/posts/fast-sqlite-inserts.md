@@ -144,6 +144,7 @@ Here are a few directions I plan to explore next to improve performance:
 2. The second fastest version runs single threaded, on a single process. Since I have a four-core machine, I could launch 4 processes, get up to 800M rows under a minute. Then I would have to merge these in few seconds, so that the overall time taken is still less than a minute.
 3. Write a go version with the garbage collector completely disabled.
 4. It is entirely possible that rust compiler might have optimised the busy loop code and removed the allocations, calls to random functions since it had no side effects. Analysis of the generated binary might shed more light.
+5. Here is a really crazy idea: learn about SQLite file format then generate the pages and write to disk directly. 
 
 Looking forward to discussions and/or collaborations with curious souls in my quest to generate a billion record SQLite DB quickly. If this sounds interesting to you, reach out to me on [Twitter](https://twitter.com/iavins) or [submit a PR](https://github.com/avinassh/fast-sqlite3-inserts).
 
