@@ -126,7 +126,7 @@ Good folks at the SQLite forum gave me an interesting idea, measure the time it 
 | PyPy              | 150 seconds      |
 | CPython           | 510 seconds      |
 
-# Learnings and Key Takeaways
+# Key Takeaways
 
 - Make use of SQLite [PRAGMA statements](https://www.sqlite.org/pragma.html) when possible
 - Use prepared statements
