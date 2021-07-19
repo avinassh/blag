@@ -23,3 +23,8 @@ theme = "skyfall"
   identifier = "projects"
   name = "Projects"
   url = "/projects"
+
+  [[menu.main]]
+  identifier = "subscribe"
+  name = "Subscribe"
+  url = "https://tinyletter.com/avi-im"
