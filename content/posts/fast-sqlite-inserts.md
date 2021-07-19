@@ -1,5 +1,5 @@
 ---
-title: "Inserting One Billion Rows in SQLite Under A Minute"
+title: "Towards Inserting One Billion Rows in SQLite Under A Minute"
 date: "2021-07-17T22:10:44+05:30"
 categories: ["database"]
 tags: ["database", "sqlite", "optimisation", "performance"]
@@ -154,3 +154,5 @@ Looking forward to discussions and/or collaborations with curious souls in my qu
 
 <small>1. Why? In [a telegram bot](https://github.com/avinassh/cowin-assist), I wrote, one of the SQL queries required a partial index. I have used partial indexes in Postgres/Mongo, but I was pleasantly surprised to know that SQLite also supported them. I decided to write a blog post (spoiler: which I never did), with numbers showing the effectiveness of partial indexes. I wrote a quick script and generated a DB, but the data was too small to show the power of partial indexes and queries were fast without them. The larger DB required more than 30 minutes to generate. So I spent 30+ hours to reduce the 30 mins of running time :p</small><br>
 <small>2. If you liked this post, then you may like [my experiment with MongoDB](https://avi.im/blag/2021/mongo-dupes-in-unique-index/) where I inserted duplicate records in a collection with a unique index - [link](https://avi.im/blag/2021/mongo-dupes-in-unique-index/).</small><br>
+<small>update (19, July): prefixed the title with 'towards' to make the intention more clear</small>
+
