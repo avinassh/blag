@@ -1,27 +1,99 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=generator content="Hugo 0.85.0"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content><meta property="og:url" content="https://avi.im/blag/2016/git-fork-cycle-github/"><title>Git/Github fork-pull request-update cycle - blag</title><meta property="og:title" content="Git/Github fork-pull request-update cycle  - blag"><meta property="og:type" content="article"><meta property="og:description" content="When contributing to Open Source Projects, new contributors often run into problems of having multiple merge commits and issues with keeping the forked repo in sync. This post addresses solutions for some of the problems."><meta name=description content="When contributing to Open Source Projects, new contributors often run into problems of having multiple merge commits and issues with keeping the forked repo in sync. This post addresses solutions for some of the problems."><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700"><link rel=stylesheet href=/blag/css/highlight.css><link rel=stylesheet href=/blag/css/journal.css><link href=/blag/index.xml rel=alternate type=application/rss+xml title=blag></head><body><div class=container><div class=site-header-nav><nav class=site-nav><a href=https://avi.im/blag>Index</a></nav><div><span><a href=/blag/about>About</a></span>
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=generator content="Hugo 0.86.1">
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=author content>
+<meta property="og:url" content="https://avi.im/blag/2016/git-fork-cycle-github/">
+<title>Git/Github fork-pull request-update cycle - blag</title>
+<meta property="og:title" content="Git/Github fork-pull request-update cycle  - blag">
+<meta property="og:type" content="article">
+<meta property="og:description" content="When contributing to Open Source Projects, new contributors often run into problems of having multiple merge commits and issues with keeping the forked repo in sync. This post addresses solutions for some of the problems.">
+<meta name=description content="When contributing to Open Source Projects, new contributors often run into problems of having multiple merge commits and issues with keeping the forked repo in sync. This post addresses solutions for some of the problems.">
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+<link rel=stylesheet href=/blag/css/highlight.css>
+<link rel=stylesheet href=/blag/css/journal.css>
+<link href=/blag/index.xml rel=alternate type=application/rss+xml title=blag>
+</head>
+<body>
+<div class=container>
+<div class=site-header-nav>
+<nav class=site-nav>
+<a href=https://avi.im/blag>Index</a>
+</nav>
+<div>
+<span><a href=/blag/about>About</a></span>
 <span><a href=/blag/projects>Projects</a></span>
-<span><a href=https://tinyletter.com/avi-im>Subscribe</a></span></div></div><article class=post><header class=post-header><h1 class=post-title>Git/Github fork-pull request-update cycle</h1><time class=post-date datetime="2016-02-19 23:03:00 +0530">19 Feb 2016</time></header><p>Lets say there is a project called <code>python</code> and you want to contribute. So you should fork <code>python</code> project and ALWAYS create a separate branch for the patch/feature you are working on and NEVER commit on the master branch of forked repo.</p><p>Lets call your forked repo as <code>python-forked</code>.</p><p>Once you fork a project, add a git remote called <code>upstream</code> (or whatever name you feel like using), which points to original repo. This remote will help you keep your project updated and in sync with original repo (from where you forked).</p><pre><code>$ cd python-forked
+<span><a href=https://tinyletter.com/avi-im>Subscribe</a></span>
+</div>
+</div>
+<article class=post>
+<header class=post-header>
+<h1 class=post-title>Git/Github fork-pull request-update cycle </h1>
+<time class=post-date datetime="2016-02-19 23:03:00 +0530">19 Feb 2016</time>
+</header>
+<p>Lets say there is a project called <code>python</code> and you want to contribute. So you should fork <code>python</code> project and ALWAYS create a separate branch for the patch/feature you are working on and NEVER commit on the master branch of forked repo.</p>
+<p>Lets call your forked repo as <code>python-forked</code>.</p>
+<p>Once you fork a project, add a git remote called <code>upstream</code> (or whatever name you feel like using), which points to original repo. This remote will help you keep your project updated and in sync with original repo (from where you forked).</p>
+<pre><code>$ cd python-forked
 $ git remote add upstream https://github.com/guido/python.git 
-</code></pre><p>Consider 3 scenarios.</p><h3 id=the-simple-fork-and-send-pr>The simple, fork and send PR</h3><p>Create a new branch, name it on the patch/feature you are working on:</p><pre><code>$ cd python-forked
+</code></pre><p>Consider 3 scenarios.</p>
+<h3 id=the-simple-fork-and-send-pr>The simple, fork and send PR</h3>
+<p>Create a new branch, name it on the patch/feature you are working on:</p>
+<pre><code>$ cd python-forked
 $ git checkout -b bugfix-unicode-strings
-</code></pre><p>Work on <code>bugfix-unicode-strings</code> and make all the changes you want. And then do a push to your github account, which is usually <code>origin</code> remote:</p><pre><code>$ git push origin bugfix-unicode-strings
-</code></pre><p>And then send PR, to <code>master</code> branch of <code>guido/python</code>, with your branch <code>bugfix-unicode-strings</code>.</p><p>Now, tomorrow, guido may add new features and you might want to update your forked repo. It&rsquo;s simple, just pull from the <code>upstream</code> to <code>master</code> branch of <code>python-forked</code></p><pre><code>$ cd python-forked
+</code></pre><p>Work on <code>bugfix-unicode-strings</code> and make all the changes you want. And then do a push to your github account, which is usually <code>origin</code> remote:</p>
+<pre><code>$ git push origin bugfix-unicode-strings
+</code></pre><p>And then send PR, to <code>master</code> branch of <code>guido/python</code>, with your branch <code>bugfix-unicode-strings</code>.</p>
+<p>Now, tomorrow, guido may add new features and you might want to update your forked repo. It&rsquo;s simple, just pull from the <code>upstream</code> to <code>master</code> branch of <code>python-forked</code></p>
+<pre><code>$ cd python-forked
 $ git fetch upstream
 $ git checkout master
 $ git rebase upstream/master
-</code></pre><h3 id=update-and-pr>Update and PR</h3><p>You have forked the project and maintainer has later moved on and added new features which you need in the current patch you are working on</p><p>You need to fetch the new changes from <code>upstream</code> and put those in your <code>patch</code> branch. While doing this, usually I update my master branch also:</p><pre><code>$ cd python-forked
+</code></pre><h3 id=update-and-pr>Update and PR</h3>
+<p>You have forked the project and maintainer has later moved on and added new features which you need in the current patch you are working on</p>
+<p>You need to fetch the new changes from <code>upstream</code> and put those in your <code>patch</code> branch. While doing this, usually I update my master branch also:</p>
+<pre><code>$ cd python-forked
 $ git fetch upstream
 $ git checkout master
 $ git rebase upstream/master
 $ git checkout existing-patch-I-am-working-on
 $ git rebase master
-</code></pre><p>You could also do <code>$ git rebase upstream/master</code> in last step to update the current patch branch.</p><h3 id=update-resolve-conflicts-and-pr>Update, resolve conflicts and PR</h3><p>You have forked the project and maintainer has made some changes to the file you are also working on</p><p>Fetch the changes and merge it with current patch branch you are working:</p><pre><code>$ cd python-forked
+</code></pre><p>You could also do <code>$ git rebase upstream/master</code> in last step to update the current patch branch.</p>
+<h3 id=update-resolve-conflicts-and-pr>Update, resolve conflicts and PR</h3>
+<p>You have forked the project and maintainer has made some changes to the file you are also working on</p>
+<p>Fetch the changes and merge it with current patch branch you are working:</p>
+<pre><code>$ cd python-forked
 $ git fetch upstream
 $ git checkout master
 $ git rebase upstream/master
 $ git checkout existing-patch-I-am-working-on-which-has-a-file-edited-by-guido
 $ git rebase master
-</code></pre><p>above rebase will fail(?) (or interrupted) and terminal will ask you to resolve the conflicts and then merge.</p><p>usually:</p><pre><code># solve the conflicts
+</code></pre><p>above rebase will fail(?) (or interrupted) and terminal will ask you to resolve the conflicts and then merge.</p>
+<p>usually:</p>
+<pre><code># solve the conflicts
 $ git rebase --continue
-</code></pre><h3 id=references>References</h3><ul><li>Syncing a Fork - <a href=https://help.github.com/articles/syncing-a-fork/>link</a></li><li>Merging an upstream repository into your fork - <a href=https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/>link</a></li><li>How to update a GitHub forked repository? - <a href=http://stackoverflow.com/questions/7244321/how-to-update-a-github-forked-repository>link</a></li></ul></article><form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit="return window.open('https://tinyletter.com/avi-im','popupwindow','scrollbars=yes,width=800,height=600'),!0"><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form><footer class=site-footer><span itemscope itemtype=http://schema.org/Person><link itemprop=url href=https://avi.im/blag><span itemprop=name></span><br><a itemprop=sameAs href=https://github.com/avinassh title=GitHub><img src=/blag/svg/gh.svg alt="icon name"></a>
-<a itemprop=sameAs href=/blag/index.xml title=GitHub><img src=/blag/svg/rss.svg alt="icon name"></a></span></footer></div><script src=/blag/js/highlight.pack.js></script><script>hljs.initHighlightingOnLoad()</script><script data-goatcounter=https://avi.goatcounter.com/count async src=//gc.zgo.at/count.js></script></body></html>
+</code></pre><h3 id=references>References</h3>
+<ul>
+<li>Syncing a Fork - <a href=https://help.github.com/articles/syncing-a-fork/>link</a></li>
+<li>Merging an upstream repository into your fork - <a href=https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/>link</a></li>
+<li>How to update a GitHub forked repository? - <a href=http://stackoverflow.com/questions/7244321/how-to-update-a-github-forked-repository>link</a></li>
+</ul>
+</article>
+<form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit="return window.open('https://tinyletter.com/avi-im','popupwindow','scrollbars=yes,width=800,height=600'),!0"><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form>
+<footer class=site-footer>
+<span itemscope itemtype=http://schema.org/Person>
+<link itemprop=url href=https://avi.im/blag>
+<span itemprop=name></span>
+<br>
+<a itemprop=sameAs href=https://github.com/avinassh title=GitHub><img src=/blag/svg/gh.svg alt="icon name"></a>
+<a itemprop=sameAs href=/blag/index.xml title=GitHub><img src=/blag/svg/rss.svg alt="icon name"></a>
+</span>
+</footer>
+</div>
+<script src=/blag/js/highlight.pack.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script data-goatcounter=https://avi.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+</body>
+</html>
