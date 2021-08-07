@@ -38,7 +38,7 @@ Some of my recent projects which I consider them to be complete and currently on
 - [slackipy](https://github.com/avinassh/slackipy) - Automate user invites to your Slack channel
 - [della](https://github.com/avinassh/della) - Della is a Django app for managing Secret Santa/Gift Exchange
 - [Little Finger](https://github.com/avinassh/little-finger) - You gotta check the repo to know more
-- [status](github.com/avinassh/status) - HTTP Status for Humans.
+- [status](github.com/avinassh/status) - HTTP Status for Humans
 - [Hocus Pocus](https://github.com/avinassh/Hocus-Pocus) — Status bar only OS X app, which shows/hides hidden
 /system files. Written using Swift
 - I have written bunch of bots: [Laozi](https://github.com/avinassh/Laozi), [Reddit GoodReads Bot](https://github.com/avinassh/Reddit-GoodReads-Bot), [prawoauth2](https://github.com/avinassh/prawoauth2)
