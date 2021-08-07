@@ -20,6 +20,11 @@ theme = "skyfall"
   url = "/about"
 
   [[menu.main]]
+  identifier = "resume"
+  name = "Resume"
+  url = "https://avi.im/resume.pdf"
+
+  [[menu.main]]
   identifier = "projects"
   name = "Projects"
   url = "/projects"
