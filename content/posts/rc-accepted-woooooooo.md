@@ -7,6 +7,6 @@ slug: "rc-accepted-woooooooo"
 summary: "I got accepted into Recurse Center, wooo!"
 ---
 
-Today I received my acceptance email to the Recurse Center, I just started jumping around everywhere out of sheer joy. I learned about RC somewhere in 2016 from Julia Evans' blog, from the series of articles on [TCP stack implementation in Python](https://jvns.ca/blog/2014/08/12/what-happens-if-you-write-a-tcp-stack-in-python/). Ever since it has been my dream to attend RC. I had been obsessed with it, read almost everyone's application and interview process, RC experience, whatever there is on the internet. 
+Today I received my acceptance email to the Recurse Center, I just started jumping around everywhere out of sheer joy. I learned about RC somewhere in 2016 from Julia Evans' blog, from the series of articles on [TCP stack implementation in Python](https://jvns.ca/blog/2013/11/06/day-23-started-writing-a-socket-library/). Ever since it has been my dream to attend RC. I had been obsessed with it, read almost everyone's application and interview process, RC experience, whatever there is on the internet.
 
 I am too happy, and I can't wait to start my batch on Nov 1st, 2021.
