@@ -9,4 +9,4 @@ summary: "I got accepted into Recurse Center, wooo!"
 
 Today I received my acceptance email to the [Recurse Center](https://www.recurse.com/scout/click?t=a4aabd5087bb19daf083302de1b46650), I just started jumping around everywhere out of sheer joy. I learned about RC somewhere in 2016 from Julia Evans' blog, from the series of articles on [TCP stack implementation in Python](https://jvns.ca/blog/2013/11/06/day-23-started-writing-a-socket-library/). Ever since it has been my dream to attend RC. I had been obsessed with it, read almost everyone's application and interview process, RC experience, whatever there is on the internet.
 
-I am too happy, and I can't wait to start my batch on Nov 1st, 2021.
+I am overjoyed, and I can't wait to start my batch on Nov 1st, 2021.
