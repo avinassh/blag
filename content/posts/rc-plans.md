@@ -11,7 +11,7 @@ I will be [joining the Recurse Center]({{< ref "posts/rc-accepted-woooooooo" >}}
 
 RC is a self-directed programme, so everyone is free to work on things that interest them. They [recommend](https://www.recurse.com/manual#sec-advice) working on things that are challenging to do. This aligns with [Andrew NG's advice](https://twitter.com/AndrewYNg/status/841076327931236352) on taking on projects you are only 70% qualified for.
 
-I don't think I will be able to work on all of the following, but I am keeping my options open. Keeping an exhaustive list would also help me to switch to something else if I am stuck on or bored. 
+I don't think I will be able to work on all of the following, but I am keeping my options open. Keeping an exhaustive list would also help me to switch to something else if I am stuck on or bored.
 
 ## A simple KV Store 
 
@@ -40,5 +40,4 @@ Some general aspects I would like to improve upon
 - Writing. Write faster, better and clear
 - Give talks and share ideas
 
-I have never pair programmed with anyone, so looking to pair and collaborate as much as possible. I am planning to allocate 30% of my time for collaboration. 
-
+I have never pair programmed with anyone, so looking to pair and collaborate as much as possible. I am planning to allocate 30% of my time for collaboration.
