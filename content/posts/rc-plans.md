@@ -31,7 +31,7 @@ I want to learn more about sockets, firewalls, NATs etc and make two computers t
 ## Few more ideas
 
 - Learn about async programming, multi-threading and write a toy green threads implementation
-- Build a toy code search engine, learn about Kythe and Zoekt etc.
+- Build a toy code search engine, learn about [Kythe](https://kythe.io/docs/kythe-overview.html) and [Zoekt](https://github.com/google/zoekt/blob/master/doc/design.md) etc.
 
 Some general aspects I would like to improve upon
 
