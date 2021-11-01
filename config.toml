@@ -12,6 +12,7 @@ theme = "skyfall"
 [params]
   githubUsername = "avinassh"
   goatSiteName = "avi"
+  rcscout = "a4aabd5087bb19daf083302de1b46650"
 
 [menu]
   [[menu.main]]
