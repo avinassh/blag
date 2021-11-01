@@ -203,3 +203,7 @@ h6 {
 
 .hljs {
   font-size: .875rem; }
+
+.rc-scout__link {
+    border-bottom: none;
+}
