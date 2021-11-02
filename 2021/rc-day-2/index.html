@@ -1,0 +1,85 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=generator content="Hugo 0.88.1">
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=author content>
+<meta property="og:url" content="https://avi.im/blag/2021/rc-day-2/">
+<title>Recurse Center Day 2: BTree Node - blag</title>
+<meta property="og:title" content="Recurse Center Day 2: BTree Node - blag">
+<meta property="og:type" content="article">
+<meta property="og:description" content="This is a draft post that I have prematurely published. Currently, I am attending RC and I want to write as much as possible, log my daily learnings and activities. But, I also don't want to spend time on grammar and prose, so I am publishing all the posts which usually I'd have kept in my draft folder.
+ B Tree I started working on the B Tree project, created a Github repo, put up skeleton code.">
+<meta name=description content="This is a draft post that I have prematurely published. Currently, I am attending RC and I want to write as much as possible, log my daily learnings and activities. But, I also don't want to spend time on grammar and prose, so I am publishing all the posts which usually I'd have kept in my draft folder.
+ B Tree I started working on the B Tree project, created a Github repo, put up skeleton code.">
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+<link rel=stylesheet href=/blag/css/highlight.css>
+<link rel=stylesheet href=/blag/css/journal.css>
+<link href=/blag/index.xml rel=alternate type=application/rss+xml title=blag>
+</head>
+<body>
+<div class=container>
+<div class=site-header-nav>
+<nav class=site-nav>
+<a href=https://avi.im/blag>Index</a>
+</nav>
+<div>
+<span><a href=/blag/about>About</a></span>
+<span><a href=/blag/projects>Projects</a></span>
+<span><a href=https://avi.im/resume.pdf>Resume</a></span>
+<span><a href=https://tinyletter.com/avi-im>Subscribe</a></span>
+</div>
+</div>
+<article class=post>
+<header class=post-header>
+<h1 class=post-title>Recurse Center Day 2: BTree Node</h1>
+<time class=post-date datetime="2021-11-03 00:14:57 +0530">03 Nov 2021</time>
+</header>
+<div style=font-size:.7rem;margin:2rem;background:#f7c9d0><p>This is a draft post that I have prematurely published. Currently, I am attending RC and I want to write as much as possible, log my daily learnings and activities. But, I also don't want to spend time on grammar and prose, so I am publishing all the posts which usually I'd have kept in my draft folder.</p></div>
+<h2 id=b-tree>B Tree</h2>
+<p>I started working on the B Tree project, created a Github repo, put up skeleton code. Then I started wondering how best would I represent a B Tree node in code.</p>
+<p>In B Tree, I need to maintain a sorted array of keys (think primary keys) in a node:</p>
+<p><img src=https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/B-tree.svg/800px-B-tree.svg.png alt></p>
+<p>Left of each key&rsquo;s child will be arrays containing less than of that key and right would be more than of key. In the above diagram, we have four nodes in total. If a node has 4 keys, at max there would be 5 pointers. My question was how would you represent one node?</p>
+<p>One idea which immediately came to my mind was storing a struct that contains both the pointers, in an array:</p>
+<pre tabindex=0><code>[(7, *1, *9), (16, *9, *18)] 
+// *1 is the pointer to the left most leaf array
+</code></pre><p>Another idea was to maintain two separate arrays, wherein one holds the keys and in another just the pointers.</p>
+<pre tabindex=0><code>keys [7, 16]
+child: [*1, *9, *18]
+</code></pre><p>I started thinking about the pros and cons of both approaches:</p>
+<ol>
+<li>
+<p>First one: Easy to code, inserting an item is straight forward but this one takes way more space.</p>
+</li>
+<li>
+<p>Second one: Insertion is slightly trickier, if I want to insert something, I need to find the slot in the first array and then move the pointers accordingly in the second.</p>
+</li>
+</ol>
+<p>I found out the most academic references use the first approach and the practical ones use the second one. e.g.: <a href=https://github.com/google/btree>google/btree</a>, <a href=https://doc.rust-lang.org/src/alloc/collections/btree/node.rs.html>rust/btreemap</a></p>
+<h2 id=people>People</h2>
+<p>RC experience is all about meeting people, learning and sharing ideas. Today I met two interesting people</p>
+<p>Elvis is learning elixir and plans to build an interesting analytics engine using the phoenix framework. Today we paired to work on his project. I don&rsquo;t know elixir at all, but Elvis was kind enough to teach me the language basics and walk me through the code.</p>
+<p>He taught me about <a href=https://elixir-lang.org/getting-started/mix-otp/agent.html>Agent</a>, <a href=https://elixir-lang.org/getting-started/mix-otp/genserver.html>GenServer</a>, really cool <a href=https://elixir-lang.org/getting-started/pattern-matching.html>pattern matching</a> features. I am looking forward to learning more about elixir.</p>
+<p>I also spoke with Yoshi today, who is an alumn who built a disk-based database using LSM Tree in Rust. We discussed the challenges and shared notes.</p>
+<p>LSM Challenges: locks, concurrent writs, copy on write etc.</p>
+</article>
+<form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit="return window.open('https://tinyletter.com/avi-im','popupwindow','scrollbars=yes,width=800,height=600'),!0"><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form>
+<footer class=site-footer>
+<div class=rc-scout style=margin-right:auto;margin-top:auto;font-size:.6rem></div>
+<script async defer src="https://www.recurse-scout.com/loader.js?t=a4aabd5087bb19daf083302de1b46650"></script>
+<span class=person-schema itemscope itemtype=http://schema.org/Person>
+<link itemprop=url href=https://avi.im/blag>
+<span itemprop=name></span>
+<br>
+<a itemprop=sameAs href=https://github.com/avinassh title=GitHub><img src=/blag/svg/gh.svg alt="icon name"></a>
+<a itemprop=sameAs href=/blag/index.xml title=GitHub><img src=/blag/svg/rss.svg alt="icon name"></a>
+</span>
+</footer>
+</div>
+<script src=/blag/js/highlight.pack.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script data-goatcounter=https://avi.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+</body>
+</html>
