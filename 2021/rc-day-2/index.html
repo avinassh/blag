@@ -1,7 +1,7 @@
 <!doctype html><html lang=en-us>
 <head>
 <meta charset=utf-8>
-<meta name=generator content="Hugo 0.88.1">
+<meta name=generator content="Hugo 0.89.0">
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=author content>
@@ -40,7 +40,7 @@
 <h2 id=b-tree>B Tree</h2>
 <p>I started working on the B Tree project, created a Github repo, put up skeleton code. Then I started wondering how best would I represent a B Tree node in code.</p>
 <p>In B Tree, I need to maintain a sorted array of keys (think primary keys) in a node:</p>
-<p><img src=https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/B-tree.svg/800px-B-tree.svg.png alt></p>
+<p><img src=/blag/images/2021/b-tree.png alt></p>
 <p>Left of each key&rsquo;s child will be arrays containing less than of that key and right would be more than of key. In the above diagram, we have four nodes in total. If a node has 4 keys, at max there would be 5 pointers. My question was how would you represent one node?</p>
 <p>One idea which immediately came to my mind was storing a struct that contains both the pointers, in an array:</p>
 <pre tabindex=0><code>[(7, *1, *9), (16, *9, *18)] 
