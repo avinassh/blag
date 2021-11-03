@@ -1,6 +1,6 @@
 ---
 title: "Recurse Center Day 3: Hammock Driven Development"
-date: "2021-11-03T00:36:42+05:30"
+date: "2021-11-04T01:36:42+05:30"
 categories: ["recurse-center", ""]
 tags: ["recurse-center", "rc", "checkin"]
 slug: "rc-day-3"
