@@ -15,7 +15,7 @@ I started working on the B Tree project, created a Github repo, put up skeleton 
 
 In B Tree, I need to maintain a sorted array of keys (think primary keys) in a node:
 
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/B-tree.svg/800px-B-tree.svg.png)
+![](/blag/images/2021/b-tree.png)
 
 Left of each key's child will be arrays containing less than of that key and right would be more than of key. In the above diagram, we have four nodes in total. If a node has 4 keys, at max there would be 5 pointers. My question was how would you represent one node?
 
