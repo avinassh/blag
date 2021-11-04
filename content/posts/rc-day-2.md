@@ -52,4 +52,4 @@ He taught me about [Agent](https://elixir-lang.org/getting-started/mix-otp/agent
 
 I also spoke with Yoshi today, who is an alumn who built a disk-based database using LSM Tree in Rust. We discussed the challenges and shared notes.
 
-LSM Challenges: locks, concurrent writs, copy on write etc.
+LSM Challenges: locks, concurrent writes, copy on write etc.
