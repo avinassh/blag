@@ -4,7 +4,7 @@ date: "2021-11-04T01:36:42+05:30"
 categories: ["recurse-center", ""]
 tags: ["recurse-center", "rc", "checkin"]
 slug: "rc-day-3"
-summary: ""
+summary: "TIL Hammock Driven Development"
 ---
 
 <div style="font-size: 0.7rem; margin: 2rem; background: #f7c9d0;"><p>This is a draft post that I have prematurely published. Currently, I am attending RC and I want to write as much as possible, log my daily learnings and activities. But, I also don't want to spend time on grammar and prose, so I am publishing all the posts which usually I'd have kept in my draft folder.</p></div>
@@ -31,7 +31,7 @@ While discussing, I suddenly realised that I had read this format from the Datab
 
 I decided to study the internals again, jot down the actual algorithm with the data structure I have in my mind and then start coding.
 
-## Challenges with Disk Datastructures
+## Challenges with Disk Data structures
 
 (I will update this section with more details soon)
 
@@ -53,8 +53,8 @@ It starts with a question: How long have you spent thinking hard about a problem
 It helps at getting better and confident at problem solving. Here's how:
 
 1. State the problem. Talk it out loud, explain to a co-worker, find a stranger and tell them what you are trying to solve
-2. Understad the problem. What do you know and what do you don't know? Write everything down
-3. Think tradeoffs, other solutions. Most likely someone must have solved the same thing
+2. Understand the problem. What do you know and what do you don't know? Write everything down
+3. Think trade offs, other solutions. Most likely someone must have solved the same thing
 
 Now that you have the problem, have understood it properly... go on a hammock and sleep! yes, seriously.
 
