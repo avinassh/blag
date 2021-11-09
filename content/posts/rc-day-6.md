@@ -1,6 +1,6 @@
 ---
 title: "Recurse Center Day 6: B Tree Root"
-date: "2021-11-09T20:29:13+05:30"
+date: "2021-11-09T16:20:15+05:30"
 categories: ["recurse-center", ""]
 tags: ["recurse-center", "rc", "checkin"]
 slug: "rc-day-6"
