@@ -5,12 +5,12 @@
 <meta http-equiv=x-ua-compatible content="IE=edge">
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=author content>
-<meta property="og:url" content="https://avi.im/blag/2021/rc-week-1/">
-<title>Recurse Center First Week - blag</title>
-<meta property="og:title" content="Recurse Center First Week - blag">
+<meta property="og:url" content="https://avi.im/blag/2021/rc-day-6/">
+<title>Recurse Center Day 6: B Tree Root - blag</title>
+<meta property="og:title" content="Recurse Center Day 6: B Tree Root - blag">
 <meta property="og:type" content="article">
-<meta property="og:description" content="Reflections on the first week of the Recurse Center">
-<meta name=description content="Reflections on the first week of the Recurse Center">
+<meta property="og:description" content="B Tree Root: how would you design it?">
+<meta name=description content="B Tree Root: how would you design it?">
 <link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
 <link rel=stylesheet href=/blag/css/highlight.css>
 <link rel=stylesheet href=/blag/css/journal.css>
@@ -31,27 +31,27 @@
 </div>
 <article class=post>
 <header class=post-header>
-<h1 class=post-title>Recurse Center First Week</h1>
-<time class=post-date datetime="2021-11-07 21:08:49 +0530">07 Nov 2021</time>
+<h1 class=post-title>Recurse Center Day 6: B Tree Root</h1>
+<time class=post-date datetime="2021-11-09 16:20:15 +0530">09 Nov 2021</time>
 </header>
 <div style=font-size:.7rem;margin:2rem;background:#f7c9d0><p>This is a draft post that I have prematurely published. Currently, I am attending RC and I want to write as much as possible, log my daily learnings and activities. But, I also don't want to spend time on grammar and prose, so I am publishing all the posts which usually I'd have kept in my draft folder.</p></div>
-<p>The first week of the Recurse Center is important and more special than the other weeks. Here is what all happened.</p>
-<h2 id=first-week>First Week</h2>
-<p>The first week of RC is filled with activities, meeting all the people in my batch, currently at RC, and alumni. The majority of my time was spent on these events and I also spent some time attending the study groups, just trying to get a taste of them.</p>
-<p>I think I did fine. Before joining RC, I had this fear of getting kicked out if I am not doing good progress. Turns out that isn&rsquo;t true at all. I was so relieved!</p>
-<p>Whatever I had read about RC on the internet turned out to be true and it is indeed a magical place if you are a programmer.</p>
-<p>My advice to new recursers: the first week can be overwhelming as there are so many things going on and it&rsquo;s okay! Try to attend all the events, try new study groups and meet everyone in your batch. Zoom fatigue is real, if you are tired take a step back, take some time off, and rest.</p>
-<h2 id=checkins>Checkins</h2>
-<p>I am attempting to write everyday about the things I am learning/doing, here are all the blog posts:</p>
+<h2 id=b-tree>B Tree</h2>
+<p>I feel I have spent plenty of time with B Tree internals and now I can start coding. Here is my plan:</p>
 <ol>
-<li><a href=https://avi.im/blag/2021/rc-day-1/>Day 1</a></li>
-<li><a href=https://avi.im/blag/2021/rc-day-2/>Day 2</a></li>
-<li><a href=https://avi.im/blag/2021/rc-day-3/>Day 3</a></li>
-<li><a href=https://avi.im/blag/2021/rc-day-4/>Day 4</a></li>
-<li><a href=https://avi.im/blag/2021/rc-day-5/>Day 5</a></li>
+<li>Implement an in-memory B Tree. This will help me learn the B Tree insertion, split, and merge algorithms better. (Also, this will be single threaded. Adding in-memory locks is easy, I see no point in doing them)</li>
+<li>Add linked lists at the leaf nodes</li>
+<li>Port it to disk</li>
+<li>Implement the WAL</li>
+<li>Explore latch crabbing and support concurrency</li>
 </ol>
-<p>Writing every day takes a good chunk of my time, however, I am also enjoying writing so I am hoping to continue this ritual, as one of my RC goals was to get better at writing.</p>
-<p>PS: I should add tag feature to this blog and group all the RC post together.</p>
+<p>Here are some of the documents which helped me learn about B Tree better:</p>
+<h2 id=b-tree-root>B Tree Root</h2>
+<p>B Tree root is a special case. At first, it starts as a leaf node. Once filled, it will split and a new root gets added.</p>
+<p>B Tree grows, like a real tree, from bottom to top. Not top to bottom ;)</p>
+<h2 id=tags>Tags</h2>
+<p>I use a <a href=https://github.com/avinassh/hugo-skyfall>fork</a> of <a href=https://github.com/dashdashzako/hugo-journal>journal</a> theme. The theme is minimal and did not support tags. So, I added them now.</p>
+<p>Adding tags was fairly simple. For tags and categories, Hugo already generates content by default. All you need to do is add a template that says how to render the tags page.</p>
+<p>I found these articles to be helpful: <a href=https://www.jakewiesler.com/blog/hugo-taxonomies>1</a>, <a href=https://phrye.com/code/tag-cloud>2</a>, <a href=https://www.sidorenko.io/post/2017/07/nice-tagcloud-with-hugo>3</a></p>
 </article>
 <form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit="return window.open('https://tinyletter.com/avi-im','popupwindow','scrollbars=yes,width=800,height=600'),!0"><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form>
 <footer class=site-footer>
