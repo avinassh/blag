@@ -3,7 +3,7 @@ title: "Recurse Center Day 8: B Tree Fill Factor (Part 2)"
 date: "2021-11-11T16:00:32+05:30"
 categories: ["recurse-center", ""]
 tags: ["recurse-center", "rc", "checkin", "btree"]
-slug: "rc-day-8-old"
+slug: "rc-day-8"
 summary: "I found out the answer to B tree fill factor "
 ---
 
