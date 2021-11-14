@@ -36,6 +36,6 @@ With this design, in the last struct, we should never store any key. The only dr
 
 ## People
 
-I paired with Oliver and Phil today for the B Tree project. I explained to them the basics of B Tree and we discussed the insertion algorithm,  brainstormed on how to recursively do the insertion and propagate the changes to the parent nodes.
+I paired with Oliver and Phil today for the B Tree project. I explained to them the basics of B Tree and we discussed the insertion algorithm, brainstormed on how to recursively do the insertion and propagate the changes to the parent nodes.
 
 Phil also introduced me to [Nightmare](https://guyinatuxedo.github.io/), which is an intro to binary exploitation / reverse engineering course. He also went on to solve [one of the exercises](https://guyinatuxedo.github.io/05-bof_callfunction/csaw18_getit/index.html) in which you had to exploit stack buffer overflow to get access to the shell. It was magic!
