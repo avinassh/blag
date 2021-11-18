@@ -7,6 +7,8 @@ slug: "rc-day-11"
 summary: "I started writing code for B Tree insertions"
 ---
 
+<div style="font-size: 0.7rem; margin: 1.2rem; padding: 0.5rem; background: #f7c9d0;"><p>This is a draft post that I have prematurely published. Currently, I am attending RC and I want to write as much as possible, log my daily learnings and activities. But, I also don't want to spend time on grammar and prose, so I am publishing all the posts which usually I'd have kept in my draft folder.</p></div>
+
 ## B Tree
 
 I was having trouble with the B Tree insertion algorithm. Here is what I was trying to do:
