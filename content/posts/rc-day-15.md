@@ -9,18 +9,18 @@ summary: "I translated B Tree Algorithms from CLRS to Python"
 
 <div style="font-size: 0.7rem; margin: 1.2rem; padding: 0.5rem; background: #f7c9d0;"><p>This is a draft post that I have prematurely published. Currently, I am attending RC and I want to write as much as possible, log my daily learnings and activities. But, I also don't want to spend time on grammar and prose, so I am publishing all the posts which usually I'd have kept in my draft folder.</p></div>
 
-**NOTE:** I feel that the following is not clear unless someone first reads the CLRS book. I will expand this article later and try to make it less dependent on the book.
+**NOTE:** I feel that the following is unclear unless someone first reads the CLRS book. I will expand this article later and try to make it less dependent on the book.
 
 ## B Tree Algorithms
 
-I spent some more time understanding the insertion (and also, search) algorithm. I won't be implementing deletion with rebalancing, because over time the deleted spots in the node will get filled with new insertions.
+I spent some more time understanding the insertion (and also, search) algorithm. I won't be implementing deletion with rebalancing because, over time, the deleted spots in the node will get filled with new insertions.
 
 Assumptions:
 
-1. Only keys are being inserted, as opposed to key, value pairs.
-1. The book uses 1 based indexing, the following is 0 based
+1. Only keys are being inserted, as opposed to key value pairs.
+1. The book uses 1 based indexing; the following is 0 based
 
-Also, following isn't a fully working Python code and I have skipped many obvious parts because understanding the algorithm was my goal.
+Also, following isn't a fully working Python code, and I have skipped many explicit parts because understanding the algorithm was my goal.
 
 ### Initialisation
 
@@ -52,11 +52,11 @@ b_tree = create()
 
 ### Split Node
 
-The split node takes a parent and a child which is full, to be split. Illustration from the book:
+The split node takes a parent and a child, which is full, to be split. Illustration from the book:
 
 ![](/blag/images/2021/node-split.png)
 
-Before calling `split_node`, we need to make sure that parent node is not full. If it is full, then it needs to be split as well. This ensures that we are not going crazy with recursion and we splitting top down:
+Before calling `split_node`, we need to make sure that the parent node is not full. If it is full, then it needs to be split as well, which ensures that we are not going crazy with recursion and we are splitting top down:
 
 
 ```python
@@ -116,7 +116,7 @@ def insert(b_tree: BTree, key: int):
 		insert_non_full(root, k)
 ```
 
-We use `insert_non_full` to insert in a node that has space, in case the child splits. 
+We use `insert_non_full` to insert in a node that has space in case the child splits. 
 
 ```python
 def insert_non_full(node: Node, key: int):
@@ -127,7 +127,7 @@ def insert_non_full(node: Node, key: int):
 		return
 	# the node is an internal node. so we find an appropriate place to insert
 	# it is possible that the child node we picked is full already. So, we will call split_node on it and then insert
-	# TODO: find the child node to insert, it should be key < child.key
+	# TODO: find the child node to insert; it should be key < child.key
 	child = node.children[i]
 	if child.is_full():
 		split_child(node, i)
@@ -146,12 +146,12 @@ if node 16 gets split, it could look like this:
 [(7, *1), (13, *9) (16, *14)]
 ```
 
-Where `13` is the key which is promoted from the child node, which points to the older node (`*9`) and the earlier `16` now points to the new split child (`*14`).
+`13` is the key promoted from the child node, which points to the older node (`*9`), and the earlier `16` now points to the new split child (`*14`).
 
 
 ## Coffee Chat
 
-I had a Coffee Chat with James who is also one of the faculty. We talked about various things from books to distributed systems. James also gave me advice on pairing effectively:
+I had a Coffee Chat with James, who is also one of the faculty. We talked about various things, from books to distributed systems. James also gave me advice on pairing effectively:
 
 1. If the task is complicated, requires lots of background reading (which is somewhat true in the case of B Tree), it is better to pair with the same people repeatedly or have a long term pairing partner.
 1. Split the task into so small that it does not require much background. E.g. writing unit tests.
