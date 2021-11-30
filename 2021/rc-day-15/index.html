@@ -1,0 +1,166 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=generator content="Hugo 0.89.4">
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=author content>
+<meta property="og:url" content="https://avi.im/blag/2021/rc-day-15/">
+<title>Recurse Center Day 15: B Tree Algorithms - blag</title>
+<meta property="og:title" content="Recurse Center Day 15: B Tree Algorithms - blag">
+<meta property="og:type" content="article">
+<meta property="og:description" content="I translated B Tree Algorithms from CLRS to Python">
+<meta name=description content="I translated B Tree Algorithms from CLRS to Python">
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+<link rel=stylesheet href=/blag/css/highlight.css>
+<link rel=stylesheet href=/blag/css/journal.css>
+<link href=/blag/index.xml rel=alternate type=application/rss+xml title=blag>
+</head>
+<body>
+<div class=container>
+<div class=site-header-nav>
+<nav class=site-nav>
+<a href=https://avi.im/blag>Index</a>
+</nav>
+<div>
+<span><a href=/blag/about>About</a></span>
+<span><a href=/blag/projects>Projects</a></span>
+<span><a href=https://avi.im/resume.pdf>Resume</a></span>
+<span><a href=https://tinyletter.com/avi-im>Subscribe</a></span>
+</div>
+</div>
+<article class=post>
+<header class=post-header>
+<h1 class=post-title>Recurse Center Day 15: B Tree Algorithms</h1>
+<time class=post-date datetime="2021-11-20 20:15:47 +0530">20 Nov 2021</time>
+</header>
+<div style=font-size:.7rem;margin:1.2rem;padding:.5rem;background:#f7c9d0><p>This is a draft post that I have prematurely published. Currently, I am attending RC and I want to write as much as possible, log my daily learnings and activities. But, I also don't want to spend time on grammar and prose, so I am publishing all the posts which usually I'd have kept in my draft folder.</p></div>
+<p><strong>NOTE:</strong> I feel that the following is unclear unless someone first reads the CLRS book. I will expand this article later and try to make it less dependent on the book.</p>
+<h2 id=b-tree-algorithms>B Tree Algorithms</h2>
+<p>I spent some more time understanding the insertion (and also, search) algorithm. I won&rsquo;t be implementing deletion with rebalancing because, over time, the deleted spots in the node will get filled with new insertions.</p>
+<p>Assumptions:</p>
+<ol>
+<li>Only keys are being inserted, as opposed to key value pairs.</li>
+<li>The book uses 1 based indexing; the following is 0 based</li>
+</ol>
+<p>Also, following isn&rsquo;t a fully working Python code, and I have skipped many explicit parts because understanding the algorithm was my goal.</p>
+<h3 id=initialisation>Initialisation</h3>
+<p>At first, we don&rsquo;t have a tree or a node. We create a new leaf node, use that as a root. In a B Tree, the root starts a leaf.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>BTree</span>():
+	<span style=color:#66d9ef>def</span> __init__(self, root: Node, max_keys: int <span style=color:#f92672>=</span> <span style=color:#ae81ff>7</span>):
+		self<span style=color:#f92672>.</span>root <span style=color:#f92672>=</span> root
+		<span style=color:#75715e># the number of maximum keys each node this B Tree can have</span>
+		self<span style=color:#f92672>.</span>max_keys <span style=color:#f92672>=</span> max_keys
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Node</span>():
+	<span style=color:#66d9ef>def</span> __init__(self):
+		self<span style=color:#f92672>.</span>keys: List[int] <span style=color:#f92672>=</span> []
+		self<span style=color:#f92672>.</span>children: List[Node] <span style=color:#f92672>=</span> []
+		self<span style=color:#f92672>.</span>isLeaf <span style=color:#f92672>=</span> <span style=color:#66d9ef>False</span>
+
+	<span style=color:#75715e># if the Node is full, then it will have `max_keys` number of keys and `max_keys+1` children</span>
+	<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>is_full</span>(self) <span style=color:#f92672>-&gt;</span> bool:
+		<span style=color:#66d9ef>pass</span>
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>create</span>() <span style=color:#f92672>-&gt;</span> BTree:
+	root: Node <span style=color:#f92672>=</span> getNewLeafNode()
+	<span style=color:#66d9ef>return</span> BTree(root)
+
+b_tree <span style=color:#f92672>=</span> create()
+</code></pre></div><h3 id=split-node>Split Node</h3>
+<p>The split node takes a parent and a child, which is full, to be split. Illustration from the book:</p>
+<p><img src=/blag/images/2021/node-split.png alt></p>
+<p>Before calling <code>split_node</code>, we need to make sure that the parent node is not full. If it is full, then it needs to be split as well, which ensures that we are not going crazy with recursion and we are splitting top down:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># this method takes the parent which has a full child, which needs to be split</span>
+<span style=color:#75715e># `child_index` param gives the position of child node in `parent.children` array</span>
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>split_child</span>(btree: BTree, parent: Node, child_index: int):
+	old_child: Node <span style=color:#f92672>=</span> parent[child_index]
+	new_child: Node <span style=color:#f92672>=</span> getNewNode()
+	new_child<span style=color:#f92672>.</span>isLeaf <span style=color:#f92672>=</span> old_child<span style=color:#f92672>.</span>isLeaf
+
+	split_point <span style=color:#f92672>=</span> int(btree<span style=color:#f92672>.</span>max_keys<span style=color:#f92672>//</span><span style=color:#ae81ff>2</span>)
+
+	<span style=color:#75715e># copies second half of old child to new one</span>
+	<span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(split_point<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>, btree<span style=color:#f92672>.</span>max_keys):
+		new_child<span style=color:#f92672>.</span>keys<span style=color:#f92672>.</span>append(old_child<span style=color:#f92672>.</span>keys[i])
+
+	<span style=color:#75715e># if old_child is internal (i.e. isLeaf is false), copy the pointers</span>
+	<span style=color:#75715e># to the new child</span>
+	<span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> old_child<span style=color:#f92672>.</span>isLeaf:
+		<span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(split_point<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>, btree<span style=color:#f92672>.</span>max_keys<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>):
+			new_child<span style=color:#f92672>.</span>children<span style=color:#f92672>.</span>append(old_child<span style=color:#f92672>.</span>children[i])		
+
+
+	median <span style=color:#f92672>=</span> old_child[split_point]
+	<span style=color:#75715e># insert the key at the right position</span>
+	parent<span style=color:#f92672>.</span>keys<span style=color:#f92672>.</span>insert(child_index, median)
+	
+	<span style=color:#75715e># insert the new child in the parent</span>
+	parent<span style=color:#f92672>.</span>children<span style=color:#f92672>.</span>insert(child_index<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>, new_child)
+	
+	old_child<span style=color:#f92672>.</span>keys <span style=color:#f92672>=</span> old_child<span style=color:#f92672>.</span>keys[:split_point]
+</code></pre></div><h3 id=insertion>Insertion</h3>
+<p>We will do the insertion as explained <a href=https://avi.im/blag/2021/rc-day-11/>earlier</a>. The insertion starts will splitting of root if it is full:</p>
+<p><img src=/blag/images/2021/root-split.png alt></p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>insert</span>(b_tree: BTree, key: int):
+	root <span style=color:#f92672>=</span> b_tree<span style=color:#f92672>.</span>root
+	<span style=color:#66d9ef>if</span> root<span style=color:#f92672>.</span>is_full():
+		<span style=color:#75715e># root is full already, so we will split and create</span>
+		<span style=color:#75715e># a new root</span>
+		new_root <span style=color:#f92672>=</span> getNewNode()
+		b_tree<span style=color:#f92672>.</span>root <span style=color:#f92672>=</span> new_root
+		<span style=color:#75715e># old root becomes first child of new root</span>
+		new_root<span style=color:#f92672>.</span>keys[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>=</span> root
+		<span style=color:#75715e># old root is at 0 position, it needs to be split. So we will call `split_child`</span>
+		split_child(new_root, <span style=color:#ae81ff>0</span>)
+		<span style=color:#75715e># now we know it is not full, so we go on and insert into it</span>
+		insert_non_full(new_root, k)
+	<span style=color:#66d9ef>else</span>:
+		<span style=color:#75715e># the root has empty space, so we can insert into it easily</span>
+		insert_non_full(root, k)
+</code></pre></div><p>We use <code>insert_non_full</code> to insert in a node that has space in case the child splits.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>insert_non_full</span>(node: Node, key: int):
+	<span style=color:#75715e># if the node is a leaf node, then we </span>
+	<span style=color:#75715e># can insert in it directly. We know it&#39;s not full.</span>
+	<span style=color:#66d9ef>if</span> node<span style=color:#f92672>.</span>isLeaf:
+		<span style=color:#75715e># insert in the node at right place</span>
+		<span style=color:#66d9ef>return</span>
+	<span style=color:#75715e># the node is an internal node. so we find an appropriate place to insert</span>
+	<span style=color:#75715e># it is possible that the child node we picked is full already. So, we will call split_node on it and then insert</span>
+	<span style=color:#75715e># TODO: find the child node to insert; it should be key &lt; child.key</span>
+	child <span style=color:#f92672>=</span> node<span style=color:#f92672>.</span>children[i]
+	<span style=color:#66d9ef>if</span> child<span style=color:#f92672>.</span>is_full():
+		split_child(node, i)
+	insert_non_full(child, key)
+</code></pre></div><p>Note that the node format here follows the book instead of the one I <a href=https://avi.im/blag/2021/rc-day-3/>described earlier</a>. During the split, you need to adjust the parent array like this:</p>
+<pre tabindex=0><code>[(7, *1), (16, *9)]
+</code></pre><p>if node 16 gets split, it could look like this:</p>
+<pre tabindex=0><code>[(7, *1), (13, *9) (16, *14)]
+</code></pre><p><code>13</code> is the key promoted from the child node, which points to the older node (<code>*9</code>), and the earlier <code>16</code> now points to the new split child (<code>*14</code>).</p>
+<h2 id=coffee-chat>Coffee Chat</h2>
+<p>I had a Coffee Chat with James, who is also one of the faculty. We talked about various things, from books to distributed systems. James also gave me advice on pairing effectively:</p>
+<ol>
+<li>If the task is complicated, requires lots of background reading (which is somewhat true in the case of B Tree), it is better to pair with the same people repeatedly or have a long term pairing partner.</li>
+<li>Split the task into so small that it does not require much background. E.g. writing unit tests.</li>
+</ol>
+<h2 id=people>People</h2>
+<p>I paired with Oliver to implement <code>split_child</code>. Pairing on this turned out to be very helpful to me because Oliver is used to reading papers and math notations, so turning the algorithm into pseudocode was very quick.</p>
+</article>
+<form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit="return window.open('https://tinyletter.com/avi-im','popupwindow','scrollbars=yes,width=800,height=600'),!0"><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form>
+<footer class=site-footer>
+<div class=rc-scout style=margin-right:auto;margin-top:auto;font-size:.6rem></div>
+<script async defer src="https://www.recurse-scout.com/loader.js?t=a4aabd5087bb19daf083302de1b46650"></script>
+<span class=person-schema itemscope itemtype=http://schema.org/Person>
+<link itemprop=url href=https://avi.im/blag>
+<span itemprop=name></span>
+<br>
+<a itemprop=sameAs href=https://github.com/avinassh title=GitHub><img src=/blag/svg/gh.svg alt="icon name"></a>
+<a itemprop=sameAs href=/blag/index.xml title=GitHub><img src=/blag/svg/rss.svg alt="icon name"></a>
+</span>
+</footer>
+</div>
+<script src=/blag/js/highlight.pack.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script data-goatcounter=https://avi.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+</body>
+</html>
