@@ -1,10 +1,8 @@
 ---
-title: "Recurse Center Day 17"
-date: "2021-11-24T16:13:29+05:30"
+title: "Recurse Center Day 19"
+date: "2021-12-01T20:22:37+05:30"
 categories: ["recurse-center", ""]
 tags: ["recurse-center", "rc", "checkin", ""]
-slug: "rc-day-17"
+slug: "rc-day-19"
 summary: ""
 ---
-
-## Disk Storage I
