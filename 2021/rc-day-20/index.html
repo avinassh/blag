@@ -1,0 +1,174 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=generator content="Hugo 0.89.4">
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=author content>
+<meta property="og:url" content="https://avi.im/blag/2021/rc-day-20/">
+<title>Recurse Center Day 20: Django v4 upgrade - blag</title>
+<meta property="og:title" content="Recurse Center Day 20: Django v4 upgrade - blag">
+<meta property="og:type" content="article">
+<meta property="og:description" content="I worked on upgrading a Django project from v1 to v4">
+<meta name=description content="I worked on upgrading a Django project from v1 to v4">
+<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
+<link rel=stylesheet href=/blag/css/highlight.css>
+<link rel=stylesheet href=/blag/css/journal.css>
+<link href=/blag/index.xml rel=alternate type=application/rss+xml title=blag>
+</head>
+<body>
+<div class=container>
+<div class=site-header-nav>
+<nav class=site-nav>
+<a href=https://avi.im/blag>Index</a>
+</nav>
+<div>
+<span><a href=/blag/about>About</a></span>
+<span><a href=/blag/projects>Projects</a></span>
+<span><a href=https://avi.im/resume.pdf>Resume</a></span>
+<span><a href=https://tinyletter.com/avi-im>Subscribe</a></span>
+</div>
+</div>
+<article class=post>
+<header class=post-header>
+<h1 class=post-title>Recurse Center Day 20: Django v4 upgrade</h1>
+<time class=post-date datetime="2021-12-02 17:18:07 +0530">02 Dec 2021</time>
+</header>
+<p>I have an <a href=https://github.com/avinassh/della>open source project</a> (check the <a href=https://avi.im/della/>screenshots here</a>) that used an outdated version of Django. I had made the last commit five years ago. I set out to upgrade Django to the latest version.</p>
+<h2 id=the-plan>The plan</h2>
+<ol>
+<li>Get it to run.</li>
+<li>Upgrade to Django 2, then 3, and then 4</li>
+<li>Ignore backward compatibility of the project. It would help me move fast if I redid the migration if needed.</li>
+</ol>
+<h2 id=getting-it-to-run>Getting it to run</h2>
+<p>My current Python version is 3.9.7, Postgres is v14, and my first task was to get Della running under these versions. I tried to install the dependencies from <code>requirements.txt</code>. The first failure was due to <code>psycopg2</code>:</p>
+<blockquote>
+<p>Error: could not determine PostgreSQL version from &lsquo;14.0&rsquo;</p>
+</blockquote>
+<p>I assumed this was because the 2.6.2 version did not support the latest Postgres. Installing the latest 2.9.2 version fixed the issue. Similarly, I also upgraded pillow, gevent and Django (to 1.11.29 LTS). <a href=https://github.com/avinassh/della/pull/16>These changes</a> were enough to get it running.</p>
+<h2 id=upgrading-to-v2>Upgrading to v2</h2>
+<p>I read the <a href=https://docs.djangoproject.com/en/2.0/releases/2.0/#features-deprecated-in-2-0>release note of v2</a>, but I was unsure how would I make changes in my project because I haven&rsquo;t seen this code in 5 years, and I remember nothing at all. Fortunately, I found this project called <a href=https://github.com/adamchainz/django-upgrade><code>django-upgrade</code></a> which applied upgrades automatically. So, I ran it on my project:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>django-upgrade --target-version 2.2 <span style=color:#e6db74>`</span>find . -name <span style=color:#e6db74>&#34;*.py&#34;</span><span style=color:#e6db74>`</span>
+Rewriting ./della/inbox/models.py
+Rewriting ./della/inbox/urls.py
+Rewriting ./della/gallery/models.py
+Rewriting ./della/gallery/urls.py
+Rewriting ./della/urls.py
+Rewriting ./della/user_manager/models.py
+Rewriting ./della/user_manager/urls.py
+</code></pre></div><p>One more nice thing about the <code>django-upgrade</code> project is that they nicely mentioned all the breaking changes required. Here are the <a href=https://github.com/avinassh/della/commit/25db8599>changes</a> it automatically rewrote:</p>
+<ol>
+<li><code>on_delete</code> argument: Starting with Django 1.9, all foreign key and one to one fields need <a href=https://docs.djangoproject.com/en/3.2/releases/1.9/#foreignkey-and-onetoonefield-on-delete-argument><code>on_delete</code> argument</a>.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#75715e># added_by = models.ForeignKey(User)</span>
+added_by <span style=color:#f92672>=</span> models<span style=color:#f92672>.</span>ForeignKey(User, on_delete<span style=color:#f92672>=</span>models<span style=color:#f92672>.</span>CASCADE)
+<span style=color:#75715e># user = models.OneToOneField(User)</span>
+user <span style=color:#f92672>=</span> models<span style=color:#f92672>.</span>OneToOneField(User, on_delete<span style=color:#f92672>=</span>models<span style=color:#f92672>.</span>CASCADE)
+</code></pre></div><ol start=2>
+<li><code>url</code> to <code>path</code>: <a href=https://docs.djangoproject.com/en/2.0/releases/2.0/#simplified-url-routing-syntax>Django 2.0 simplified</a> the URL routing syntax. The documentation on <a href=https://docs.djangoproject.com/en/2.2/ref/urls/><code>path</code></a> explains how to use them.</li>
+</ol>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>url(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#39;^upload/$&#39;</span>, ImageUploadView<span style=color:#f92672>.</span>as_view(), name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;upload&#39;</span>),
+url(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#39;^(?P&lt;pk&gt;\d+)/$&#39;</span>, ImageDetailView<span style=color:#f92672>.</span>as_view(), name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;image-detail&#39;</span>),
+url(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#39;^$&#39;</span>, ImageListView<span style=color:#f92672>.</span>as_view(), name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;image-list&#39;</span>)
+url(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#39;^@(?P&lt;recipient&gt;[a-zA-Z0-9_]+)/$&#39;</span>, ThreadDetailView<span style=color:#f92672>.</span>as_view()
+</code></pre></div><p>simplified to:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>path(<span style=color:#e6db74>&#39;upload/&#39;</span>, ImageUploadView<span style=color:#f92672>.</span>as_view(), name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;upload&#39;</span>),
+path(<span style=color:#e6db74>&#39;&lt;int:pk&gt;/&#39;</span>, ImageDetailView<span style=color:#f92672>.</span>as_view(), name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;image-detail&#39;</span>),
+path(<span style=color:#e6db74>&#39;&#39;</span>, ImageListView<span style=color:#f92672>.</span>as_view(), name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;image-list&#39;</span>)
+re_path(<span style=color:#e6db74>r</span><span style=color:#e6db74>&#39;^@(?P&lt;recipient&gt;[a-zA-Z0-9_]+)/$&#39;</span>, ThreadDetailView<span style=color:#f92672>.</span>as_view()
+</code></pre></div><p>However, when I tried to migrate, I ran into the following error:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>File <span style=color:#e6db74>&#34;/Users/avi/code/della/della/urls.py&#34;</span>, line <span style=color:#ae81ff>21</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>from</span> .views <span style=color:#f92672>import</span> HomePageView
+  File <span style=color:#e6db74>&#34;/Users/avi/code/della/della/views.py&#34;</span>, line <span style=color:#ae81ff>3</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>from</span> della.user_manager.forms <span style=color:#f92672>import</span> SignupForm
+  File <span style=color:#e6db74>&#34;/Users/avi/code/della/della/user_manager/forms.py&#34;</span>, line <span style=color:#ae81ff>7</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>from</span> crispy_forms.helper <span style=color:#f92672>import</span> FormHelper
+  File <span style=color:#e6db74>&#34;/Users/avi/.virtualenvs/della/lib/python3.9/site-packages/crispy_forms/helper.py&#34;</span>, line <span style=color:#ae81ff>4</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>from</span> django.core.urlresolvers <span style=color:#f92672>import</span> reverse, NoReverseMatch
+<span style=color:#a6e22e>ModuleNotFoundError</span>: No module named <span style=color:#e6db74>&#39;django.core.urlresolvers&#39;</span>
+</code></pre></div><p>I fixed by <a href=https://github.com/avinassh/della/commit/62781979>upgrading <code>django-crispy-forms</code></a>. The next error was:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>File <span style=color:#e6db74>&#34;/Users/avi/code/della/della/urls.py&#34;</span>, line <span style=color:#ae81ff>24</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    path(<span style=color:#e6db74>&#39;gallery/&#39;</span>, include(
+  File <span style=color:#e6db74>&#34;/Users/avi/.virtualenvs/della/lib/python3.9/site-packages/django/urls/conf.py&#34;</span>, line <span style=color:#ae81ff>38</span>, <span style=color:#f92672>in</span> include
+    <span style=color:#66d9ef>raise</span> ImproperlyConfigured(
+django<span style=color:#f92672>.</span>core<span style=color:#f92672>.</span>exceptions<span style=color:#f92672>.</span>ImproperlyConfigured: Specifying a namespace <span style=color:#f92672>in</span> include() without providing an app_name <span style=color:#f92672>is</span> <span style=color:#f92672>not</span> supported<span style=color:#f92672>.</span> Set the app_name attribute <span style=color:#f92672>in</span> the included module, <span style=color:#f92672>or</span> <span style=color:#66d9ef>pass</span> a <span style=color:#ae81ff>2</span><span style=color:#f92672>-</span>tuple containing the list of patterns <span style=color:#f92672>and</span> app_name instead<span style=color:#f92672>.</span>
+</code></pre></div><p>It seems it needed <a href=https://docs.djangoproject.com/en/2.2/topics/http/urls/#namespaces-and-include>application name in the urlconfs</a>. So I <a href=https://github.com/avinassh/della/commit/f222a852>added <code>app_name</code> variable</a> to each of the URLconf module. The next error was:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>File <span style=color:#e6db74>&#34;/Users/avi/code/della/della/inbox/urls.py&#34;</span>, line <span style=color:#ae81ff>3</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>from</span> .views <span style=color:#f92672>import</span> (MessageCreateView, ThreadDetailView, ThreadListView,
+  File <span style=color:#e6db74>&#34;/Users/avi/code/della/della/inbox/views.py&#34;</span>, line <span style=color:#ae81ff>14</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>from</span> . <span style=color:#f92672>import</span> tasks
+  File <span style=color:#e6db74>&#34;/Users/avi/code/della/della/inbox/tasks.py&#34;</span>, line <span style=color:#ae81ff>4</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    <span style=color:#f92672>from</span> django.core.urlresolvers <span style=color:#f92672>import</span> reverse
+<span style=color:#a6e22e>ModuleNotFoundError</span>: No module named <span style=color:#e6db74>&#39;django.core.urlresolvers&#39;</span>
+</code></pre></div><p>Seems they <a href=https://docs.djangoproject.com/en/1.11/ref/urlresolvers/>moved</a> <code>reverse</code> and <code>reverse_lazy</code> to <code>django.urls</code> from <code>django.core.urlresolvers</code>. I simply <a href=https://github.com/avinassh/della/commit/41598af>renamed the import statements</a> to fix this. Next error was:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>  File <span style=color:#e6db74>&#34;/Users/avi/code/della/della/user_manager/urls.py&#34;</span>, line <span style=color:#ae81ff>11</span>, <span style=color:#f92672>in</span> <span style=color:#f92672>&lt;</span>module<span style=color:#f92672>&gt;</span>
+    path(<span style=color:#e6db74>&#39;login/&#39;</span>, auth_views<span style=color:#f92672>.</span>login, name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;login&#39;</span>,
+<span style=color:#a6e22e>AttributeError</span>: module <span style=color:#e6db74>&#39;django.contrib.auth.views&#39;</span> has no attribute <span style=color:#e6db74>&#39;login&#39;</span>
+</code></pre></div><p>In Django 2.2, <code>contrib.auth.views</code> <a href=https://docs.djangoproject.com/en/2.2/topics/auth/default/#all-authentication-views>started using class based views</a>. Following <a href=https://github.com/avinassh/della/commit/5a151b3>changes</a> fixed this error:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>urlpatterns <span style=color:#f92672>=</span> [
+    path(<span style=color:#e6db74>&#39;login/&#39;</span>, auth_views<span style=color:#f92672>.</span>login, name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;login&#39;</span>,
+        kwargs<span style=color:#f92672>=</span>{<span style=color:#e6db74>&#39;template_name&#39;</span>: <span style=color:#e6db74>&#39;user_manager/login.html&#39;</span>}),
+    path(<span style=color:#e6db74>&#39;logout/&#39;</span>, auth_views<span style=color:#f92672>.</span>logout, name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;logout&#39;</span>,
+        kwargs<span style=color:#f92672>=</span>{<span style=color:#e6db74>&#39;next_page&#39;</span>: <span style=color:#e6db74>&#39;/&#39;</span>}),
+    ]
+</code></pre></div><p>changed to:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>urlpatterns <span style=color:#f92672>=</span> [
+    path(<span style=color:#e6db74>&#39;login/&#39;</span>, auth_views<span style=color:#f92672>.</span>LoginView<span style=color:#f92672>.</span>as_view(template_name<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;user_manager/login.html&#34;</span>), name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;login&#39;</span>,
+        ),
+    path(<span style=color:#e6db74>&#39;logout/&#39;</span>, auth_views<span style=color:#f92672>.</span>LogoutView, name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;logout&#39;</span>,
+        kwargs<span style=color:#f92672>=</span>{<span style=color:#e6db74>&#39;next_page&#39;</span>: <span style=color:#e6db74>&#39;/&#39;</span>}),
+    ]
+</code></pre></div><p>The following error was:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>File <span style=color:#e6db74>&#34;/Users/avi/code/della/della/views.py&#34;</span>, line <span style=color:#ae81ff>13</span>, <span style=color:#f92672>in</span> get_context_data
+    <span style=color:#66d9ef>if</span> self<span style=color:#f92672>.</span>request<span style=color:#f92672>.</span>user<span style=color:#f92672>.</span>is_authenticated():
+<span style=color:#a6e22e>TypeError</span>: <span style=color:#e6db74>&#39;bool&#39;</span> object <span style=color:#f92672>is</span> <span style=color:#f92672>not</span> callable
+</code></pre></div><p>Seems <code>User.is_authenticated()</code> was <a href=https://docs.djangoproject.com/en/1.10/releases/1.10/#using-user-is-authenticated-and-user-is-anonymous-as-methods>changed to a property</a> in Django 1.10, but <code>django-upgrade</code> did not account for this change. The <a href=https://github.com/avinassh/della/commit/ada5a25>fix</a> was simple, and now my project started working for Django 2.2.</p>
+<h2 id=upgrading-to-v3>Upgrading to v3</h2>
+<p><code>django-upgrade</code> did not make changes, so I made all changes manually. The first error was:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>  File <span style=color:#e6db74>&#34;/Users/avi/.virtualenvs/della/lib/python3.9/site-packages/django/apps/config.py&#34;</span>, line <span style=color:#ae81ff>246</span>, <span style=color:#f92672>in</span> create
+    <span style=color:#66d9ef>raise</span> ImproperlyConfigured(
+django<span style=color:#f92672>.</span>core<span style=color:#f92672>.</span>exceptions<span style=color:#f92672>.</span>ImproperlyConfigured: Cannot <span style=color:#f92672>import</span> <span style=color:#e6db74>&#39;user_manager&#39;</span><span style=color:#f92672>.</span> Check that <span style=color:#e6db74>&#39;della.user_manager.apps.UserManagerConfig.name&#39;</span> <span style=color:#f92672>is</span> correct<span style=color:#f92672>.</span>
+</code></pre></div><p>It seems Django 3.2 introduced <a href=https://docs.djangoproject.com/en/3.2/releases/3.2/#automatic-appconfig-discovery>auto discovery of apps</a>, which requires <a href=https://docs.djangoproject.com/en/2.2/ref/applications/#configuring-applications>some changes</a> for the app names. I tried changing the config as per docs; it didn&rsquo;t work. However, I learned that Django made this config optional, so I <a href=https://github.com/avinassh/della/commit/a5eb387>removed all of them</a>. The following error was:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>File <span style=color:#e6db74>&#34;/Users/avi/.virtualenvs/della/lib/python3.9/site-packages/django/template/defaulttags.py&#34;</span>, line <span style=color:#ae81ff>1036</span>, <span style=color:#f92672>in</span> find_library
+    <span style=color:#66d9ef>raise</span> TemplateSyntaxError(
+django<span style=color:#f92672>.</span>template<span style=color:#f92672>.</span>exceptions<span style=color:#f92672>.</span>TemplateSyntaxError: <span style=color:#e6db74>&#39;staticfiles&#39;</span> <span style=color:#f92672>is</span> <span style=color:#f92672>not</span> a registered tag library<span style=color:#f92672>.</span> Must be one of:
+admin_list
+admin_modify
+admin_urls
+cache
+crispy_forms_field
+crispy_forms_filters
+crispy_forms_tags
+crispy_forms_utils
+i18n
+l10n
+log
+static
+tz
+</code></pre></div><p>The fix was pretty simple, I just <a href=https://github.com/avinassh/della/commit/9803d1a>renamed</a> <code>staticfiles</code> to <code>static</code>. Now my app started working with Django 3.</p>
+<h2 id=upgrading-to-v4>Upgrading to v4</h2>
+<p>At the time of this writing, Django 4.0 RC1 is out, but Django 4.0 <a href=https://code.djangoproject.com/wiki/Version4.0Roadmap>will be out</a> in just four days.</p>
+<p>Only change required was using the CBV with <code>as_view</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>path(<span style=color:#e6db74>&#39;logout/&#39;</span>, auth_views<span style=color:#f92672>.</span>LogoutView<span style=color:#f92672>.</span>as_view(), name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;logout&#39;</span>)
+</code></pre></div><h2 id=whats-next>What&rsquo;s next?</h2>
+<p>Della used a significantly older version of <code>django-background-tasks</code> which seems to be unmaintained now. I am looking at alternatives and replacing them.</p>
+</article>
+<form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit="return window.open('https://tinyletter.com/avi-im','popupwindow','scrollbars=yes,width=800,height=600'),!0"><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form>
+<footer class=site-footer>
+<div class=rc-scout style=margin-right:auto;margin-top:auto;font-size:.6rem></div>
+<script async defer src="https://www.recurse-scout.com/loader.js?t=a4aabd5087bb19daf083302de1b46650"></script>
+<span class=person-schema itemscope itemtype=http://schema.org/Person>
+<link itemprop=url href=https://avi.im/blag>
+<span itemprop=name></span>
+<br>
+<a itemprop=sameAs href=https://github.com/avinassh title=GitHub><img src=/blag/svg/gh.svg alt="icon name"></a>
+<a itemprop=sameAs href=/blag/index.xml title=GitHub><img src=/blag/svg/rss.svg alt="icon name"></a>
+</span>
+</footer>
+</div>
+<script src=/blag/js/highlight.pack.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script data-goatcounter=https://avi.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
+</body>
+</html>
