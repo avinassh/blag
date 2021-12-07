@@ -6,8 +6,8 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=author content>
 <meta property="og:url" content="https://avi.im/blag/2021/rc-day-20/">
-<title>Recurse Center Day 20: Django v4 upgrade - blag</title>
-<meta property="og:title" content="Recurse Center Day 20: Django v4 upgrade - blag">
+<title>Recurse Center Day 20: Django v4 upgrade (from v1) - blag</title>
+<meta property="og:title" content="Recurse Center Day 20: Django v4 upgrade (from v1) - blag">
 <meta property="og:type" content="article">
 <meta property="og:description" content="I worked on upgrading a Django project from v1 to v4">
 <meta name=description content="I worked on upgrading a Django project from v1 to v4">
@@ -31,7 +31,7 @@
 </div>
 <article class=post>
 <header class=post-header>
-<h1 class=post-title>Recurse Center Day 20: Django v4 upgrade</h1>
+<h1 class=post-title>Recurse Center Day 20: Django v4 upgrade (from v1)</h1>
 <time class=post-date datetime="2021-12-02 17:18:07 +0530">02 Dec 2021</time>
 </header>
 <p>I have an <a href=https://github.com/avinassh/della>open source project</a> (check the <a href=https://avi.im/della/>screenshots here</a>) that used an outdated version of Django. I had made the last commit five years ago. I set out to upgrade Django to the latest version.</p>
@@ -149,9 +149,10 @@ tz
 </code></pre></div><p>The fix was pretty simple, I just <a href=https://github.com/avinassh/della/commit/9803d1a>renamed</a> <code>staticfiles</code> to <code>static</code>. Now my app started working with Django 3.</p>
 <h2 id=upgrading-to-v4>Upgrading to v4</h2>
 <p>At the time of this writing, Django 4.0 RC1 is out, but Django 4.0 <a href=https://code.djangoproject.com/wiki/Version4.0Roadmap>will be out</a> in just four days.</p>
-<p>Only change required was using the CBV with <code>as_view</code>:</p>
+<p>Only <a href=https://github.com/avinassh/della/commit/cc9cea1>change required</a> was using the CBV with <code>as_view</code>:</p>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>path(<span style=color:#e6db74>&#39;logout/&#39;</span>, auth_views<span style=color:#f92672>.</span>LogoutView<span style=color:#f92672>.</span>as_view(), name<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;logout&#39;</span>)
-</code></pre></div><h2 id=whats-next>What&rsquo;s next?</h2>
+</code></pre></div><p>Update 7/Dec/2021: Django v4 is out and I upgraded from RC1 to 4.0 final. No changes were required.</p>
+<h2 id=whats-next>What&rsquo;s next?</h2>
 <p>Della used a significantly older version of <code>django-background-tasks</code> which seems to be unmaintained now. I am looking at alternatives and replacing them.</p>
 </article>
 <form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit="return window.open('https://tinyletter.com/avi-im','popupwindow','scrollbars=yes,width=800,height=600'),!0"><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form>
