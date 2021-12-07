@@ -1,5 +1,5 @@
 ---
-title: "Recurse Center Day 20: Django v4 upgrade"
+title: "Recurse Center Day 20: Django v4 upgrade (from v1)"
 date: "2021-12-02T17:18:07+05:30"
 categories: ["recurse-center", ""]
 tags: ["recurse-center", "rc", "checkin", ""]
@@ -178,11 +178,13 @@ The fix was pretty simple, I just [renamed](https://github.com/avinassh/della/co
 
 At the time of this writing, Django 4.0 RC1 is out, but Django 4.0 [will be out](https://code.djangoproject.com/wiki/Version4.0Roadmap) in just four days.
 
-Only change required was using the CBV with `as_view`:
+Only [change required](https://github.com/avinassh/della/commit/cc9cea1) was using the CBV with `as_view`:
 
 ```python
 path('logout/', auth_views.LogoutView.as_view(), name='logout')
 ```
+
+Update 7/Dec/2021: Django v4 is out and I upgraded from RC1 to 4.0 final. No changes were required.
 
 ## What's next?
 
