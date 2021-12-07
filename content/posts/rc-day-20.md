@@ -1,5 +1,5 @@
 ---
-title: "Recurse Center Day 20: Django v4 upgrade"
+title: "Recurse Center Day 20: Django v4 upgrade (from v1)"
 date: "2021-12-02T17:18:07+05:30"
 categories: ["recurse-center", ""]
 tags: ["recurse-center", "rc", "checkin", ""]
