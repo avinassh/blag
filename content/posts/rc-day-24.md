@@ -209,3 +209,5 @@ I [updated](https://github.com/avinassh/go/commit/454505b7a9) my code to handle 
 1. Hacking on an unknown large codebase is scary at first, but it is satisfying
 1. Due to hash calculations, you can't add single-character tokens, tokens that are of the same length but differ after 3rd characters onwards
 1. Other than Eli's post, there are no documentation or articles on Go compiler internals. How does someone get started working on them? How do they navigate and find all these intricacies without spending hours? Maybe Google has some internal documentation on the Go compiler.
+
+(update 9/Dec)**Note**: This post is getting a lot attention. Any chance you are a regular Go contributor? I would love to learn about the daily development cycle. How do you make changes, how do you do quick tests before running the whole test suite etc. Feel free to reach out to me [@iavins](https://twitter.com/iavins) or [email]({{< ref "about" >}}).
