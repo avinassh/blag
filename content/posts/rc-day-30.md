@@ -7,3 +7,9 @@ slug: "rc-day-30"
 summary: ""
 draft: true
 ---
+
+Zoekt Stuff
+
+https://swtch.com/~rsc/regexp/regexp4.html
+
+https://github.com/google/zoekt/blob/master/doc/design.md
