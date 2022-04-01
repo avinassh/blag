@@ -1,165 +1,101 @@
-<!doctype html><html lang=en-us>
-<head>
-<meta charset=utf-8>
-<meta name=generator content="Hugo 0.91.2">
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=author content>
-<meta property="og:url" content="https://avi.im/blag/2021/golang-marshaling-special-fields/">
-<title>Marshaling Struct with Special Fields to JSON in Golang - blag</title>
-<meta property="og:title" content="Marshaling Struct with Special Fields to JSON in Golang - blag">
-<meta property="og:type" content="article">
-<meta property="og:description" content="This is a short post explaining how I marshaled http.Request into json">
-<meta name=description content="This is a short post explaining how I marshaled http.Request into json">
-<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
-<link rel=stylesheet href=/blag/css/highlight.css>
-<link rel=stylesheet href=/blag/css/journal.css>
-<link href=/blag/index.xml rel=alternate type=application/rss+xml title=blag>
-</head>
-<body>
-<div class=container>
-<div class=site-header-nav>
-<nav class=site-nav>
-<a href=https://avi.im/blag>Index</a>
-</nav>
-<div>
-<span><a href=/blag/about>About</a></span>
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=generator content="Hugo 0.96.0"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content><meta property="og:url" content="https://avi.im/blag/2021/golang-marshaling-special-fields/"><title>Marshaling Struct with Special Fields to JSON in Golang - blag</title><meta property="og:title" content="Marshaling Struct with Special Fields to JSON in Golang - blag"><meta property="og:type" content="article"><meta property="og:description" content="This is a short post explaining how I marshaled http.Request into json"><meta name=description content="This is a short post explaining how I marshaled http.Request into json"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700"><link rel=stylesheet href=/blag/css/highlight.css><link rel=stylesheet href=/blag/css/journal.css><link href=/blag/index.xml rel=alternate type=application/rss+xml title=blag></head><body><div class=container><div class=site-header-nav><nav class=site-nav><a href=https://avi.im/blag>Index</a></nav><div><span><a href=/blag/about>About</a></span>
 <span><a href=/blag/projects>Projects</a></span>
 <span><a href=https://avi.im/resume.pdf>Resume</a></span>
-<span><a href=https://tinyletter.com/avi-im>Subscribe</a></span>
-</div>
-</div>
-<article class=post>
-<header class=post-header>
-<h1 class=post-title>Marshaling Struct with Special Fields to JSON in Golang</h1>
-<time class=post-date datetime="2021-05-01 14:35:53 +0530">01 May 2021</time>
-</header>
-<p>I needed to marshal <code>http.Request</code> to json, but this struct contains few fields which are not serialise-able. Here is <a href=https://play.golang.org/p/CTIQXEUnxfn>some sample code</a>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// imports and error handling is omitted for brevity
-</span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;GET&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#66d9ef>nil</span>)
-    <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>req</span>)
-    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>err</span>)
-}
-</code></pre></div><p>When you run the above code, we get an error:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>json</span>: <span style=color:#a6e22e>unsupported</span> <span style=color:#66d9ef>type</span>: <span style=color:#66d9ef>func</span>() (<span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>ReadCloser</span>, <span style=color:#66d9ef>error</span>)
-</code></pre></div><p>So I inspected <a href=https://golang.org/pkg/net/http/#Request>the struct</a>, found out that it has two fields which json doesn&rsquo;t know how to serialize:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// in net/http
-</span><span style=color:#75715e></span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Request</span> <span style=color:#66d9ef>struct</span> {
-    <span style=color:#75715e>// snipped
-</span><span style=color:#75715e></span>    <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>func</span>() (<span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>ReadCloser</span>, <span style=color:#66d9ef>error</span>)
-    <span style=color:#a6e22e>Cancel</span> <span style=color:#f92672>&lt;-</span><span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>struct</span>{}
-}
-</code></pre></div><p>I <a href=https://play.golang.org/p/YfT5XOuHAu2>wrote a wrapper struct</a> in which I embedded the <code>http.Request</code> object, redefined these fields. Do note that the json struct tags need to match with the corresponding fields from <code>http.Request</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>RequestWrapper</span> <span style=color:#66d9ef>struct</span> {
-    <span style=color:#75715e>// the types of variables `GetBody` and `Cancel` do not
-</span><span style=color:#75715e></span>    <span style=color:#75715e>// really matter since I don&#39;t want them in my final json output
-</span><span style=color:#75715e></span>    <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;GetBody,omitempty&#34;`</span>
-    <span style=color:#a6e22e>Cancel</span>  <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Cancel,omitempty&#34;`</span>
-    <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
-}
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;GET&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#66d9ef>nil</span>)
-    <span style=color:#a6e22e>reqWrapper</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>RequestWrapper</span>{<span style=color:#a6e22e>req</span>}
-    <span style=color:#a6e22e>out</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>reqWrapper</span>)
-    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(string(<span style=color:#a6e22e>out</span>))
-}
-</code></pre></div><p>This works nicely! Since we don&rsquo;t care about <code>GetBody</code>, <code>Cancel</code> fields, you might be tempted to use <code>-</code> struct tag instead of explicit mention of <code>omitempty</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>RequestWrapper</span> <span style=color:#66d9ef>struct</span> {
-    <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;-&#34;`</span>
-    <span style=color:#a6e22e>Cancel</span>  <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;-&#34;`</span>
-    <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
-}
-</code></pre></div><p>Unfortunately, <a href=https://play.golang.org/p/HG2k8CdlU5_p>this doesn&rsquo;t work</a> and we ran into the same error which we had encountered earlier. That is because, the wrapper struct fields gets ignored for json marshaling, but embedded struct&rsquo;s fields get considered.</p>
-<p>Now, lets test our code with an HTTP request containing body:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;POST&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>NewReader</span>(<span style=color:#e6db74>&#34;Hello, World!&#34;</span>))
-    <span style=color:#a6e22e>reqWrapper</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>RequestWrapper</span>{<span style=color:#a6e22e>Request</span>: <span style=color:#a6e22e>req</span>}
-    <span style=color:#a6e22e>out</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>reqWrapper</span>)
-    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(string(<span style=color:#a6e22e>out</span>))
-}
-</code></pre></div><p>Uh oh! we see that request body isn&rsquo;t marshaled correctly:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>{
-    <span style=color:#e6db74>&#34;Body&#34;</span>: {<span style=color:#e6db74>&#34;Reader&#34;</span>: {}},
-    <span style=color:#f92672>//</span> snipped
-}
-</code></pre></div><p><code>Body</code> field is of type <code>io.ReadCloser</code>. While serialising JSON doesn&rsquo;t throw any error, but it doesn&rsquo;t know how to serialise it either. So, we will slightly modify our struct:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>RequestWrapper</span> <span style=color:#66d9ef>struct</span> {
-    <span style=color:#75715e>// this assumes Body is always a string
-</span><span style=color:#75715e></span>    <span style=color:#a6e22e>Body</span>    <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Body,omitempty&#34;`</span>
-    <span style=color:#75715e>// the types of variables `GetBody` and `Cancel` do not
-</span><span style=color:#75715e></span>    <span style=color:#75715e>// really matter since I don&#39;t want them in my final json output
-</span><span style=color:#75715e></span>    <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;GetBody,omitempty&#34;`</span>
-    <span style=color:#a6e22e>Cancel</span>  <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Cancel,omitempty&#34;`</span>
-    <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
-}
-</code></pre></div><p>Then we read the body, assign it to this newly added field:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;POST&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>NewReader</span>(<span style=color:#e6db74>&#34;Hello, World!&#34;</span>))
-    <span style=color:#a6e22e>body</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ioutil</span>.<span style=color:#a6e22e>ReadAll</span>(<span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>Body</span>)
-    <span style=color:#a6e22e>reqWrapper</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>RequestWrapper</span>{<span style=color:#a6e22e>Request</span>: <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>Body</span>: string(<span style=color:#a6e22e>body</span>)}
-    <span style=color:#a6e22e>out</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>reqWrapper</span>)
-    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(string(<span style=color:#a6e22e>out</span>))
-}
-</code></pre></div><p><a href=https://play.golang.org/p/hR8p27oGs_E>This</a> works perfectly!</p>
-<h2 id=bonus>Bonus</h2>
-<p>The same can be achieved by implementing <code>MarshalJSON()</code> on the <code>RequestWrapper</code>, which I find it to be cleaner:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-
-<span style=color:#f92672>import</span> (
-    <span style=color:#e6db74>&#34;encoding/json&#34;</span>
-    <span style=color:#e6db74>&#34;fmt&#34;</span>
-    <span style=color:#e6db74>&#34;io/ioutil&#34;</span>
-    <span style=color:#e6db74>&#34;net/http&#34;</span>
-    <span style=color:#e6db74>&#34;strings&#34;</span>
-)
-
-<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>RequestWrapper</span> <span style=color:#66d9ef>struct</span> {
-    <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
-}
-
-<span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>r</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>RequestWrapper</span>) <span style=color:#a6e22e>MarshalJSON</span>() ([]<span style=color:#66d9ef>byte</span>, <span style=color:#66d9ef>error</span>) {
-    <span style=color:#a6e22e>body</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ioutil</span>.<span style=color:#a6e22e>ReadAll</span>(<span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Request</span>.<span style=color:#a6e22e>Body</span>)
-    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#f92672>&amp;</span><span style=color:#66d9ef>struct</span> {
-        <span style=color:#a6e22e>Body</span>    <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Body,omitempty&#34;`</span>
-        <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;GetBody,omitempty&#34;`</span>
-        <span style=color:#a6e22e>Cancel</span>  <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Cancel,omitempty&#34;`</span>
-        <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
-    }{
-        <span style=color:#a6e22e>Body</span>:  string(<span style=color:#a6e22e>body</span>),
-        <span style=color:#a6e22e>Request</span>: <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Request</span>,
-    })
-}
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;POST&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>NewReader</span>(<span style=color:#e6db74>&#34;Hello, World!&#34;</span>))
-    <span style=color:#a6e22e>reqWrapper</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>RequestWrapper</span>{<span style=color:#a6e22e>Request</span>: <span style=color:#a6e22e>req</span>}
-    <span style=color:#a6e22e>out</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>reqWrapper</span>)
-    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(string(<span style=color:#a6e22e>out</span>))
-}
-</code></pre></div><h3 id=note>Note</h3>
-<p>If you are passing around this request object, then the next method won&rsquo;t be able to read the body. In that case, buffer needs to be refilled:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#a6e22e>body</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ioutil</span>.<span style=color:#a6e22e>ReadAll</span>(<span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>Body</span>)
-<span style=color:#75715e>// then assign an `io.ReadCloser` back to it
-</span><span style=color:#75715e></span><span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>Body</span> = <span style=color:#a6e22e>ioutil</span>.<span style=color:#a6e22e>NopCloser</span>(<span style=color:#a6e22e>bytes</span>.<span style=color:#a6e22e>NewBuffer</span>(<span style=color:#a6e22e>body</span>))
-</code></pre></div>
-</article>
-<form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit="return window.open('https://tinyletter.com/avi-im','popupwindow','scrollbars=yes,width=800,height=600'),!0"><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form>
-<footer class=site-footer>
-<div class=rc-scout style=margin-right:auto;margin-top:auto;font-size:.6rem></div>
-<script async defer src="https://www.recurse-scout.com/loader.js?t=a4aabd5087bb19daf083302de1b46650"></script>
-<span class=person-schema itemscope itemtype=http://schema.org/Person>
-<link itemprop=url href=https://avi.im/blag>
-<span itemprop=name></span>
-<br>
-<a itemprop=sameAs href=https://github.com/avinassh title=GitHub><img src=/blag/svg/gh.svg alt="icon name"></a>
-<a itemprop=sameAs href=/blag/index.xml title=GitHub><img src=/blag/svg/rss.svg alt="icon name"></a>
-</span>
-</footer>
-</div>
-<script src=/blag/js/highlight.pack.js></script>
-<script>hljs.initHighlightingOnLoad()</script>
-<script data-goatcounter=https://avi.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
-</body>
-</html>
+<span><a href=https://tinyletter.com/avi-im>Subscribe</a></span></div></div><article class=post><header class=post-header><h1 class=post-title>Marshaling Struct with Special Fields to JSON in Golang</h1><time class=post-date datetime="2021-05-01 14:35:53 +0530">01 May 2021</time></header><p>I needed to marshal <code>http.Request</code> to json, but this struct contains few fields which are not serialise-able. Here is <a href=https://play.golang.org/p/CTIQXEUnxfn>some sample code</a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// imports and error handling is omitted for brevity
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;GET&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>_</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>req</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>err</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>When you run the above code, we get an error:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#a6e22e>json</span>: <span style=color:#a6e22e>unsupported</span> <span style=color:#66d9ef>type</span>: <span style=color:#66d9ef>func</span>() (<span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>ReadCloser</span>, <span style=color:#66d9ef>error</span>)
+</span></span></code></pre></div><p>So I inspected <a href=https://golang.org/pkg/net/http/#Request>the struct</a>, found out that it has two fields which json doesn&rsquo;t know how to serialize:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// in net/http
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Request</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// snipped
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>func</span>() (<span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>ReadCloser</span>, <span style=color:#66d9ef>error</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Cancel</span> <span style=color:#f92672>&lt;-</span><span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>struct</span>{}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>I <a href=https://play.golang.org/p/YfT5XOuHAu2>wrote a wrapper struct</a> in which I embedded the <code>http.Request</code> object, redefined these fields. Do note that the json struct tags need to match with the corresponding fields from <code>http.Request</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>RequestWrapper</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// the types of variables `GetBody` and `Cancel` do not
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// really matter since I don&#39;t want them in my final json output
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;GetBody,omitempty&#34;`</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Cancel</span>  <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Cancel,omitempty&#34;`</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;GET&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#66d9ef>nil</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>reqWrapper</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>RequestWrapper</span>{<span style=color:#a6e22e>req</span>}
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>out</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>reqWrapper</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(string(<span style=color:#a6e22e>out</span>))
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>This works nicely! Since we don&rsquo;t care about <code>GetBody</code>, <code>Cancel</code> fields, you might be tempted to use <code>-</code> struct tag instead of explicit mention of <code>omitempty</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>RequestWrapper</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;-&#34;`</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Cancel</span>  <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;-&#34;`</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Unfortunately, <a href=https://play.golang.org/p/HG2k8CdlU5_p>this doesn&rsquo;t work</a> and we ran into the same error which we had encountered earlier. That is because, the wrapper struct fields gets ignored for json marshaling, but embedded struct&rsquo;s fields get considered.</p><p>Now, lets test our code with an HTTP request containing body:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;POST&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>NewReader</span>(<span style=color:#e6db74>&#34;Hello, World!&#34;</span>))
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>reqWrapper</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>RequestWrapper</span>{<span style=color:#a6e22e>Request</span>: <span style=color:#a6e22e>req</span>}
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>out</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>reqWrapper</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(string(<span style=color:#a6e22e>out</span>))
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Uh oh! we see that request body isn&rsquo;t marshaled correctly:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;Body&#34;</span>: {<span style=color:#e6db74>&#34;Reader&#34;</span>: {}},
+</span></span><span style=display:flex><span>    <span style=color:#f92672>//</span> snipped
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><code>Body</code> field is of type <code>io.ReadCloser</code>. While serialising JSON doesn&rsquo;t throw any error, but it doesn&rsquo;t know how to serialise it either. So, we will slightly modify our struct:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>RequestWrapper</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// this assumes Body is always a string
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>Body</span>    <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Body,omitempty&#34;`</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// the types of variables `GetBody` and `Cancel` do not
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// really matter since I don&#39;t want them in my final json output
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;GetBody,omitempty&#34;`</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>Cancel</span>  <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Cancel,omitempty&#34;`</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Then we read the body, assign it to this newly added field:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;POST&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>NewReader</span>(<span style=color:#e6db74>&#34;Hello, World!&#34;</span>))
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>body</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ioutil</span>.<span style=color:#a6e22e>ReadAll</span>(<span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>Body</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>reqWrapper</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>RequestWrapper</span>{<span style=color:#a6e22e>Request</span>: <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>Body</span>: string(<span style=color:#a6e22e>body</span>)}
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>out</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>reqWrapper</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(string(<span style=color:#a6e22e>out</span>))
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><a href=https://play.golang.org/p/hR8p27oGs_E>This</a> works perfectly!</p><h2 id=bonus>Bonus</h2><p>The same can be achieved by implementing <code>MarshalJSON()</code> on the <code>RequestWrapper</code>, which I find it to be cleaner:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;encoding/json&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;io/ioutil&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;net/http&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;strings&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>RequestWrapper</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>r</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>RequestWrapper</span>) <span style=color:#a6e22e>MarshalJSON</span>() ([]<span style=color:#66d9ef>byte</span>, <span style=color:#66d9ef>error</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>body</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ioutil</span>.<span style=color:#a6e22e>ReadAll</span>(<span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Request</span>.<span style=color:#a6e22e>Body</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#f92672>&amp;</span><span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Body</span>    <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Body,omitempty&#34;`</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>GetBody</span> <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;GetBody,omitempty&#34;`</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Cancel</span>  <span style=color:#66d9ef>string</span> <span style=color:#e6db74>`json:&#34;Cancel,omitempty&#34;`</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>*</span><span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>Request</span>
+</span></span><span style=display:flex><span>    }{
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Body</span>:  string(<span style=color:#a6e22e>body</span>),
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>Request</span>: <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Request</span>,
+</span></span><span style=display:flex><span>    })
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>req</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>http</span>.<span style=color:#a6e22e>NewRequest</span>(<span style=color:#e6db74>&#34;POST&#34;</span>, <span style=color:#e6db74>&#34;http://example.com&#34;</span>, <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>NewReader</span>(<span style=color:#e6db74>&#34;Hello, World!&#34;</span>))
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>reqWrapper</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>RequestWrapper</span>{<span style=color:#a6e22e>Request</span>: <span style=color:#a6e22e>req</span>}
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>out</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>Marshal</span>(<span style=color:#a6e22e>reqWrapper</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(string(<span style=color:#a6e22e>out</span>))
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=note>Note</h3><p>If you are passing around this request object, then the next method won&rsquo;t be able to read the body. In that case, buffer needs to be refilled:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#a6e22e>body</span>, <span style=color:#a6e22e>_</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ioutil</span>.<span style=color:#a6e22e>ReadAll</span>(<span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>Body</span>)
+</span></span><span style=display:flex><span><span style=color:#75715e>// then assign an `io.ReadCloser` back to it
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>req</span>.<span style=color:#a6e22e>Body</span> = <span style=color:#a6e22e>ioutil</span>.<span style=color:#a6e22e>NopCloser</span>(<span style=color:#a6e22e>bytes</span>.<span style=color:#a6e22e>NewBuffer</span>(<span style=color:#a6e22e>body</span>))
+</span></span></code></pre></div></article><form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit='return window.open("https://tinyletter.com/avi-im","popupwindow","scrollbars=yes,width=800,height=600"),!0'><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form><footer class=site-footer><div class=rc-scout style=margin-right:auto;margin-top:auto;font-size:.6rem></div><script async defer src="https://www.recurse-scout.com/loader.js?t=a4aabd5087bb19daf083302de1b46650"></script>
+<span class=person-schema itemscope itemtype=http://schema.org/Person><link itemprop=url href=https://avi.im/blag><span itemprop=name></span><br><a itemprop=sameAs href=https://github.com/avinassh title=GitHub><img src=/blag/svg/gh.svg alt="icon name"></a>
+<a itemprop=sameAs href=/blag/index.xml title=GitHub><img src=/blag/svg/rss.svg alt="icon name"></a></span></footer></div><script src=/blag/js/highlight.pack.js></script>
+<script>hljs.initHighlightingOnLoad()</script><script data-goatcounter=https://avi.goatcounter.com/count async src=//gc.zgo.at/count.js></script></body></html>

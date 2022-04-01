@@ -1,189 +1,90 @@
-<!doctype html><html lang=en-us>
-<head>
-<meta charset=utf-8>
-<meta name=generator content="Hugo 0.91.2">
-<meta http-equiv=x-ua-compatible content="IE=edge">
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=author content>
-<meta property="og:url" content="https://avi.im/blag/2021/rc-day-24/">
-<title>Recurse Center Day 24: Hacking Go compiler to add a new keyword - blag</title>
-<meta property="og:title" content="Recurse Center Day 24: Hacking Go compiler to add a new keyword - blag">
-<meta property="og:type" content="article">
-<meta property="og:description" content="I forked and modified Go compiler to add a new keyword called let, as alias for var">
-<meta name=description content="I forked and modified Go compiler to add a new keyword called let, as alias for var">
-<link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700">
-<link rel=stylesheet href=/blag/css/highlight.css>
-<link rel=stylesheet href=/blag/css/journal.css>
-<link href=/blag/index.xml rel=alternate type=application/rss+xml title=blag>
-</head>
-<body>
-<div class=container>
-<div class=site-header-nav>
-<nav class=site-nav>
-<a href=https://avi.im/blag>Index</a>
-</nav>
-<div>
-<span><a href=/blag/about>About</a></span>
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=generator content="Hugo 0.96.0"><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content><meta property="og:url" content="https://avi.im/blag/2021/rc-day-24/"><title>Recurse Center Day 24: Hacking Go compiler to add a new keyword - blag</title><meta property="og:title" content="Recurse Center Day 24: Hacking Go compiler to add a new keyword - blag"><meta property="og:type" content="article"><meta property="og:description" content="I forked and modified Go compiler to add a new keyword called let, as alias for var"><meta name=description content="I forked and modified Go compiler to add a new keyword called let, as alias for var"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Arvo:400,700"><link rel=stylesheet href=/blag/css/highlight.css><link rel=stylesheet href=/blag/css/journal.css><link href=/blag/index.xml rel=alternate type=application/rss+xml title=blag></head><body><div class=container><div class=site-header-nav><nav class=site-nav><a href=https://avi.im/blag>Index</a></nav><div><span><a href=/blag/about>About</a></span>
 <span><a href=/blag/projects>Projects</a></span>
 <span><a href=https://avi.im/resume.pdf>Resume</a></span>
-<span><a href=https://tinyletter.com/avi-im>Subscribe</a></span>
-</div>
-</div>
-<article class=post>
-<header class=post-header>
-<h1 class=post-title>Recurse Center Day 24: Hacking Go compiler to add a new keyword</h1>
-<time class=post-date datetime="2021-12-08 13:03:55 +0530">08 Dec 2021</time>
-</header>
-<h2 id=go-compiler>Go Compiler</h2>
-<p>I want to poke around the Go compiler and understand some internals for my next RC project. I want to add a new feature that does something new to the compiler. I found this fantastic article <a href=https://eli.thegreenplace.net/2019/go-compiler-internals-adding-a-new-statement-to-go-part-1/>Go compiler internals: adding a new statement to Go</a> by Eli Bendersky, precisely what I want!</p>
-<p>Before doing anything significant, I wanted to make a tiny change to get familiar with the toolchain. First, I decided to add an alias <code>loop</code> for <code>for</code>. However, the compiler codebase already uses keyword loop as a label at many places, so I changed my alias. Also, instead of <code>for</code>, I decided to add an alias for <code>var</code>. The rest of this post summarises how I accomplished this and my learnings along the way.</p>
-<p>I cloned the Go compiler (this is like ~500mb):</p>
-<pre tabindex=0><code># Already forked on Github
+<span><a href=https://tinyletter.com/avi-im>Subscribe</a></span></div></div><article class=post><header class=post-header><h1 class=post-title>Recurse Center Day 24: Hacking Go compiler to add a new keyword</h1><time class=post-date datetime="2021-12-08 13:03:55 +0530">08 Dec 2021</time></header><h2 id=go-compiler>Go Compiler</h2><p>I want to poke around the Go compiler and understand some internals for my next RC project. I want to add a new feature that does something new to the compiler. I found this fantastic article <a href=https://eli.thegreenplace.net/2019/go-compiler-internals-adding-a-new-statement-to-go-part-1/>Go compiler internals: adding a new statement to Go</a> by Eli Bendersky, precisely what I want!</p><p>Before doing anything significant, I wanted to make a tiny change to get familiar with the toolchain. First, I decided to add an alias <code>loop</code> for <code>for</code>. However, the compiler codebase already uses keyword loop as a label at many places, so I changed my alias. Also, instead of <code>for</code>, I decided to add an alias for <code>var</code>. The rest of this post summarises how I accomplished this and my learnings along the way.</p><p>I cloned the Go compiler (this is like ~500mb):</p><pre tabindex=0><code># Already forked on Github
 # I have cloned in /Users/avi/code or ~/code
 git clone git@github.com:avinassh/go.git go-fork 
 
 # This is the latest release of this writing
 git checkout tags/go1.17.4 -b var-vah
-</code></pre><p>The next step was to make a minimal change, compile and make sure it worked. I decided I would rename <code>var</code> to <code>vah</code> so that I can compile the following:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-
-<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-	<span style=color:#a6e22e>vah</span> <span style=color:#a6e22e>someVar</span> = <span style=color:#ae81ff>42</span>;
-	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>someVar</span>)
-}
-</code></pre></div><p>If you compile the above, you will get the following error:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># command-line-arguments</span>
-./main.go:6:6: syntax error: unexpected someVar at end of statement
-</code></pre></div><p>The go compiler code resides at <code>src/cmd/compile/internal</code>. To compile, run <code>src/make.bash</code>. Another alternative is to run <code>all.bash</code>, which runs all the tests but can be very slow for rapid development.</p>
-<p>There are a couple of things I need to do:</p>
-<ol>
-<li>Add a new token, <code>vah</code>, to tokenise my code correctly. That is, recognise a new word called <code>vah</code> in my source code.</li>
-<li>Parse the code and generate an identical AST as <code>var</code>. Make it so that it thinks <code>vah</code> is the same as <code>var</code>.</li>
-</ol>
-<h3 id=adding-a-new-token>Adding a new token</h3>
-<p>Adding a new keyword in Go is&mldr;<a href=https://github.com/avinassh/go/commit/07be904cff>interesting</a>:</p>
-<ol>
-<li>There is a file <code>tokens.go</code> which maintains an enum of all tokens</li>
-<li>The keys point to the tokens</li>
-<li>The comment next to them are the actual tokens you have in the source code</li>
-</ol>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// syntax/tokens.go
-</span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Struct</span>      <span style=color:#75715e>// struct
-</span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Switch</span>      <span style=color:#75715e>// switch
-</span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Type</span>        <span style=color:#75715e>// type
-</span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Var</span>         <span style=color:#75715e>// var
-</span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Vah</span> 		 <span style=color:#75715e>// vah
-</span><span style=color:#75715e></span>}
-</code></pre></div><p>The next step is to generate tokens by using <code>go generate</code> in the <code>syntax</code> directory, but I got an error:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>GOROOT<span style=color:#f92672>=</span>/Users/avi/code/go-fork go generate tokens.go
-tokens.go:9: running <span style=color:#e6db74>&#34;stringer&#34;</span>: exec: <span style=color:#e6db74>&#34;stringer&#34;</span>: executable file not found in $PATH
-</code></pre></div><p>This error can be fixed easily by installing <code>stringer</code>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>go get golang.org/x/tools/cmd/stringer
-</code></pre></div><p>(Above might modify <code>go.mod</code> and <code>go.sum</code>, so do a git clean)</p>
-<p>Above command <a href=https://github.com/avinassh/go/commit/4ba3f6e7d7>modified</a> <code>token_string.go</code> file. I was able to compile the compiler too. But it did not work as expected; when I tried to compile my code, the error was the same as earlier. As if it did not consider any changes I made. I spent the next four hours figuring out and pulling my hair out.</p>
-<h3 id=keyword-map-generator>Keyword map generator</h3>
-<p>Following is the <a href=https://github.com/avinassh/go/blob/go1.17.4/src/cmd/compile/internal/syntax/scanner.go#L426,#L435>keyword map generator code</a>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>init</span>() {
-	<span style=color:#75715e>// populate keywordMap
-</span><span style=color:#75715e></span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>tok</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>_Break</span>; <span style=color:#a6e22e>tok</span> <span style=color:#f92672>&lt;=</span> <span style=color:#a6e22e>_Var</span>; <span style=color:#a6e22e>tok</span><span style=color:#f92672>++</span> {
-		<span style=color:#a6e22e>h</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>hash</span>([]byte(<span style=color:#a6e22e>tok</span>.<span style=color:#a6e22e>String</span>()))
-		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>keywordMap</span>[<span style=color:#a6e22e>h</span>] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span> {
-			panic(<span style=color:#e6db74>&#34;imperfect hash&#34;</span>)
-		}
-		<span style=color:#a6e22e>keywordMap</span>[<span style=color:#a6e22e>h</span>] = <span style=color:#a6e22e>tok</span>
-	}
-}
-</code></pre></div><p>Notice how the for loop is hardcoded till <code>_Var</code>, but not till the <a href=https://github.com/avinassh/go/blob/go1.17.4/src/cmd/compile/internal/syntax/tokens.go#L70>last item <code>tokenCount</code></a>. So the keyword generator wasn&rsquo;t even considering my new token!</p>
-<h3 id=keyword-map-size>Keyword map size</h3>
-<p>I <a href=https://github.com/avinassh/go/commit/e07e586041>moved</a> the <code>vah</code> to a line above. This time when I tried to bootstrap the compile, I got an error:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>./make.bash
-
-Building Go cmd/dist using /usr/local/Cellar/go/1.17.2/libexec. <span style=color:#f92672>(</span>go1.17.2 darwin/amd64<span style=color:#f92672>)</span>
-Building Go toolchain1 using /usr/local/Cellar/go/1.17.2/libexec.
-Building Go bootstrap cmd/go <span style=color:#f92672>(</span>go_bootstrap<span style=color:#f92672>)</span> using Go toolchain1.
-panic: imperfect hash
-
-goroutine <span style=color:#ae81ff>1</span> <span style=color:#f92672>[</span>running<span style=color:#f92672>]</span>:
-bootstrap/cmd/compile/internal/syntax.init.0<span style=color:#f92672>()</span>
-	/Users/avi/code/go-fork/src/cmd/compile/internal/syntax/scanner.go:431 +0xc5
-</code></pre></div><p>This error was <a href=https://github.com/avinassh/go/blob/go1.17.4/src/cmd/compile/internal/syntax/scanner.go#L430,#L432>originating</a> from keyword map generator. From Eli&rsquo;s blog:</p>
-<blockquote>
-<p>The compiler tries to build a &ldquo;perfect&rdquo; hash table to perform keyword string to token lookups. By &ldquo;perfect&rdquo; it means it wants no collisions, just a linear array where every keyword maps to a single index. The hash function is rather ad-hoc (it only looks at the contents of the first characters of the string token, for example) and it&rsquo;s not easy to debug why a new token creates collisions. To work around it, I increased the lookup table size by changing it to [1 &#171; 7]token, thus changing the size of the lookup array from 64 to 128. This gives the hash function much more space to distribute its keys, and the collision went away.</p>
-</blockquote>
-<p>So I <a href=https://github.com/avinassh/go/commit/8009619e8e>changed the size to 128</a>, but the error persisted.</p>
-<h3 id=token-hash>Token Hash</h3>
-<p>There is a <a href=https://github.com/avinassh/go/blob/go1.17.4/src/cmd/compile/internal/syntax/scanner.go#L418,#L422>method</a> in <code>syntax/scanner.go</code> which says how the hash is calculated:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// hash is a perfect hash function for keywords.
-</span><span style=color:#75715e>// It assumes that s has at least length 2.
-</span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>hash</span>(<span style=color:#a6e22e>s</span> []<span style=color:#66d9ef>byte</span>) <span style=color:#66d9ef>uint</span> {
-	<span style=color:#66d9ef>return</span> (uint(<span style=color:#a6e22e>s</span>[<span style=color:#ae81ff>0</span>])<span style=color:#f92672>&lt;&lt;</span><span style=color:#ae81ff>4</span> ^ uint(<span style=color:#a6e22e>s</span>[<span style=color:#ae81ff>1</span>]) <span style=color:#f92672>+</span> uint(len(<span style=color:#a6e22e>s</span>))) <span style=color:#f92672>&amp;</span> uint(len(<span style=color:#a6e22e>keywordMap</span>)<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)
-}
-</code></pre></div><p>The <code>hash</code> method considers the token&rsquo;s first and second characters and the length. I was pairing with Miccah, and he pointed to this method; thanks to him, I figured out that <code>var</code> and <code>vah</code> had the same hash, and hence it was breaking!</p>
-<p>I decided to <a href=https://github.com/avinassh/go/commit/2886c0344c>use</a> <code>let</code> instead of <code>vah</code>. So my code would be:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-
-<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-	<span style=color:#a6e22e>let</span> <span style=color:#a6e22e>someVar</span> = <span style=color:#ae81ff>42</span>;
-	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>someVar</span>)
-}
-</code></pre></div><p>After all these changes, I was able to bootstrap the compiler.</p>
-<h3 id=updating-the-parser>Updating the parser</h3>
-<p>Updating the parser was fairly simple. When encountering the <code>let</code> token in the parsing step, I wanted to behave as if it encountered <code>var</code>. So I made the <a href=https://github.com/avinassh/go/commit/50f8bd505c>following change</a>:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#75715e>// syntax/parser.go
-</span><span style=color:#75715e></span><span style=color:#66d9ef>switch</span> <span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>tok</span> {
-	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>_Var</span>, <span style=color:#a6e22e>_Let</span>:
-		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>declStmt</span>(<span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>varDecl</span>)
-
-	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>_Const</span>:
-		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>declStmt</span>(<span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>constDecl</span>)
-
-	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>_Type</span>:
-		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>declStmt</span>(<span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>typeDecl</span>)
-	}
-</code></pre></div><p>The method <code>p.declStmt(p.varDecl)</code> parses the current statement as <code>var</code>.</p>
-<p>This change alone was enough to compile my custom code, but it didn&rsquo;t work at first, and I spent more than two hours debugging why. I had set a <code>GOROOT</code> in my shell, which pointed to my system installation. I had to update this to point to the forked repo, and it worked!</p>
-<pre tabindex=0><code>$ GOROOT=/Users/avi/code/go-fork ./go run main.go
+</code></pre><p>The next step was to make a minimal change, compile and make sure it worked. I decided I would rename <code>var</code> to <code>vah</code> so that I can compile the following:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>vah</span> <span style=color:#a6e22e>someVar</span> = <span style=color:#ae81ff>42</span>;
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>someVar</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>If you compile the above, you will get the following error:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># command-line-arguments</span>
+</span></span><span style=display:flex><span>./main.go:6:6: syntax error: unexpected someVar at end of statement
+</span></span></code></pre></div><p>The go compiler code resides at <code>src/cmd/compile/internal</code>. To compile, run <code>src/make.bash</code>. Another alternative is to run <code>all.bash</code>, which runs all the tests but can be very slow for rapid development.</p><p>There are a couple of things I need to do:</p><ol><li>Add a new token, <code>vah</code>, to tokenise my code correctly. That is, recognise a new word called <code>vah</code> in my source code.</li><li>Parse the code and generate an identical AST as <code>var</code>. Make it so that it thinks <code>vah</code> is the same as <code>var</code>.</li></ol><h3 id=adding-a-new-token>Adding a new token</h3><p>Adding a new keyword in Go is&mldr;<a href=https://github.com/avinassh/go/commit/07be904cff>interesting</a>:</p><ol><li>There is a file <code>tokens.go</code> which maintains an enum of all tokens</li><li>The keys point to the tokens</li><li>The comment next to them are the actual tokens you have in the source code</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// syntax/tokens.go
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Struct</span>      <span style=color:#75715e>// struct
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Switch</span>      <span style=color:#75715e>// switch
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Type</span>        <span style=color:#75715e>// type
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Var</span>         <span style=color:#75715e>// var
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>_Vah</span> 		 <span style=color:#75715e>// vah
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></div><p>The next step is to generate tokens by using <code>go generate</code> in the <code>syntax</code> directory, but I got an error:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>GOROOT<span style=color:#f92672>=</span>/Users/avi/code/go-fork go generate tokens.go
+</span></span><span style=display:flex><span>tokens.go:9: running <span style=color:#e6db74>&#34;stringer&#34;</span>: exec: <span style=color:#e6db74>&#34;stringer&#34;</span>: executable file not found in $PATH
+</span></span></code></pre></div><p>This error can be fixed easily by installing <code>stringer</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>go get golang.org/x/tools/cmd/stringer
+</span></span></code></pre></div><p>(Above might modify <code>go.mod</code> and <code>go.sum</code>, so do a git clean)</p><p>Above command <a href=https://github.com/avinassh/go/commit/4ba3f6e7d7>modified</a> <code>token_string.go</code> file. I was able to compile the compiler too. But it did not work as expected; when I tried to compile my code, the error was the same as earlier. As if it did not consider any changes I made. I spent the next four hours figuring out and pulling my hair out.</p><h3 id=keyword-map-generator>Keyword map generator</h3><p>Following is the <a href=https://github.com/avinassh/go/blob/go1.17.4/src/cmd/compile/internal/syntax/scanner.go#L426,#L435>keyword map generator code</a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>init</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// populate keywordMap
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>tok</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>_Break</span>; <span style=color:#a6e22e>tok</span> <span style=color:#f92672>&lt;=</span> <span style=color:#a6e22e>_Var</span>; <span style=color:#a6e22e>tok</span><span style=color:#f92672>++</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>h</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>hash</span>([]byte(<span style=color:#a6e22e>tok</span>.<span style=color:#a6e22e>String</span>()))
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>keywordMap</span>[<span style=color:#a6e22e>h</span>] <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span>			panic(<span style=color:#e6db74>&#34;imperfect hash&#34;</span>)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>keywordMap</span>[<span style=color:#a6e22e>h</span>] = <span style=color:#a6e22e>tok</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Notice how the for loop is hardcoded till <code>_Var</code>, but not till the <a href=https://github.com/avinassh/go/blob/go1.17.4/src/cmd/compile/internal/syntax/tokens.go#L70>last item <code>tokenCount</code></a>. So the keyword generator wasn&rsquo;t even considering my new token!</p><h3 id=keyword-map-size>Keyword map size</h3><p>I <a href=https://github.com/avinassh/go/commit/e07e586041>moved</a> the <code>vah</code> to a line above. This time when I tried to bootstrap the compile, I got an error:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>./make.bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Building Go cmd/dist using /usr/local/Cellar/go/1.17.2/libexec. <span style=color:#f92672>(</span>go1.17.2 darwin/amd64<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>Building Go toolchain1 using /usr/local/Cellar/go/1.17.2/libexec.
+</span></span><span style=display:flex><span>Building Go bootstrap cmd/go <span style=color:#f92672>(</span>go_bootstrap<span style=color:#f92672>)</span> using Go toolchain1.
+</span></span><span style=display:flex><span>panic: imperfect hash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>goroutine <span style=color:#ae81ff>1</span> <span style=color:#f92672>[</span>running<span style=color:#f92672>]</span>:
+</span></span><span style=display:flex><span>bootstrap/cmd/compile/internal/syntax.init.0<span style=color:#f92672>()</span>
+</span></span><span style=display:flex><span>	/Users/avi/code/go-fork/src/cmd/compile/internal/syntax/scanner.go:431 +0xc5
+</span></span></code></pre></div><p>This error was <a href=https://github.com/avinassh/go/blob/go1.17.4/src/cmd/compile/internal/syntax/scanner.go#L430,#L432>originating</a> from keyword map generator. From Eli&rsquo;s blog:</p><blockquote><p>The compiler tries to build a &ldquo;perfect&rdquo; hash table to perform keyword string to token lookups. By &ldquo;perfect&rdquo; it means it wants no collisions, just a linear array where every keyword maps to a single index. The hash function is rather ad-hoc (it only looks at the contents of the first characters of the string token, for example) and it&rsquo;s not easy to debug why a new token creates collisions. To work around it, I increased the lookup table size by changing it to [1 &#171; 7]token, thus changing the size of the lookup array from 64 to 128. This gives the hash function much more space to distribute its keys, and the collision went away.</p></blockquote><p>So I <a href=https://github.com/avinassh/go/commit/8009619e8e>changed the size to 128</a>, but the error persisted.</p><h3 id=token-hash>Token Hash</h3><p>There is a <a href=https://github.com/avinassh/go/blob/go1.17.4/src/cmd/compile/internal/syntax/scanner.go#L418,#L422>method</a> in <code>syntax/scanner.go</code> which says how the hash is calculated:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// hash is a perfect hash function for keywords.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// It assumes that s has at least length 2.
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>hash</span>(<span style=color:#a6e22e>s</span> []<span style=color:#66d9ef>byte</span>) <span style=color:#66d9ef>uint</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> (uint(<span style=color:#a6e22e>s</span>[<span style=color:#ae81ff>0</span>])<span style=color:#f92672>&lt;&lt;</span><span style=color:#ae81ff>4</span> ^ uint(<span style=color:#a6e22e>s</span>[<span style=color:#ae81ff>1</span>]) <span style=color:#f92672>+</span> uint(len(<span style=color:#a6e22e>s</span>))) <span style=color:#f92672>&amp;</span> uint(len(<span style=color:#a6e22e>keywordMap</span>)<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>The <code>hash</code> method considers the token&rsquo;s first and second characters and the length. I was pairing with Miccah, and he pointed to this method; thanks to him, I figured out that <code>var</code> and <code>vah</code> had the same hash, and hence it was breaking!</p><p>I decided to <a href=https://github.com/avinassh/go/commit/2886c0344c>use</a> <code>let</code> instead of <code>vah</code>. So my code would be:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>let</span> <span style=color:#a6e22e>someVar</span> = <span style=color:#ae81ff>42</span>;
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>someVar</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>After all these changes, I was able to bootstrap the compiler.</p><h3 id=updating-the-parser>Updating the parser</h3><p>Updating the parser was fairly simple. When encountering the <code>let</code> token in the parsing step, I wanted to behave as if it encountered <code>var</code>. So I made the <a href=https://github.com/avinassh/go/commit/50f8bd505c>following change</a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// syntax/parser.go
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>switch</span> <span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>tok</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>_Var</span>, <span style=color:#a6e22e>_Let</span>:
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>declStmt</span>(<span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>varDecl</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>_Const</span>:
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>declStmt</span>(<span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>constDecl</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>_Type</span>:
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>declStmt</span>(<span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>typeDecl</span>)
+</span></span><span style=display:flex><span>	}
+</span></span></code></pre></div><p>The method <code>p.declStmt(p.varDecl)</code> parses the current statement as <code>var</code>.</p><p>This change alone was enough to compile my custom code, but it didn&rsquo;t work at first, and I spent more than two hours debugging why. I had set a <code>GOROOT</code> in my shell, which pointed to my system installation. I had to update this to point to the forked repo, and it worked!</p><pre tabindex=0><code>$ GOROOT=/Users/avi/code/go-fork ./go run main.go
 42
-</code></pre><p>So far, my changes have been minimal. If a <code>for</code> loop had <code>var</code> declaration, it wouldn&rsquo;t throw a warning. If I had a global <code>let</code> declaration, it would fail:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-
-<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
-
-<span style=color:#a6e22e>let</span> <span style=color:#a6e22e>someVar</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>42</span>
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>someVar</span>)
-}
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># command-line-arguments</span>
-./main.go:14:1: syntax error: non-declaration statement outside <span style=color:#66d9ef>function</span> body
-</code></pre></div><p>I <a href=https://github.com/avinassh/go/commit/454505b7a9>updated</a> my code to handle these cases for the sake of completion.</p>
-<h2 id=final-words>Final words</h2>
-<ol>
-<li>Hacking on an unknown large codebase is scary at first, but it is satisfying</li>
-<li>Due to hash calculations, you can&rsquo;t add single-character tokens, tokens that are of the same length but differ after 3rd characters onwards</li>
-<li>Other than Eli&rsquo;s post, there are no documentation or articles on Go compiler internals. How does someone get started working on them? How do they navigate and find all these intricacies without spending hours? Maybe Google has some internal documentation on the Go compiler.</li>
-</ol>
-<p>(update 9/Dec)<strong>Note</strong>: This post is getting a lot attention. Any chance you are a regular Go contributor? I would love to learn about the daily development cycle. How do you make changes, how do you do quick tests before running the whole test suite etc. Feel free to reach out to me <a href=https://twitter.com/iavins>@iavins</a> or <a href=https://avi.im/blag/about/>email</a>.</p>
-</article>
-<form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit="return window.open('https://tinyletter.com/avi-im','popupwindow','scrollbars=yes,width=800,height=600'),!0"><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form>
-<footer class=site-footer>
-<div class=rc-scout style=margin-right:auto;margin-top:auto;font-size:.6rem></div>
-<script async defer src="https://www.recurse-scout.com/loader.js?t=a4aabd5087bb19daf083302de1b46650"></script>
-<span class=person-schema itemscope itemtype=http://schema.org/Person>
-<link itemprop=url href=https://avi.im/blag>
-<span itemprop=name></span>
-<br>
-<a itemprop=sameAs href=https://github.com/avinassh title=GitHub><img src=/blag/svg/gh.svg alt="icon name"></a>
-<a itemprop=sameAs href=/blag/index.xml title=GitHub><img src=/blag/svg/rss.svg alt="icon name"></a>
-</span>
-</footer>
-</div>
-<script src=/blag/js/highlight.pack.js></script>
-<script>hljs.initHighlightingOnLoad()</script>
-<script data-goatcounter=https://avi.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
-</body>
-</html>
+</code></pre><p>So far, my changes have been minimal. If a <code>for</code> loop had <code>var</code> declaration, it wouldn&rsquo;t throw a warning. If I had a global <code>let</code> declaration, it would fail:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>let</span> <span style=color:#a6e22e>someVar</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>42</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>someVar</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># command-line-arguments</span>
+</span></span><span style=display:flex><span>./main.go:14:1: syntax error: non-declaration statement outside <span style=color:#66d9ef>function</span> body
+</span></span></code></pre></div><p>I <a href=https://github.com/avinassh/go/commit/454505b7a9>updated</a> my code to handle these cases for the sake of completion.</p><h2 id=final-words>Final words</h2><ol><li>Hacking on an unknown large codebase is scary at first, but it is satisfying</li><li>Due to hash calculations, you can&rsquo;t add single-character tokens, tokens that are of the same length but differ after 3rd characters onwards</li><li>Other than Eli&rsquo;s post, there are no documentation or articles on Go compiler internals. How does someone get started working on them? How do they navigate and find all these intricacies without spending hours? Maybe Google has some internal documentation on the Go compiler.</li></ol><p>(update 9/Dec)<strong>Note</strong>: This post is getting a lot attention. Any chance you are a regular Go contributor? I would love to learn about the daily development cycle. How do you make changes, how do you do quick tests before running the whole test suite etc. Feel free to reach out to me <a href=https://twitter.com/iavins>@iavins</a> or <a href=https://avi.im/blag/about/>email</a>.</p></article><form style="border:1px solid #ccc;padding:3px;text-align:center" action=https://tinyletter.com/avi-im method=post target=popupwindow onsubmit='return window.open("https://tinyletter.com/avi-im","popupwindow","scrollbars=yes,width=800,height=600"),!0'><p><label for=tlemail>Enter your email address: </label><input type=text style=width:140px name=email id=tlemail></p><input type=hidden value=1 name=embed><input type=submit value=Subscribe></form><footer class=site-footer><div class=rc-scout style=margin-right:auto;margin-top:auto;font-size:.6rem></div><script async defer src="https://www.recurse-scout.com/loader.js?t=a4aabd5087bb19daf083302de1b46650"></script>
+<span class=person-schema itemscope itemtype=http://schema.org/Person><link itemprop=url href=https://avi.im/blag><span itemprop=name></span><br><a itemprop=sameAs href=https://github.com/avinassh title=GitHub><img src=/blag/svg/gh.svg alt="icon name"></a>
+<a itemprop=sameAs href=/blag/index.xml title=GitHub><img src=/blag/svg/rss.svg alt="icon name"></a></span></footer></div><script src=/blag/js/highlight.pack.js></script>
+<script>hljs.initHighlightingOnLoad()</script><script data-goatcounter=https://avi.goatcounter.com/count async src=//gc.zgo.at/count.js></script></body></html>
