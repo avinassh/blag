@@ -1,8 +1,7 @@
 ---
 title: "Introducing CaskDB – a project to teach you writing a key-value store"
 date: "2022-05-10T21:46:11+05:30"
-categories: ["", ""]
-tags: ["", ""]
+tags: ["bitcask", "btree", "database", "caskdb"]
 slug: "py-caskdb"
 summary: "CaskDB is an educational project which aims to guide you in writing a persistent, embeddable database from scratch."
 ---
