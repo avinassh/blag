@@ -33,4 +33,4 @@ You might need to repeat steps 3-5 if you want to add new indexes.
 
 1. Bunch of Jira tickets - [1](https://jira.mongodb.org/browse/SERVER-3664), [2](https://jira.mongodb.org/browse/SERVER-6587)
 1. Stackoverflow - [1](https://stackoverflow.com/questions/22061008/in-mongodb-how-can-i-index-on-fields-in-collections-in-secondary-noderepli), [2](https://stackoverflow.com/questions/16472392/different-indexes-on-different-replica-set-members)
-1. My [previous blog post](http://localhost:1313/blag/2021/adding-unique-index-large-collection/) where I discovered that you can add duplicate records on an unique index
+1. My [previous blog post](https://avi.im/blag/2021/mongo-dupes-in-unique-index/) where I discovered that you can add duplicate records on an unique index
