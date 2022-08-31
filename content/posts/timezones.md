@@ -25,3 +25,10 @@ https://docs.google.com/presentation/d/1H1tkvg_vm39jXPZbOvQLoWb32POSpTYiZx8qMtBv
 https://old.reddit.com/r/programming/comments/toui47/saving_time_in_utc_doesnt_work_and_offsets_arent/
 
 https://swizec.com/blog/saving-time-in-utc-doesnt-work-and-offsets-arent-enough/
+
+
+---
+
+the oldest time/date supported by Databases? 
+
+for e.g. using Django, datetime older than 1800 breaks
