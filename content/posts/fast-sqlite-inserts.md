@@ -38,7 +38,7 @@ The machine I am using is MacBook Pro, 2019 (2.4 GHz Quad Core i5, 8GB, 256GB SS
 
 Aspects I was willing to compromise on were:
 
-- I don't need the durability guarantee. That is, it is fine if the process crashes and all the data is lost. I could just run s the script again.
+- I don't need the durability guarantee. That is, it is fine if the process crashes and all the data is lost. I could just run the script again.
 - It may use my machine resources to the fullest: 100% CPU, 8GB Memory and gigabytes of SSD space.
 - No need of using true random methods, pseudo-random methods from stdlib are just fine.
 
