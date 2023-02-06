@@ -4,7 +4,7 @@ date: "2023-02-05T17:56:57+05:30"
 categories: ["rant", ""]
 tags: ["python", "go"]
 slug: "refactoring-python"
-summary: ""
+summary: "It's harder to refactor a large Python codebase. Type hints won't save you, and you need a lot of unit tests. But how does that work in practice? Is Python fast to ship?"
 ---
 
 <div style="font-size: 0.7rem; margin: 1.2rem; padding: 0.5rem; background: #d8d1d2;"><p>Note: Following blog post more or less applies to any dynamically typed programming language, e.g. Ruby. I am only sharing my experience and frustrations with Python, cos that's the language I use.</p></div>
