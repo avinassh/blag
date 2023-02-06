@@ -57,7 +57,7 @@ I am finding it painful to refactor in Python. I can't even complain that someon
 
 Static languages have an initial one-time cost. I find it similar to TDD. But your future self will thank you. If I am touching a project after years, I'd rather wish it was in a typed language. I have written some interesting stuff in Python, [like one](https://github.com/avinassh/fast-sqlite3-inserts) or [this one](https://github.com/avinassh/py-caskdb). I will continue to learn and use it for my side projects. But I am going to dread working on a large Python codebase.
 
-<small><i>Thanks to Hari, Nihar, and Sumesh for reading a draft of this.</i></small>
+<small><i>Thanks to Hari, Satan, and Sumesh for reading a draft of this.</i></small>
 
 ---
 
