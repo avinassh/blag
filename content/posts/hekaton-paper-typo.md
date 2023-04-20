@@ -18,8 +18,7 @@ It is a short story about how I hit a wall while implementing a database researc
 - I started making notes. At first, it seemed easy to comprehend, but I noticed gaps in my understanding when I began thinking about the implementation. I watched Andy's lecture again to reinforce my learning.
 - [Apr 9] I started working through the paper's `Version Visibility` section. This part explains an ongoing transaction's effect on a row's visibility. It addresses the questions like transaction `tx1` updated a row; can `tx2` see it? Some of the ideas around row visibility didn't make sense.
 - I went back to the paper and reread it several times now. I thought maybe I had missed something from the earlier sections. I took a pencil and paper and started drawing all possible flows. I did it multiple times, but no vain.
-- For a moment, I started wondering if the papers could have errors. But this is a famous paper, and since I couldn't find anything online, I thought I did not understand it correctly. I being a noob didn't help.
-- I stopped sleeping.
+- For a moment, I started wondering if the papers could have errors. But this is a famous paper, and since I couldn't find anything online, I thought I did not understand it correctly.
 - I started asking in Slack / Discord / Zulip groups. I explained the paper to one of my friends and asked if he saw any issues. Nothing helped!
 ![](/blag/images/2023/hekaton-rc.png)
 - [Apr 12] I emailed one of the authors, Professor Spyros Blanas, with zero hopes of hearing anything back.
@@ -27,7 +26,6 @@ It is a short story about how I hit a wall while implementing a database researc
 - From one of the groups, [Alex Miller](https://transactional.blog) saw my message. It turns out he is friends with another author Cristian, and they discussed my issue. He agreed that one of the tables needed to be corrected. My morning just got better!
 - It surprised me that published papers can have typos — even the popular ones.
 - [Apr 14] I discussed the issue with Pekka. I filed [an issue](https://github.com/penberg/mvcc-rs/issues/15) and submitted [a patch](https://github.com/penberg/mvcc-rs/pull/16).
-- I finally slept like a log.
 - Tx Commit.
 
 I am some rando on the internet and wasn't expecting any response. It was heartwarming to see that people were willing to take the time to help me. 
