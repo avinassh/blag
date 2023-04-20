@@ -27,7 +27,7 @@ It is a short story about how I hit a wall while implementing a database researc
 - From one of the groups, [Alex Miller](https://transactional.blog) saw my message. It turns out he is friends with another author Cristian, and they discussed my issue. He agreed that one of the tables needed to be corrected. My morning just got better!
 - It surprised me that published papers can have typos — even the popular ones.
 - [Apr 14] I discussed the issue with Pekka. I filed [an issue](https://github.com/penberg/mvcc-rs/issues/15) and submitted [a patch](https://github.com/penberg/mvcc-rs/pull/16).
-- I finally slept like a baby.
+- I finally slept like a log.
 - Tx Commit.
 
 I am some rando on the internet and wasn't expecting any response. It was heartwarming to see that people were willing to take the time to help me. 
