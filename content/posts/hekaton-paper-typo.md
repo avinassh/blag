@@ -9,7 +9,7 @@ summary: "It is a short story about how I hit a wall while implementing a databa
 
 It is a short story about how I hit a wall while implementing a database research paper, found a publication error and how people on the internet helped me. 
 
-## Timeline:
+## Timeline
 
 - `$whoami` I am a backend developer interested in databases, and they excite me! I dream of being a database developer one day. I have an educational side project called [CaskDB](https://github.com/avinassh/py-caskdb). It aims to teach how to build a key-value store. I always look forward to adding new database features, as it allows me to learn new things. 
 - [7th Apr] Pekka Enberg [tweeted](https://twitter.com/penberg/status/1644221651293204480) about the [Hekaton MVCC paper](https://vldb.org/pvldb/vol5/p298_per-akelarson_vldb2012.pdf). This research paper was new to me, and I found it approachable. CaskDB does not have transactions yet, so I thought it would be a great learning opportunity for me to implement it.
