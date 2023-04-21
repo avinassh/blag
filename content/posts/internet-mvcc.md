@@ -27,7 +27,7 @@ The paper is Hekaton MVCC - [High-Performance Concurrency Control Mechanisms for
 - [Apr 12] I emailed one of the authors, Professor Spyros Blanas, with zero hopes of hearing anything back.
 - [Apr 13] I woke up to the Professor's reply, and they acknowledged that there was indeed a typo in the paper! What a blissful morning! Not only was he kind enough to reply, but he also gave me a high-level idea of how things should be.
 - From one of the groups, [Alex Miller](https://transactional.blog) saw my message. It turns out he is friends with another author Cristian, and they discussed my issue. He agreed that one of the tables needed to be corrected. My morning just got better!
-- It surprised me that published papers can have typos — even the popular ones.
+- I was surprised to learn even popular research papers can have typos.
 - [Apr 14] I discussed the issue with Pekka. I filed [an issue](https://github.com/penberg/mvcc-rs/issues/15) and submitted [a patch](https://github.com/penberg/mvcc-rs/pull/16).
 - Tx Commit.
 
@@ -48,6 +48,6 @@ According to the above rules, a committed row becomes invisible for new transact
 V is visible only if TE is not T
 ```
 
-Check the [errata](https://avi.im/blag/yet-to-link) blog post if you want to read the error's implications and the fix in detail.
+Check the [errata](https://avi.im/blag/yet-to-link) blog post to read the error's implications and the fix in detail.
 
-<small><i>Thanks to Bhargav, Hari, Satan, Saad, Sumesh, and Piyush for reading a draft of this.</i></small>
+<small><i>Thanks to Bhargav, Hari, Satan, Saad, Sumesh, Piyush, and Gautam for reading a draft of this.</i></small>
