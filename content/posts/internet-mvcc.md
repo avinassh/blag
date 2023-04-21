@@ -23,6 +23,7 @@ The paper is Hekaton MVCC - [High-Performance Concurrency Control Mechanisms for
 - For a moment, I started wondering if the paper could have errors. But this is a famous paper, and I couldn't find any errata online. I was uncertain whether I had misunderstood the paper or if it was flawed.
 - I started asking in Slack / Discord / Zulip groups. People were helpful, but the answers were related to general MVCC, not particular to the Hekaton MVCC. I explained the paper to one of my friends and asked if he saw any issues. Nothing helped!
 ![](/blag/images/2023/hekaton-rc.png)
+![](https://deploy-preview-39--avinassh.netlify.app/images/2023/hekaton-rc.png)
 - [Apr 12] I emailed one of the authors, Professor Spyros Blanas, with zero hopes of hearing anything back.
 - [Apr 13] I woke up to the Professor's reply, and they acknowledged that there was indeed a typo in the paper! What a blissful morning! Not only was he kind enough to reply, but he also gave me a high-level idea of how things should be.
 - From one of the groups, [Alex Miller](https://transactional.blog) saw my message. It turns out he is friends with another author Cristian, and they discussed my issue. He agreed that one of the tables needed to be corrected. My morning just got better!
@@ -39,8 +40,9 @@ A little kindness goes a long way.
 I have written another detailed blog post [here](https://avi.im/blag/yet-to-link) so search engines can pick up and help someone in the future. The paper contains two tables, which decide the row visibility during a transaction. One of the tables, `Table 2`, has a typo:
 
 ![](/blag/images/2023/hekaton-table-2.png)
+![](https://deploy-preview-39--avinassh.netlify.app/images/2023/hekaton-table-2.png)
 
-According to the above rules, a committed row becomes invisible for transactions. The fix is simple: 
+According to the above rules, a committed row becomes invisible for new transactions. The fix is simple: 
 
 ```
 V is visible only if TE is not T

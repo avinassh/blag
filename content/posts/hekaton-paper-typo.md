@@ -1,6 +1,6 @@
 ---
 title: "Errata in Hekaton MVCC paper"
-date: "2023-04-20T22:19:15+05:30"
+date: "2023-04-20T22:59:15+05:30"
 categories: ["database", ""]
 tags: ["database", "hekaton", "typo", "mvcc"]
 slug: "hekaton-paper-typo"
@@ -14,10 +14,11 @@ Hekaton MVCC Paper - [High-Performance Concurrency Control Mechanisms for Main-M
 Following the conventions of the paper, here is a state diagram:
 
 ![](/blag/images/2023/hekaton-state.png)
+![](https://deploy-preview-39--avinassh.netlify.app/images/2023/hekaton-state.png)
 
-At time 60, we observe our initial state, where the value of Larry is 170. This is a committed row.
-At time 75, a transaction is started and is in `Active` state. It wants to update the value to 150, so it appended row 2
-At time 80, another new transaction, Tx80 is started, and it wants to read the value of Larry. Both Tx75 and Tx80 are in `Active` state.
+1. At time 60, we observe our initial state, where the value of Larry is 170. This is a committed row.
+2. At time 75, a transaction is started and is in `Active` state. It wants to update the value to 150, so it appended row 2
+3. At time 80, another new transaction, Tx80 is started, and it wants to read the value of Larry. Both Tx75 and Tx80 are in `Active` state.
 
 What is the value Tx80 going to read?
 
@@ -26,12 +27,13 @@ Tx80 can't see row 2 because of Table 1 rules. If Tx75 is in `Active` state, onl
 But can Tx80 see row 1? The rules from the paper contradict that since Tx75 is in `Active` state:
 
 ![](/blag/images/2023/hekaton-table-2.png)
+![](https://deploy-preview-39--avinassh.netlify.app/images/2023/hekaton-table-2.png)
 
 This is a typo, and Tx80 should be able to see row 1 since it is a committed row. Also, Tx75 should not be able to see row 1 anymore; instead, only row 2, which it is updating.
 
 ## Implications
-Committed rows can become invisible for new transactions
-Rows become invisible to the very transactions which are updating them
+- Committed rows can become invisible for new transactions
+- Uncommitted rows can become invisible to the very transactions which are updating them
 
 ## Fix
 
