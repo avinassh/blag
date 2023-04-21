@@ -47,3 +47,7 @@ According to the above rules, a committed row becomes invisible for new transact
 ```
 V is visible only if TE is not T
 ```
+
+Check the [errata](https://avi.im/blag/yet-to-link) blog post if you want to read the error's implications and the fix in detail.
+
+<small><i>Thanks to Bhargav, Hari, Satan, Saad, Sumesh, and Piyush for reading a draft of this.</i></small>
