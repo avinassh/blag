@@ -35,10 +35,10 @@ This is a typo, and Tx80 should be able to see row<sub>1</sub> since it is a com
 
 ## Fix
 
-The fix is simple: 
+The fix is simple, the entire column should read:
 
 > V is visible only if TE is not T
 
-By doing this:
+The usual rule about the time ranges still apply. By doing this:
 - Tx80 can now see row<sub>1</sub> (but not row<sub>2</sub>)
 - Tx75 can now see row<sub>2</sub> (but not row<sub>1</sub>)

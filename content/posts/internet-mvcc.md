@@ -14,7 +14,7 @@ The paper is Hekaton MVCC - [High-Performance Concurrency Control Mechanisms for
 ## Timeline
 
 - `$whoami` I am a backend developer, and databases excite me! I dream of being a database developer one day. I have an educational side project called [CaskDB](https://github.com/avinassh/py-caskdb) which aims to teach how to build a key-value store. I always look forward to adding new database features, as it allows me to learn new things. 
-- [Apr 7] Pekka Enberg [tweeted](https://twitter.com/penberg/status/1644221651293204480) about the [Hekaton MVCC paper](https://vldb.org/pvldb/vol5/p298_per-akelarson_vldb2012.pdf). This research paper was new to me, and I found it approachable. CaskDB does not have transactions yet, so this gave me a great learning opportunity to implement it.
+- [Apr 7] Pekka Enberg [tweeted](https://twitter.com/penberg/status/1644221651293204480) about the Hekaton MVCC paper. This research paper was new to me, and I found it approachable. CaskDB does not have transactions yet, so this gave me a great learning opportunity to implement it.
 - [Apr 8] Pekka started implementing the paper in Rust and [tweeted](https://twitter.com/penberg/status/1644676555942109185) about it. It became easy for me to follow the paper with the code. I also started working on my [Go implementation](https://github.com/avinassh/mvcc-go).
 - I am a massive fan of Andy and have watched the videos from his course [CMU Advanced Database Systems](https://15721.courses.cs.cmu.edu/spring2023/). I started rewatching the [Hekaton lectures](https://www.youtube.com/watch?v=9EY0vYFNWxY). The lecture series is excellent; go check it out!
 - Reading the paper was straightforward, but when I began thinking about code, I noticed gaps in my understanding. Code is fun; that's when you see the unexpected challenges and nuances.
@@ -40,7 +40,7 @@ I have written another detailed blog post [here]({{< ref "posts/hekaton-paper-ty
 
 ![](/blag/images/2023/hekaton-table-2.png)
 
-According to the above rules, a committed row becomes invisible for new transactions. The fix is simple: 
+According to the above rules, a committed row becomes invisible for new transactions. The fix is simple, the entire column should read:
 
 
 > V is visible only if TE is not T
