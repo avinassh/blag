@@ -3,6 +3,8 @@ title: "Projects"
 summary: "Some of the projects I have done."
 ---
 
+<i>Are you a database developer? If so, I would love to chat with you. Please say hi!</i>
+
 I am learning Rust and WASM these days. You can find some of my code on my [GitHub](https://github.com/avinassh).
 
 I am always looking to collaborate and work on interesting stuff. Hit me up on [Twitter](http://twitter.com/iavins) or [email](http://scr.im/avii) me. 
@@ -12,6 +14,7 @@ I am always looking to collaborate and work on interesting stuff. Hit me up on [
 
 I am an open source enthusiast and contribute in my free time. Following projects are my current focus:
 
+- [CaskDB](https://github.com/avinassh/py-caskdb/)
 - [gRPC Errors](https://github.com/avinassh/grpc-errors)
 - [twirpy](https://github.com/verloop/twirpy)
 - [Fast SQLite Inserts](https://github.com/avinassh/fast-sqlite3-inserts)

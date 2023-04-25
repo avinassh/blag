@@ -3,7 +3,9 @@ title: "About"
 summary: "Some Stuff About Me"
 ---
 
-Hey there👋 I am Avinash. I am a backend developer who mostly codes in Go, and Python. I am interested in distributed systems, message queues, and messaging infrastructure in general. I am also learning Rust and WASM these days.
+<i>Are you a database developer? If so, I would love to chat with you. Please say hi!</i>
+
+Hey there👋 I am Avinash. I am a backend developer who mainly codes in Go and Python. I am interested in databases, message queues, and distributed systems in general. I am learning Rust and building an [educational project](https://github.com/avinassh/py-caskdb/) that aims to teach anyone building a KV Store by passing tests.
 
 <!-- And I am available for hire. If you have new job opportunities, [get in touch with me](http://scr.im/avii). Thanks! -->
 I am always looking to collaborate and work on interesting stuff. Hit me up on [Twitter](http://twitter.com/iavins) or [email](http://scr.im/avii) me. 
@@ -12,6 +14,7 @@ I am always looking to collaborate and work on interesting stuff. Hit me up on [
 
 I am an open source enthusiast and contribute in my free time. Following projects are my current focus:
 
+- [CaskDB](https://github.com/avinassh/py-caskdb/)
 - [gRPC Errors](https://github.com/avinassh/grpc-errors)
 - [twirpy](https://github.com/verloop/twirpy)
 - [Fast SQLite Inserts](https://github.com/avinassh/fast-sqlite3-inserts)
