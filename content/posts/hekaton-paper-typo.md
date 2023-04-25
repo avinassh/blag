@@ -25,11 +25,7 @@ Tx80 can't see row<sub>2</sub> because of Table 1 rules. If Tx75 is in `Active` 
 
 But can Tx80 see row<sub>1</sub>? The rules from the paper contradict that since Tx75 is in `Active` state:
 
-<img src="{filename}/images/2023/hekaton-table-2.png" alt="makey makey offer page" style="width: 50%;"/>
-
 ![](/blag/images/2023/hekaton-table-2.png)
-
-{{ $image := .Resources.GetMatch "sunset.jpg" }}
 
 This is a typo, and Tx80 should be able to see row<sub>1</sub> since it is a committed row. Also, Tx75 should not be able to see row<sub>1</sub> anymore; instead, only row<sub>2</sub>, which it is updating.
 
