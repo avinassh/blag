@@ -23,7 +23,7 @@ What is the value Tx80 going to read?
 
 Tx80 can't see row<sub>2</sub> because of Table 1 rules. If Tx75 is in `Active` state, only Tx75 can see row<sub>2</sub>. This makes sense because row<sub>2</sub> is fresh, and Tx75 might drop the changes later. We don't want any other transactions to see this row.
 
-But can Tx80 see row<sub>1</sub>? The rules from the paper contradict that since Tx75 is in `Active` state:
+But can Tx80 see row<sub>1</sub>? From the paper's conventions, Tx75 is `TE` and Tx80 is `T`, and row<sub>1</sub> is `V`. The rules from the paper contradict that since Tx75 is in `Active` state:
 
 ![](/blag/images/2023/hekaton-table-2.png)
 
