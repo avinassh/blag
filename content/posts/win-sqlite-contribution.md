@@ -1,10 +1,10 @@
 ---
-title: "Win: contribution to SQLite codebase"
+title: "Win: contribution to libSQL (SQLite) codebase"
 date: "2024-02-16T08:45:29+05:30"
 categories: ["open source", "oss"]
 tags: ["sqlite", ""]
 slug: "win-sqlite-contribution"
-summary: "I got my patches accepted into SQLite codebase!"
+summary: "I got my patches accepted into SQLite fork, libSQL codebase!"
 ---
 
 Back in November, I was exploring Vector Search with [sqlite-vss](https://github.com/asg017/sqlite-vss) extension. On Turso, I couldn't get it [to work](https://github.com/tursodatabase/libsql/issues/865). I assumed it was a problem with the extension.
