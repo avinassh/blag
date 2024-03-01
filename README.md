@@ -11,5 +11,7 @@ git clone --recurse-submodules -j8 git@github.com:avinassh/blag.git
 hugo new posts/post-title-here.md
 # or edit any existing file. 
 # now to preview the site locally, including draft posts, run:
-hugo server -D
+hugo -wD server
+# if you want the latest updated submodule
+git submodule update --remote themes/skyfall
 ```
