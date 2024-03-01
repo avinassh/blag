@@ -29,6 +29,10 @@ The workflow is:
 4. Run the tests again - now the framework will compare against the saved snapshot and the test will pass.
 5. If there is a regression or intentional change to the output, running the tests will generate a new snapshot file. The old one is preserved so you can review the change.
 
+Here is a small gif from [insta's doc](https://insta.rs/docs/quickstart/) showing the interactive review:
+
+![insta review](https://github.com/avinassh/blag/assets/640792/32ebfd08-9b79-4fcd-a320-268e591388d1)
+
 You may check my [pull request](https://github.com/tursodatabase/libsql/pull/1117) on libsql-server which adds a bunch of snapshot tests. 
 
 Jane Street has a nice blog post on the same - [What if writing tests was a joyful experience?](https://blog.janestreet.com/the-joy-of-expect-tests/).
