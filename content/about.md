@@ -3,30 +3,30 @@ title: "About"
 summary: "Some Stuff About Me"
 ---
 
-<i>Are you a database developer? If so, I would love to chat with you. Please say hi!</i>
+Hey there👋 I am Avinash. I work at [Turso Database](https://turso.tech/). I am interested in databases, message queues, and distributed systems in general. I am learning Rust and building an [educational project](https://github.com/avinassh/py-caskdb/) that aims to teach anyone building a KV Store by passing tests.
 
-Hey there👋 I am Avinash. I am a backend developer who mainly codes in Go and Python. I am interested in databases, message queues, and distributed systems in general. I am learning Rust and building an [educational project](https://github.com/avinassh/py-caskdb/) that aims to teach anyone building a KV Store by passing tests.
+#### Standing invitation
+If you want to talk software, I want to talk to you. Drop me a message. <small>Inspired by [patio11](https://www.kalzumeus.com/standing-invitation/).</small>
+
 
 <!-- And I am available for hire. If you have new job opportunities, [get in touch with me](http://scr.im/avii). Thanks! -->
-I am always looking to collaborate and work on interesting stuff. Hit me up on [Twitter](http://twitter.com/iavins) or [email](http://scr.im/avii) me. 
+<!-- I am always looking to collaborate and work on interesting stuff. Hit me up on [Twitter](http://twitter.com/iavins) or [email](http://scr.im/avii) me.  -->
 
 ## Open Source
 
-I am an open source enthusiast and contribute in my free time. Following projects are my current focus:
+I am an [open source enthusiast](https://github.com/avinassh) and contribute in my free time. You may find following projects interesting:
 
 - [CaskDB](https://github.com/avinassh/py-caskdb/)
-- [gRPC Errors](https://github.com/avinassh/grpc-errors)
-- [twirpy](https://github.com/verloop/twirpy)
 - [Fast SQLite Inserts](https://github.com/avinassh/fast-sqlite3-inserts)
+<!-- - [gRPC Errors](https://github.com/avinassh/grpc-errors)
+- [twirpy](https://github.com/verloop/twirpy)
 - [fluvio-go](https://github.com/avinassh/fluvio-go)
 - [pastry](https://github.com/avinassh/pastry)
-- [grusto](https://github.com/avinassh/grusto)
-
+- [grusto](https://github.com/avinassh/grusto) -->
 
 ## On Interwebz
-
+<!-- - [Stackoverflow](http://stackoverflow.com/users/1382297/avi) — I read the Go, Python tagged questions often. -->
 - [GitHub](http://github.com/avinassh) — Some of the Open Source code I have written and contributed.
-- [Stackoverflow](http://stackoverflow.com/users/1382297/avi) — I read the Go, Python tagged questions often.
 - [Lobsters](https://lobste.rs/) — Pretty much addicted to this.
 - [Twitter](http://twitter.com/iavins) — I am mostly active on this thing.
 

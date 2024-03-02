@@ -21,16 +21,21 @@ theme = "skyfall"
   url = "/about"
 
   [[menu.main]]
-  identifier = "resume"
-  name = "Resume"
-  url = "https://avi.im/resume.pdf"
+  identifier = "now"
+  name = "Now"
+  url = "/now"
 
-  [[menu.main]]
-  identifier = "projects"
-  name = "Projects"
-  url = "/projects"
-
-  [[menu.main]]
-  identifier = "subscribe"
-  name = "Subscribe"
-  url = "https://tinyletter.com/avi-im"
+#  [[menu.main]]
+#  identifier = "resume"
+#  name = "Resume"
+#  url = "https://avi.im/resume.pdf"
+#
+#  [[menu.main]]
+#  identifier = "projects"
+#  name = "Projects"
+#  url = "/projects"
+#
+#  [[menu.main]]
+#  identifier = "subscribe"
+#  name = "Subscribe"
+#  url = "https://tinyletter.com/avi-im"
