@@ -37,7 +37,7 @@ The depth comes only when you work with simple code and see how small changes ca
 
 ## Cthulhu
 
-The very apt cover of Modern C:
+The very apt cover of Effective C:
 
 <img src="/blag/images/2024/c-for-cthulhu.jpeg" alt="C for Cthulhu" style="width: 40%;"/>
 
