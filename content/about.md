@@ -3,7 +3,7 @@ title: "About"
 summary: "Some Stuff About Me"
 ---
 
-Hey there👋 I am Avinash. I work at [Turso Database](https://turso.tech/). I am interested in databases, message queues, and distributed systems in general. I am learning Rust and building an [educational project](https://github.com/avinassh/py-caskdb/) that aims to teach anyone building a KV Store by passing tests.
+Hey there👋 I am v. I work at [Turso Database](https://turso.tech/). I am interested in databases, message queues, and distributed systems in general. I am learning Rust and building an [educational project](https://github.com/avinassh/py-caskdb/) that aims to teach anyone building a KV Store by passing tests.
 
 #### Standing invitation
 If you want to talk software, I want to talk to you. Drop me a message. <small>Inspired by [patio11](https://www.kalzumeus.com/standing-invitation/).</small>
