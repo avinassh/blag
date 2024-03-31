@@ -47,7 +47,7 @@ int main()
     sqlite3 *db;
     char *zErrMsg = 0;
     sqlite3_open("users.db", &db);
-    `sqlite3_exec(db, "PRAGMA journal_mode = WAL;", 0, 0, 0);`
+    sqlite3_exec(db, "PRAGMA journal_mode = WAL;", 0, 0, 0);
     sqlite3_exec(db, "SELECT * FROM t", callback, 0, &zErrMsg);
     sqlite3_close(db);
     return 0;
