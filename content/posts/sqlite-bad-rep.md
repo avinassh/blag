@@ -23,7 +23,7 @@ Why?
 
 SQLite, like any other database, has its pros and cons. For the majority of applications and scales, it is perfect. You always have PostgreSQL for anything else.
 
-TLDR: Go yolo with SQLite. You will be fine.
+TLDR: SQLite slaps. You will be fine.
 
 ---
 
