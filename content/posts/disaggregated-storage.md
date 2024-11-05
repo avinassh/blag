@@ -19,11 +19,11 @@ You might have run PostgreSQL locally for development. The database assumes all 
 
 What if we separate them, by storing the data in a separate machine? What if, instead of disk I/O, we do network I/O and bring the data from elsewhere, on demand? Suddenly, your disk won't be a limiting factor anymore!
 
-This is called the separation of compute and storage, also known as storage disaggregation. You typically store the B-Tree pages in a storage server.
+This is called the separation of compute and storage, also known as storage disaggregation. You typically store the B-Tree pages in a storage server and `get_page` is now an RPC call. (Neon calls this method as [`GetPage@LSN`](https://neon.tech/blog/get-page-at-lsn))
 
 <img src="/blag/images/2024/disagg-db.png" alt="disaggregated storage architecture" style="width: 60%;"/>
 
-Since the disk is no longer attached, it's easy to scale and scale separately. You can scale CPU and I/O resources independently, and vertical scaling limits won't matter anymore. You can spawn as many compute machines as needed. If your machine crashes, you can spawn a new one without downloading all the database files. Database failover is instant, and you get time travel / Point In Time Restore seamlessly.
+Since the disk is no longer attached, it's easy to scale and scale separately. You can scale CPU and I/O resources independently, and vertical scaling limits won't matter anymore. You can spawn as many compute machines as needed. Startup and shutdown is instant (hello, Serverless). If your machine crashes, you can spawn a new one without downloading all the database files. Database failover is instant, and you get time travel / Point In Time Restore seamlessly.
 
 But all this comes at a cost: Latency. Disk I/O is way faster than network I/O. Also, while disk I/O operations rarely fail, network I/O calls can fail more frequently.
 
