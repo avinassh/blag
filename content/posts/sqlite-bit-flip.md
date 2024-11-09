@@ -50,7 +50,3 @@ This means if you're using any extension that uses reserve bytes, you can't use 
 Again, this is not a bug. [Most databases (except a few)](https://avi.im/blag/2024/databases-checksum) assume that the OS, filesystem, and disk are sound. Whether this matters depends on your application and the guarantees you need.
 
 edit: I wrote a [follow up post](https://avi.im/blag/2024/databases-checksum).
-
----
-
-This post has gone more viral than I anticipated! I don't have SoundCloud, but consider joining my [Telegram](https://t.me/databases_v) or [WhatsApp](https://www.whatsapp.com/channel/0029VaC5Qe72P59b63Qozt0c) where I post database internals content.

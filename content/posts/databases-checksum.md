@@ -27,7 +27,3 @@ Did I miss any? [Let me know](https://x.com/iavins/status/1855256734400663597).
 
 - TigerBeetle's [safety page](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/about/safety.md) is a great read on this topic.
 - Redundancy Does Not Imply Fault Tolerance: Analysis of Distributed Storage Reactions to Single Errors and Corruptions - [link](https://www.usenix.org/conference/fast17/technical-sessions/presentation/ganesan)
-
----
-
-This post has gone more viral than I anticipated! I don't have SoundCloud, but consider joining my [Telegram](https://t.me/databases_v) or [WhatsApp](https://www.whatsapp.com/channel/0029VaC5Qe72P59b63Qozt0c) where I post database internals content.
