@@ -22,6 +22,8 @@ So, here's a short list of databases that do enable checksums by default:
 - ClickHouse
 - [MySQL with InnoDB](https://x.com/MarkCallaghanDB/status/1855341370199953671)
 
+Note that the upcoming Postgres 18 will have [checksums enabled](https://github.com/postgres/postgres/commit/04bec894a04cb0d32533f1522ab81b7016141ff1) by default in cluster mode. 
+
 Did I miss any? [Let me know](https://x.com/iavins/status/1855256734400663597).
 
 ## Reading
