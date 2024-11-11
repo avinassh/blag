@@ -27,7 +27,6 @@ I am an [open source enthusiast](https://github.com/avinassh) and contribute in 
 ## On Interwebz
 <!-- - [Stackoverflow](http://stackoverflow.com/users/1382297/avi) — I read the Go, Python tagged questions often. -->
 - [GitHub](http://github.com/avinassh) — Some of the Open Source code I have written and contributed.
-- [Lobsters](https://lobste.rs/) — Pretty much addicted to this.
 - [Twitter](http://twitter.com/iavins) — I am mostly active on this thing.
 
 <!-- ## Machine
