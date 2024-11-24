@@ -77,3 +77,5 @@ It's time we use the S3 as the brother Bezos intended. The malloc of the web.
 <small>2. If any Amazon engineers would like to share more details about the Transaction Log, hit me up please.</small><br>
 <small>3. Jack also wrote an excellent cost analysis: [A Cost Analysis of Replication vs S3 Express One Zone in Transactional Data Systems](https://jack-vanlightly.com/blog/2024/6/10/a-cost-analysis-of-replication-vs-s3-express-one-zone-in-transactional-data-systems)</small><br>
 <small>4. In S3, if you store 100 billion objects, you *might* lose one in a year. To put it another way: if you store 10 million objects, it would take 10,000 years to lose one. If a dinosaur had stored 1,000 objects, they would still be intact after 65 million years 🦖</small><br>
+
+<small><i>Thanks to Mr. Bhat, and Rishi for reading an early draft of this post.</i></small>
