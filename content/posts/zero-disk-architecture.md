@@ -11,7 +11,7 @@ summary: "State is pain. The next generation of infrastructure tools will be bui
 
 ## State is pain
 
-In my [previous post](https://avi.im/blag/2024/sqlite-bit-flip/), I explained how a disk attached to a machine makes things difficult. Vertical scaling has its limits, and when you hit that limit, you can't do horizontal scaling right away because of the attached disk. Mainstream databases like Postgres or MySQL don't scale horizontally. I recently learned that BlueSky team switched from Postgres to a combination of Scylla and SQLite. One of the reasons was because (vanilla) Postgres is not horizontally scalable, but Scylla is.
+In my [previous post](https://avi.im/blag/2024/disaggregated-storage/), I explained how a disk attached to a machine makes things difficult. Vertical scaling has its limits, and when you hit that limit, you can't do horizontal scaling right away because of the attached disk. Mainstream databases like Postgres or MySQL don't scale horizontally. I recently learned that BlueSky team switched from Postgres to a combination of Scylla and SQLite. One of the reasons was because (vanilla) Postgres is not horizontally scalable, but Scylla is.
 
 State is pain. Since the machine is stateful, you lose elasticity and scalability. So, the solution was to separate state from compute, so that they become independently scalable.
 
@@ -39,7 +39,7 @@ It seems most database companies roll their own storage server. However, there i
 
 <img src="/blag/images/2024/zero-disk-arch.svg" alt="zero disk architecture" style="width: 80%;"/>
 
-The idea is simple. Instead of writing to a storage server, we will write to S3. Thus we will not manage any storage server, rather we offload it to the smart folks at AWS. S3 meets all our requirements. As a bonus, you get infinite storage space. S3 came out in 2006 and it has proven test of time. It provides [99.999999999% (that's elevan nines) durability](https://x.com/iavins/status/1860621569355030696) and 99.99% availability guarantees. I believe the next generation of infrastructure systems will be built on zero disk paradigm.
+The idea is simple. Instead of writing to a storage server, we will write to S3. Thus we will not manage any storage server, rather we offload it to the smart folks at AWS. S3 meets all our requirements. As a bonus, you get infinite storage space. S3 came out in 2006 and it has proven test of time. It provides [99.999999999% (that's eleven nines) durability](https://x.com/iavins/status/1860621569355030696) and 99.99% availability guarantees. I believe the next generation of infrastructure systems will be built on zero disk paradigm.
 
 This idea is not new. In 2008, there was a research paper ['Building a Database on S3'](https://people.csail.mit.edu/kraska/pub/sigmod08-s3.pdf) - a paper way ahead of its time, with lots of interesting ideas for today's cloud computing. The researchers experimented with storing a B-tree on S3 using SQS as a Write-Ahead Log (WAL). They also provided analysis on latency when writing to S3 and the associated costs. The paper had some flaws, like they dropped ACID properties. However, we are in 2025, and we can do better.
 
