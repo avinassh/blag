@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+    <!-- Definitions for reuse -->
+    <defs>
+        <!-- Arrow marker -->
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+                refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+        </marker>
+        <!-- Small Arrow marker for raft connections -->
+        <marker id="smallArrow" markerWidth="8" markerHeight="6" 
+                refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+        </marker>
+    </defs>
+
+    <!-- Compute Node -->
+    <rect x="100" y="60" width="120" height="80" rx="10" 
+          fill="#404040" stroke="#333333" stroke-width="2"/>
+    <text x="160" y="105" text-anchor="middle" fill="white" font-size="14" font-family="Arial">
+        Compute Node
+    </text>
+
+    <!-- Raft Cluster Container (Larger) -->
+    <rect x="320" y="40" width="160" height="120" rx="10" 
+          fill="#f0f0f0" stroke="#dddddd" stroke-width="2"/>
+    <text x="400" y="65" text-anchor="middle" fill="#333333" font-size="14" font-family="Arial">
+        Raft Cluster
+    </text>
+    
+    <!-- Raft Nodes in Triangle -->
+    <circle cx="400" cy="85" r="10" fill="#666666"/>  <!-- Top node -->
+    <circle cx="370" cy="125" r="10" fill="#666666"/> <!-- Bottom left node -->
+    <circle cx="430" cy="125" r="10" fill="#666666"/> <!-- Bottom right node -->
+    
+    <!-- Curved Raft Node Connections -->
+    <!-- Top to bottom left -->
+    <path d="M395 93 Q380 105 375 117" 
+          stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#smallArrow)"/>
+    
+    <!-- Bottom left to bottom right -->
+    <path d="M380 125 Q400 135 420 125" 
+          stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#smallArrow)"/>
+    
+    <!-- Bottom right to top -->
+    <path d="M425 117 Q420 105 405 93" 
+          stroke="#555" stroke-width="1.5" fill="none" marker-end="url(#smallArrow)"/>
+
+    <!-- S3 Standard -->
+    <rect x="580" y="60" width="120" height="80" rx="10" 
+          fill="#808080" stroke="#666666" stroke-width="2"/>
+    <text x="640" y="105" text-anchor="middle" fill="white" font-size="14" font-family="Arial">
+        S3
+    </text>
+
+    <!-- Main Connections -->
+    <!-- Dotted line from Compute to Raft -->
+    <path d="M220 100 L320 100" 
+          stroke="#666" stroke-width="2" stroke-dasharray="5,5"
+          marker-end="url(#arrowhead)"/>
+
+    <!-- Solid line from Raft to S3 Standard -->
+    <path d="M480 100 L580 100" 
+          stroke="#666" stroke-width="2"
+          marker-end="url(#arrowhead)"/>
+</svg>
