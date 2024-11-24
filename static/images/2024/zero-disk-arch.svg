@@ -1,14 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
-    <!-- Definitions for reuse -->
     <defs>
-        <!-- Arrow marker -->
         <marker id="arrowhead" markerWidth="10" markerHeight="7" 
                 refX="9" refY="3.5" orient="auto">
             <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
         </marker>
     </defs>
 
-    <!-- Three Compute Nodes -->
     <rect x="100" y="40" width="120" height="80" rx="10" 
           fill="#404040" stroke="#333333" stroke-width="2"/>
     <text x="160" y="85" text-anchor="middle" fill="white" font-size="14" font-family="Arial">
@@ -27,7 +24,6 @@
         Compute 3
     </text>
 
-    <!-- S3 Storage (Bigger) -->
     <rect x="580" y="40" width="150" height="260" rx="10" 
           fill="#808080" stroke="#666666" stroke-width="2"/>
     <text x="655" y="165" text-anchor="middle" fill="white" font-size="16" font-family="Arial">
@@ -35,7 +31,6 @@
     <text x="655" y="190" text-anchor="middle" fill="white" font-size="16" font-family="Arial">
         Storage</text>
 
-    <!-- Connections with curved lines -->
     <path d="M220 80 Q400 80, 580 120" 
           stroke="#666" stroke-width="2" fill="none"
           marker-end="url(#arrowhead)"/>

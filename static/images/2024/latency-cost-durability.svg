@@ -1,16 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
-  <!-- Circles with semi-transparent fill -->
   <circle cx="200" cy="180" r="90" fill="rgba(0,0,0,0.15)" stroke="#333333" stroke-width="2"/>
   <circle cx="320" cy="180" r="90" fill="rgba(0,0,0,0.15)" stroke="#666666" stroke-width="2"/>
   <circle cx="260" cy="280" r="90" fill="rgba(0,0,0,0.15)" stroke="#999999" stroke-width="2"/>
-  
-  <!-- Labels -->
-  <!-- Left circle text (adjusted) -->
   <text x="180" y="160" font-family="Arial" font-size="16" fill="#333333" text-anchor="middle">Latency</text>
-  
-  <!-- Right circle text (unchanged) -->
   <text x="340" y="160" font-family="Arial" font-size="16" fill="#333333" text-anchor="middle">Cost</text>
-  
-  <!-- Bottom circle text (unchanged) -->
   <text x="260" y="320" font-family="Arial" font-size="16" fill="#333333" text-anchor="middle">Durability</text>
 </svg>

@@ -1,21 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
-    <!-- Definitions for reuse -->
     <defs>
-        <!-- Arrow marker -->
         <marker id="arrowhead" markerWidth="10" markerHeight="7" 
                 refX="9" refY="3.5" orient="auto">
             <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
         </marker>
     </defs>
 
-    <!-- Compute Node -->
     <rect x="100" y="60" width="120" height="80" rx="10" 
           fill="#404040" stroke="#333333" stroke-width="2"/>
     <text x="160" y="105" text-anchor="middle" fill="white" font-size="14" font-family="Arial">
         Compute Node
     </text>
 
-    <!-- S3 Express One Zone -->
     <rect x="340" y="60" width="120" height="80" rx="10" 
           fill="#f0f0f0" stroke="#dddddd" stroke-width="2"/>
     <text x="400" y="90" text-anchor="middle" fill="#333333" font-size="14" font-family="Arial">
@@ -25,20 +21,16 @@
         One Zone
     </text>
 
-    <!-- S3 Standard -->
     <rect x="580" y="60" width="120" height="80" rx="10" 
           fill="#808080" stroke="#666666" stroke-width="2"/>
     <text x="640" y="105" text-anchor="middle" fill="white" font-size="14" font-family="Arial">
         S3 Standard
     </text>
 
-    <!-- Connections -->
-    <!-- Dotted line from Compute to S3 Express -->
     <path d="M220 100 L340 100" 
           stroke="#666" stroke-width="2" stroke-dasharray="5,5"
           marker-end="url(#arrowhead)"/>
 
-    <!-- Solid line from S3 Express to S3 Standard -->
     <path d="M460 100 L580 100" 
           stroke="#666" stroke-width="2"
           marker-end="url(#arrowhead)"/>
