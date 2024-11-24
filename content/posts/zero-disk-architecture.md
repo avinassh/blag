@@ -9,7 +9,7 @@ summary: "State is pain. The next generation of infrastructure tools will be bui
 
 <small>This is a follow up to my post: [Disaggregated Storage - a brief introduction](https://avi.im/blag/2024/disaggregated-storage/)</small>
 
-## State is Pain
+## State is pain
 
 In my [previous post](https://avi.im/blag/2024/sqlite-bit-flip/), I explained how a disk attached to a machine makes things difficult. Vertical scaling has its limits, and when you hit that limit, you can't do horizontal scaling right away because of the attached disk. Mainstream databases like Postgres or MySQL don't scale horizontally. I recently learned that BlueSky team switched from Postgres to a combination of Scylla and SQLite. One of the reasons was because (vanilla) Postgres is not horizontally scalable, but Scylla is.
 
@@ -48,11 +48,11 @@ Another reason I suspect is lack of features like conditional writes. Without th
 
 Databases typically operate with pages, which are 4KiB in size. But object storages operate at much bigger sizes. The cost will be insanely high if we write every 4KiB object. So we will batch them at the compute layer till say 512KiB and then write all the pages as a single object. Suppose a transaction has sent a commit request, when do you acknowledge it as committed? If the local batch is not full, then do you make the client wait or cache the writes at compute and return success? If you do the latter, there is a risk of data loss. If you wait, then latency shoots up. Like everything in engineering, there is a trade-off: latency vs durability.
 
-Smaller payloads also mean more requests, but that increases both cost and provides better durability and latency. This adds one more parameter: latency vs durability vs cost.
+Smaller payloads also mean more requests, but that increases both cost and provides better durability and latency. This adds one more parameter: cost vs latency vs durability.
 
 <img src="/blag/images/2024/latency-cost-durability.svg" alt="latency cost durability trade off" style="width: 80%;"/>
 
-I stole this trade off diagram from [Jack Vanlightly's excellent article](https://jack-vanlightly.com/blog/2023/11/29/s3-express-one-zone-not-quite-what-i-hoped-for). Chris Riccomini also [explored](https://materializedview.io/p/cloud-storage-triad-latency-cost-durability) this trade off model and gave a catchy 'LCD model' title.
+I stole this trade-off diagram from [Jack Vanlightly's excellent article](https://jack-vanlightly.com/blog/2023/11/29/s3-express-one-zone-not-quite-what-i-hoped-for). Chris Riccomini also [explored](https://materializedview.io/p/cloud-storage-triad-latency-cost-durability) this concept and coined catchy 'LCD model' term.
 
 <img src="/blag/images/2024/s3-express-cache.svg" alt="s3 express as a cache"/>
 
@@ -62,7 +62,7 @@ If you want to optimize for latency, you can first write to S3 Express One Zone 
 
 For OLTP databases, this can be still slow. That's why databases like [Neon](https://neon.tech/blog/architecture-decisions-in-neon), [TiDB](https://aws.amazon.com/blogs/storage/how-pingcap-transformed-tidb-into-a-serverless-dbaas-using-amazon-s3-and-amazon-ebs) etc. have a Raft cluster setup which receives the writes. Then they are written to S3. This also saves on cost because instead of many smaller writes, you can make one large write to S3.
 
-So depending on the trade-offs you want to make, you can write directly to S3 (standard or Express One Zone) or use a write through cache server. Diskless Architecture is also very attractive for systems where you don't care about latency. For example, OLAP databases, data warehouse systems.
+So depending on the trade-offs you want to make, you can write directly to S3 (standard or Express One Zone) or use a write through cache server. Zero disk architecture is also very attractive for systems where you don't care about latency. For example, OLAP databases, data warehouse systems.
 
 Here are some systems which use S3 (or similar) as a primary store: [Snowflake](https://event.cwi.nl/lsde/papers/p215-dageville-snowflake.pdf), [WarpStream](https://www.warpstream.com/blog/zero-disks-is-better-for-kafka), [SlateDB](https://slatedb.io/docs/architecture), [Turbo Puffer](https://turbopuffer.com/architecture), [Clickhouse](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/), [Quickwit](https://quickwit.io/docs/main-branch/overview/architecture).
 
@@ -71,9 +71,8 @@ Zero Disk Architeture is a very compelling because you are not managing any stor
 It's time we use the S3 as the brother Bezos intended. The malloc of the web.
 
 ---
-<small>1. Any object store would work. But I like S3.</small><br>
-<small>2. If any Amazon engineers would like to share more about The Transaction Log, hit me up please.</small><br>
-<small>3. Jack also wrote an excellent cost analysis: [A Cost Analysis of Replication vs S3 Express One Zone in Transactional Data Systems](https://jack-vanlightly.com/blog/2024/6/10/a-cost-analysis-of-replication-vs-s3-express-one-zone-in-transactional-data-systems
-)</small><br>
-<small>4. In S3, if you store 100B objects, you *might* lose one in a year. Put another way, if you store 10M objects, it would take 10,000 years to lose one. If a dinosaur stored 1000 objects, after 65 million years, it would still have them 🦖</small><br>
 
+<small>1. Any object store would work. But I like S3.</small><br>
+<small>2. If any Amazon engineers would like to share more details about the Transaction Log, hit me up please.</small><br>
+<small>3. Jack also wrote an excellent cost analysis: [A Cost Analysis of Replication vs S3 Express One Zone in Transactional Data Systems](https://jack-vanlightly.com/blog/2024/6/10/a-cost-analysis-of-replication-vs-s3-express-one-zone-in-transactional-data-systems)</small><br>
+<small>4. In S3, if you store 100 billion objects, you *might* lose one in a year. To put it another way: if you store 10 million objects, it would take 10,000 years to lose one. If a dinosaur had stored 1,000 objects, they would still be intact after 65 million years 🦖</small><br>
