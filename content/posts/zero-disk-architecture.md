@@ -31,20 +31,21 @@ So...what are my options?
 
 2. Use an existing open source storage engine. For Disaggregated Storage on SQLite, I went with this route and used Foundation DB. One problem with this approach is, you need to run and manage the cluster by yourself. I don't know any hosted KV Store providers.
 
-3. Solve my skill issues and build my own storage server. But this will take years! We want to ship fast and ship yesterday, so not an option.
+3. Become a cracked engineer and build my own storage server. But this will take years! We want to ship fast and ship yesterday, so not an option.
 
 It seems most database companies roll their own storage server. However, there is one more option which is a mix of #1 and #2: Amazon S3.
 
 ## Zero Disk Arechitetcure
 
-The idea is simple. Instead of writing to a storage server, we will write to S3. Thus we will not manage any storage server, rather we offload it to the smart folks at AWS. S3 meets all our requirements. As a bonus, you get infinite storage space. S3 came out in 2006 and it has proven test of time. It provides [99.999999999% (that's elevan nines) durability](https://x.com/iavins/status/1860621569355030696) and 99.99% availability guarantees.
+<img src="/blag/images/2024/zero-disk-arch.svg" alt="zero disk architecture" style="width: 80%;"/>
+
+The idea is simple. Instead of writing to a storage server, we will write to S3. Thus we will not manage any storage server, rather we offload it to the smart folks at AWS. S3 meets all our requirements. As a bonus, you get infinite storage space. S3 came out in 2006 and it has proven test of time. It provides [99.999999999% (that's elevan nines) durability](https://x.com/iavins/status/1860621569355030696) and 99.99% availability guarantees. I believe the next generation of infrastructure systems will be built on zero disk paradigm.
 
 This idea is not new. In 2008, there was a research paper ['Building a Database on S3'](https://people.csail.mit.edu/kraska/pub/sigmod08-s3.pdf) - a paper way ahead of its time, with lots of interesting ideas for today's cloud computing. The researchers experimented with storing a B-tree on S3 using SQS as a Write-Ahead Log (WAL). They also provided analysis on latency when writing to S3 and the associated costs. The paper had some flaws, like they dropped ACID properties. However, we are in 2025, and we can do better.
 
 Then, why has no one built such a system until now? My guess: latency and cost. However, S3 keeps getting better. They keep reducing the price all the time. The cost and latency are both going down as technology improves! Amazon S3 Express One Zone was launched last year and it's supposed to be 10x faster. Another reason I think is B-Tree vs LSM Tree. LSM Tree workload is more suited for S3. As most newer databases adapt to LSM, they're closer to S3. In the paper also they map B-Tree on S3.
 
 Another reason I suspect is lack of features like conditional writes. Without this, you need an external system to provide transactional and ACID properties. S3 recently added this which gives you CAS-style operations on S3 objects.
-
 
 Databases typically operate with pages, which are 4KiB in size. But object storages operate at much bigger sizes. The cost will be insanely high if we write every 4KiB object. So we will batch them at the compute layer till say 512KiB and then write all the pages as a single object. Suppose a transaction has sent a commit request, when do you acknowledge it as committed? If the local batch is not full, then do you make the client wait or cache the writes at compute and return success? If you do the latter, there is a risk of data loss. If you wait, then latency shoots up. Like everything in engineering, there is a trade-off: latency vs durability.
 
