@@ -35,11 +35,11 @@ So...what are my options?
 
 It seems most database companies roll their own storage server. However, there is one more option which is a mix of #1 and #2: Amazon S3.
 
-## Zero Disk Arechitetcure
+## Zero Disk Architecture
 
 <img src="/blag/images/2024/zero-disk-arch.svg" alt="zero disk architecture" style="width: 80%;"/>
 
-The idea is simple. Instead of writing to a storage server, we will write to S3. Thus we will not manage any storage server, rather we offload it to the smart folks at AWS. S3 meets all our requirements. As a bonus, you get infinite storage space. S3 came out in 2006 and it has proven test of time. It provides [99.999999999% (that's eleven nines) durability](https://x.com/iavins/status/1860621569355030696) and 99.99% availability guarantees. I believe the next generation of infrastructure systems will be built on zero disk paradigm.
+The idea is simple. Instead of writing to a storage server, we will write to S3. Thus we will not manage any storage server, rather we offload it to the smart folks at AWS. S3 meets all our requirements. As a bonus, you get infinite storage space. S3 came out in 2006 and it has proven test of time. It is designed to provide [99.999999999% (that's eleven nines) durability](https://x.com/iavins/status/1860621569355030696) and 99.99% availability guarantees. I believe the next generation of infrastructure systems will be built on zero disk paradigm.
 
 This idea is not new. In 2008, there was a research paper ['Building a Database on S3'](https://people.csail.mit.edu/kraska/pub/sigmod08-s3.pdf) - a paper way ahead of its time, with lots of interesting ideas for today's cloud computing. The researchers experimented with storing a B-tree on S3 using SQS as a Write-Ahead Log (WAL). They also provided analysis on latency when writing to S3 and the associated costs. The paper had some flaws, like they dropped ACID properties. However, we are in 2025, and we can do better.
 
@@ -65,7 +65,7 @@ For OLTP databases, this can be still slow. That's why databases like [Neon](htt
 
 So depending on the trade-offs you want to make, you can write directly to S3 (standard or Express One Zone) or use a write through cache server. Zero disk architecture is also very attractive for systems where you don't care about latency. For example, OLAP databases, data warehouse systems.
 
-Here are some systems which use S3 (or similar) as a primary store: [Snowflake](https://event.cwi.nl/lsde/papers/p215-dageville-snowflake.pdf), [WarpStream](https://www.warpstream.com/blog/zero-disks-is-better-for-kafka), [SlateDB](https://slatedb.io/docs/architecture), [Turbo Puffer](https://turbopuffer.com/architecture), [Clickhouse](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/), [Quickwit](https://quickwit.io/docs/main-branch/overview/architecture).
+Here are some systems which use S3 (or similar) as a primary store: [Snowflake](https://event.cwi.nl/lsde/papers/p215-dageville-snowflake.pdf), [WarpStream](https://www.warpstream.com/blog/zero-disks-is-better-for-kafka), [SlateDB](https://slatedb.io/docs/architecture), [Turbo Puffer](https://turbopuffer.com/architecture), [Clickhouse](https://aws.amazon.com/blogs/storage/clickhouse-cloud-amazon-s3-express-one-zone-making-a-blazing-fast-analytical-database-even-faster/), [Quickwit](https://quickwit.io/docs/main-branch/overview/architecture), [Milvus](https://milvus.io/docs/architecture_overview.md).
 
 Zero Disk Architeture is a very compelling because you are not managing any storage server. You are not managing the state. The problem is for AWS S3 to deal with now. On top of it, you get all the benefits of disaggregated storage I highlighted earlier. 
 
@@ -76,6 +76,6 @@ It's time we use the S3 as the brother Bezos intended. The malloc of the web.
 <small>1. Any object store would work. But I like S3.</small><br>
 <small>2. If any Amazon engineers would like to share more details about the Transaction Log, hit me up please.</small><br>
 <small>3. Jack also wrote an excellent cost analysis: [A Cost Analysis of Replication vs S3 Express One Zone in Transactional Data Systems](https://jack-vanlightly.com/blog/2024/6/10/a-cost-analysis-of-replication-vs-s3-express-one-zone-in-transactional-data-systems)</small><br>
-<small>4. In S3, if you store 100 billion objects, you *might* lose one in a year. To put it another way: if you store 10 million objects, it would take 10,000 years to lose one. If a dinosaur had stored 1,000 objects, they would still be intact after 65 million years 🦖</small><br>
+<small>4. In S3, if you store 100 billion objects, you *might* lose one in a year. To put it another way: if you store 10 million objects, you might lose one in 10,000 years. If a dinosaur had stored 1,000 objects, they may be still intact after 65 million years 🦖</small><br>
 
 <small><i>Thanks to Mr. Bhat, and Rishi for reading an early draft of this post.</i></small>
