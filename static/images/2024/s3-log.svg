@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <rect width="600" height="400" fill="white"/>
+  
+  <g transform="translate(150, 30)">
+    <rect x="-10" y="15" width="100" height="230" fill="none" stroke="black" stroke-width="1" rx="3"/>
+    <rect x="0" y="45" width="80" height="190" fill="none" stroke="black" stroke-width="1.5"/>
+    <rect x="250" y="15" width="120" height="230" fill="none" stroke="black" stroke-width="1.5" rx="3"/>
+    
+    <text x="40" y="35" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Log</text>
+    <text x="310" y="35" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">S3 Objects</text>
+    
+    <g>
+      <line x1="0" y1="85" x2="80" y2="85" stroke="black" stroke-width="1"/>
+      <line x1="0" y1="125" x2="80" y2="125" stroke="black" stroke-width="1"/>
+      <line x1="0" y1="165" x2="80" y2="165" stroke="black" stroke-width="1"/>
+      <line x1="0" y1="205" x2="80" y2="205" stroke="black" stroke-width="1"/>
+      
+      <text x="40" y="70" font-family="Arial" font-size="12" text-anchor="middle">Record 1</text>
+      <text x="40" y="110" font-family="Arial" font-size="12" text-anchor="middle">Record 2</text>
+      <text x="40" y="150" font-family="Arial" font-size="12" text-anchor="middle">Record 3</text>
+      <text x="40" y="190" font-family="Arial" font-size="12" text-anchor="middle">Record 4</text>
+      <text x="40" y="225" font-family="Arial" font-size="12" text-anchor="middle">Record 5</text>
+    </g>
+    
+    <g>
+      <rect x="270" y="55" width="80" height="25" fill="#f0f0f0" stroke="black" stroke-width="1" rx="2"/>
+      <rect x="270" y="95" width="80" height="25" fill="#f0f0f0" stroke="black" stroke-width="1" rx="2"/>
+      <rect x="270" y="135" width="80" height="25" fill="#f0f0f0" stroke="black" stroke-width="1" rx="2"/>
+      <rect x="270" y="175" width="80" height="25" fill="#f0f0f0" stroke="black" stroke-width="1" rx="2"/>
+      <rect x="270" y="215" width="80" height="25" fill="#f0f0f0" stroke="black" stroke-width="1" rx="2"/>
+      
+      <text x="310" y="72" font-family="Arial" font-size="11" text-anchor="middle">00000001</text>
+      <text x="310" y="112" font-family="Arial" font-size="11" text-anchor="middle">00000002</text>
+      <text x="310" y="152" font-family="Arial" font-size="11" text-anchor="middle">00000003</text>
+      <text x="310" y="192" font-family="Arial" font-size="11" text-anchor="middle">00000004</text>
+      <text x="310" y="232" font-family="Arial" font-size="11" text-anchor="middle">00000005</text>
+    </g>
+    
+    <g stroke="black" stroke-width="1" fill="none">
+      <path d="M80,67 L270,67" marker-end="url(#arrowhead)"/>
+      <path d="M80,107 L270,107" marker-end="url(#arrowhead)"/>
+      <path d="M80,147 L270,147" marker-end="url(#arrowhead)"/>
+      <path d="M80,187 L270,187" marker-end="url(#arrowhead)"/>
+      <path d="M80,227 L270,227" marker-end="url(#arrowhead)"/>
+    </g>
+  </g>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="black"/>
+    </marker>
+  </defs>
+</svg>

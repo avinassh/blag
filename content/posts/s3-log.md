@@ -4,7 +4,7 @@ date: "2024-11-30T23:16:21+05:30"
 categories: ["distributed systems"]
 tags: ["database", "distributed systems", "infrastructure", "disaggregated storage", "zero disk", "diskless", "wal", "log"]
 slug: "s3-log"
-summary: ""
+summary: "In this third part of the series, I will show how we can implement a durable, distributed, and highly available log using S3"
 ---
 
 I will show how we can implement a durable, distributed, and highly available log using S3. This post is the third part in the series:
@@ -13,9 +13,12 @@ I will show how we can implement a durable, distributed, and highly available lo
 2. [Zero Disk Architecture](https://avi.im/blag/2024/zero-disk-architecture/)
 3. Building a distributed log using S3
 
-tl;dr The code is open source, comes with some tests and open issues to contribute: [s3-log](https://github.com/avinassh/s3-log)
+tl;dr The code is open source, comes with tests and open issues to contribute: [s3-log](https://github.com/avinassh/s3-log)
 
 ## Log
+
+<img src="/blag/images/2024/log.svg" alt="log"/>
+
 
 I love logs. The log is the heart of data and event streaming systems. A database is a log. Kafka is a log. Simply put, it's an ordered collection of records. The log is append-only, and once records are written, they are immutable. Each inserted record gets a unique, sequentially increasing identifier.
 
@@ -45,15 +48,15 @@ type WAL interface {
 }
 ```
 
-We will write each payload as an object in S3 and make sure that it gets a unique offset in the log.
+We will write each payload as an object in S3 and ensure it gets a unique offset in the log. We need to make sure that record numbers are unique and sequentially increasing.
 
-We need to make sure that record numbers are unique, and are sequentially increasing.
+<img src="/blag/images/2024/s3-log.svg" alt="s3 log"/>
 
 ### Append
 
-The only 'write' operation we can do on a log is `Append`. Append takes a bunch of bytes, writes that to end of the log. It returns the `offset` the position of this record on the log.
+The only 'write' operation we can do on a log is `Append`. Append takes a bunch of bytes and writes them to the end of the log. It returns the offset, which is the position of this record in the log.
 
-Let's define a struct which maintains a counter `length` and every time we insert, we will increment this counter by one.
+Let's define a struct that maintains a counter `length`. Every time we insert, we will increment this counter by one.
 
 ```go
 type S3WAL struct {
@@ -63,7 +66,7 @@ type S3WAL struct {
 }
 ```
 
-The very first record will have offset as `0000000001`, every new object we insert in the S3 bucket we will increment it by one. Once a record is inserted, we will return its offset to the caller. 
+The very first record will have offset `0000000001`. For every new object we insert in the S3 bucket, we will increment it by one. Once a record is inserted, we will return its offset to the caller.
 
 ```go
 func (w *S3WAL) Append(ctx context.Context, data []byte) (uint64, error) {
@@ -106,13 +109,15 @@ func TestSameOffset(t *testing.T) {
 }
 ```
 
-You might be thinking, why not use S3's latest feature appends and write to the same object? We can certainly do that, but it is tricky to get right since a zombie writer might come back and append to an old object while a new leader might be writing to a new file. Unlike typical Raft based storage systems, S3 does not have a concept of fencing tokens. I left this optimisation to tackle it later.
+You might be thinking, "Why not use S3's latest append feature and write to the same object?" We can certainly do that, but it's tricky to get right since a zombie writer might come back and append to an old object while a new leader is writing to a new file. Unlike typical Raft-based storage systems, S3 does not have a concept of fencing tokens. I've left this optimization to tackle later.
 
-I have also kept the sequencing simpler and consider no gaps. If we allow gaps, it might be possible for a zombie writer to write to some old sequence number. There are ways to prevent this, but thats a problem for another day! (note to self: I should probably write another blog post with these problems)
+I've also kept the sequencing simpler by considering no gaps. If we allow gaps, it might be possible for a zombie writer to write to an old sequence number. There are ways to prevent this, but that's a problem for another day! (Note to self: I should probably write another blog post about these problems.)
 
 ### Checksums
 
-S3 provides 99.99999999% durability. But like a sane man, I would never trust an external system for data integrity. [Most databases don't do checksums](https://avi.im/blag/2024/databases-checksum/), but we can do better. For now, let's use sha-256 for checksums (go std lib has it). So, let's store offset, the data and the checksum.
+S3 provides 99.99999999% durability. But like any sane man, I would never trust an external system for data integrity. [Most databases don't do checksums](https://avi.im/blag/2024/databases-checksum/), but we can do better. For now, let's use SHA-256 for checksums (Go std lib has it). We'll store the offset, the data, and the checksum.
+
+<img src="/blag/images/2024/record-format.svg" alt="record format"/>
 
 By storing offset we make the record self contained. For e.g. if we do compaction tomorrow and change file names, the record's offset remains same.
 
@@ -212,6 +217,6 @@ That's it! The project is open source: [s3-log](https://github.com/avinassh/s3-l
 
 <small>1. Any object store would work. But I like S3.</small><br>
 <small>2. Yes, a database is a log.</small><br>
-<small>3. I'm not surprised that Jay Krepps ended up loving logs so much he wrote a book [I Heart Logs]().</small><br>
+<small>3. I'm not surprised that Jay Kreps ended up loving logs so much he wrote a book [I Heart Logs]().</small><br>
 <small>4. [Threads are evil](https://x.com/iavins/status/1860299083056849098)</small><br>
-<small>5. My fren read this post and asked me, instead of S3, can I use Kafka and store my records there? You definitely can. But running Kafka is not easy. Hosted Kafka is way more expensive than S3. Moreover, you build Kafka like systems using a log. Going other way around is recursive.</small><br>
+<small>5. My fren read this post and asked me, instead of S3, can I use Kafka and store my records there? You definitely can. But running Kafka is not easy. Hosted Kafka is way more expensive than S3. Moreover, you build Kafka-like systems using a log. Going the other way around is recursive.</small><br>

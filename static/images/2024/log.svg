@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <rect width="800" height="300" fill="white"/>
+  <g transform="translate(100, 150)">
+    <rect x="0" y="0" width="280" height="50" fill="none" stroke="black" stroke-width="1.5"/>
+    <g stroke="black" stroke-width="1">
+      <line x1="40" y1="0" x2="40" y2="50"/>
+      <line x1="80" y1="0" x2="80" y2="50"/>
+      <line x1="120" y1="0" x2="120" y2="50"/>
+      <line x1="160" y1="0" x2="160" y2="50"/>
+      <line x1="200" y1="0" x2="200" y2="50"/>
+      <line x1="240" y1="0" x2="240" y2="50"/>
+    </g>
+    <g font-family="Arial" font-size="14" text-anchor="middle" dominant-baseline="middle">
+      <text x="20" y="25">0</text>
+      <text x="60" y="25">1</text>
+      <text x="100" y="25">2</text>
+      <text x="140" y="25">3</text>
+      <text x="180" y="25">4</text>
+      <text x="220" y="25">5</text>
+      <text x="260" y="25">6</text>
+    </g>
+    <rect x="280" y="0" width="40" height="50" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="4"/>
+    <text x="300" y="25" font-family="Arial" font-size="14" text-anchor="middle" dominant-baseline="middle">7</text>
+    <g stroke="black" stroke-width="1.5">
+      <path d="M20,-30 L20,0" marker-end="url(#arrowhead)"/>
+      <path d="M300,-30 L300,0" marker-end="url(#arrowhead)"/>
+    </g>
+    <g font-family="Arial" font-size="14" text-anchor="middle">
+      <text x="20" y="-45">1st Record</text>
+      <text x="300" y="-55">Next Record</text>
+      <text x="300" y="-35">Written</text>
+    </g>
+  </g>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="black"/>
+    </marker>
+  </defs>
+</svg>
