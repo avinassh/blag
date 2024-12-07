@@ -1,0 +1,14 @@
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="background: transparent">
+    <!-- Directory structure -->
+    <g font-family="monospace" font-size="14">
+        <!-- Bucket name -->
+        <text x="20" y="30">- bucket/</text>
+        
+        <!-- Files -->
+        <text x="40" y="60">- 0000000001</text>
+        <text x="40" y="85">- 0000000002</text>
+        <text x="40" y="110">- 0000000003</text>
+        <text x="40" y="135">- ...</text>
+        <text x="40" y="160">- 0000004242</text>
+    </g>
+</svg>
