@@ -4,7 +4,7 @@ date: "2024-12-07T16:41:34+05:30"
 categories: ["algorithms"]
 tags: ["distributed systems", "search", "algorithms", "zero disk", "diskless", "wal", "log"]
 slug: "galloping-search"
-summary: "I recently learned Galloping Search while building a distributed log s3-log. It's used to search sorted items when the upper bound is unknown. It's like binary search but without the 'high' value. In this short post, I will share my notes on it"
+summary: "I recently learned about Galloping Search while building a distributed log called s3-log. It's used to search sorted items when the upper bound is unknown. In this short post, I will share my notes and other alternatives I discovered for searching over unbounded items"
 ---
 
 I recently learned about an algorithm called Galloping Search. It's used to search sorted items when the upper bound is unknown. It's like binary search but without the 'high' value. In this short post, I'll explain my problem and how I solved it.
