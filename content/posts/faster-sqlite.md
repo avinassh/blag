@@ -7,6 +7,8 @@ slug: "faster-sqlite"
 summary: "Researchers at the University of Helsinki and Cambridge attempted to build a faster SQLite using modern programming paradigms like io_uring and disaggregated storage. They demonstrate up to a 100x reduction in tail latency. These are my notes."
 ---
 
+<small>Disclosure: I work with one of the paper's authors at Turso</small>
+
 SQLite is already fast. But can we make it even faster? Researchers at the University of Helsinki and Cambridge began with this question and published a paper, ["Serverless Runtime / Database Co-Design With Asynchronous I/O"](https://penberg.org/papers/penberg-edgesys24.pdf). They demonstrate up to a 100x reduction in tail latency. These are my notes on the paper.
 
 This is the foundational paper behind [Limbo](https://github.com/tursodatabase/limbo), the SQLite rewrite in Rust. Let's dive in.
