@@ -19,7 +19,7 @@ jobs:
       - name: install hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest'
+          hugo-version: "0.139.4"
 
       - name: clean up
         run: |
