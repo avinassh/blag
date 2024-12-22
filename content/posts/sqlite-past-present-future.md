@@ -4,7 +4,7 @@ date: "2024-12-22T18:03:15+05:30"
 categories: ["", ""]
 tags: ["database", "sqlite", "wal", "blob", "bloom filter", "joins", "ssb benchmark", "duckdb"]
 slug: "sqlite-past-present-future"
-summary: "This is a fascinating story of how researchers used Bloom filters cleverly to make SQLite 10x faster for analytical queries. These are my five minutes notes on the paper SQLite: Past, Present, and Future"
+summary: "This is the fascinating story of how researchers used Bloom filters cleverly to make SQLite 10x faster for analytical queries. These are my five-minute notes on the paper SQLite: Past, Present, and Future"
 ---
 
 This is the fascinating story of how researchers used Bloom filters cleverly to make SQLite 10x faster for analytical queries. These are my five-minute notes on the paper [SQLite: Past, Present, and Future (2022)](https://www.vldb.org/pvldb/vol15/p3535-gaffney.pdf). I'll also explain some database internals and how databases implement joins.
