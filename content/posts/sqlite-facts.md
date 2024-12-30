@@ -23,7 +23,7 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 	<img src="/blag/images/2024/sqlite-fact-3.png" style="width: 65%;"/>	
 
-1. SQLite originated from a US warship. Dr. Richard Hipp (DRH) was building software for the USS Oscar Austin, a Navy destroyer. The existing software would just stop working whenever the server went down (this was in the 2000s). For a battleship, this was unacceptable.
+1. SQLite originated from a US warship. D. Richard Hipp (DRH) was building software for the USS Oscar Austin, a Navy destroyer. The existing software would just stop working whenever the server went down (this was in the 2000s). For a battleship, this was unacceptable.
 
 	So DRH asked the question: what if the database just worked without any server? This was an innovative idea back then.
 
@@ -121,7 +121,7 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 	<img src="/blag/images/2024/sqlite-fact-10.png" style="width: 65%;"/>
 
-1. SQLite's author Dr. Richard Hipp (DRH) did not find existing version control systems suitable. So he wrote his own called [Fossil](https://fossil-scm.org/home/doc/trunk/www/fossil-v-git.wiki). Fossil is powered by SQLite, of course.
+1. SQLite's author D. Richard Hipp (DRH) did not find existing version control systems suitable. So he wrote his own called [Fossil](https://fossil-scm.org/home/doc/trunk/www/fossil-v-git.wiki). Fossil is powered by SQLite, of course.
 
 	This reminds me of how Linus wrote Git. 
 
