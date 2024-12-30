@@ -59,9 +59,9 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 1. It's an interesting business model. They generate revenue through paid support, maintenance services, consortium membership, and commercial extensions. 
 
-1. SQLite does not have a Code of Conduct (CoC), rather Code of Ethics derived from "instruments of good works" from chapter 4 of The Rule of St. Benedict
+1. SQLite does not have a Code of Conduct (CoC), rather [Code of Ethics](https://sqlite.org/codeofethics.html) derived from "instruments of good works" from chapter 4 of The Rule of St. Benedict
 
-	<img src="/blag/images/2024/sqlite-coe-1.jpeg" style="width: 65%;"/><img src="/blag/images/2024/sqlite-coe-2.jpeg" style="width: 65%;"/>
+	<img src="/blag/images/2024/sqlite-coe.png"/>
 
 1. In SQLite: In place of a legal notice, here is a [blessing](https://github.com/sqlite/sqlite/blob/624cb96/src/wal.c#L4,#L9):
 
