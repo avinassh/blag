@@ -109,7 +109,7 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 	CREATE TABLE t(value SPONGEBLOB) --- This is BLOB type!
 	```
 
-1. This is one my [favorite lore](https://x.com/iavins/status/1865746403072389612). SQLite had to default prefix from `sqlite_` to `etilqs_` when users started calling developers in the middle of the night
+1. This is one my [favorite lore](https://x.com/iavins/status/1865746403072389612). SQLite had to change the default prefix from `sqlite_` to `etilqs_` when users started calling developers in the middle of the night
 
 	<img src="/blag/images/2024/sqlite-fact-9.png" style="width: 65%;"/>
 
