@@ -25,7 +25,9 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 1. SQLite originated from a US warship. D. Richard Hipp (DRH) was building software for the USS Oscar Austin, a Navy destroyer. The existing software would just stop working whenever the server went down (this was in the 2000s). For a battleship, this was unacceptable.
 
-	So DRH asked the question: what if the database just worked without any server? This was an innovative idea back then.
+	So DRH asked the question: what if the database just worked without any server? In DRH words:
+
+	> Why do we even need a server? Why can’t I pull this directly off the disk drive? That way if the computer is healthy enough, it can run our application at all, we don’t have dependencies that can fail and cause us to fail, and I looked around and there were no SQL database engines that would do that, and one of the guys I was working with says, “Richard, why don’t you just write one?” “Okay, I’ll give it a try.” I didn’t do that right away, but later on, it was a funding hiatus. This was back in 2000, and if I recall correctly, Newt Gingrich and Bill Clinton were having a fight of some sort, so all government contracts got shut down, so I was out of work for a few months, and I thought, “Well, I’ll just write that database engine now.”
 
 1. SQLite is not open source in the legal sense, as "open source" has a specific definition and requires licenses approved by the Open Source Initiative (OSI). 
 
@@ -87,7 +89,7 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 	- The default is rollback journal mode, which restricts you to have either multiple readers or a single writer
 	- Foreign Keys are disabled; they are opt-in
-	- It is "weakly typed". SQLite calls it "type affinity". Meaning you can insert whatever in a column even though you have defined a type. Strong typed columns are opt-in.
+	- It is "weakly typed". SQLite calls it "type affinity". Meaning you can insert whatever in a column even though you have defined a type. Strong typed columns are opt-in (by [`STRICT`](https://www.sqlite.org/stricttables.html) tables).
 	- [Many of the `ALTER` commands](https://sqlite.org/omitted.html) you expect in other databases don't work. For example, you cannot add a contraint to an existing column. (They recently added ability to rename a column name)
 
 	There is a whole [list of quirks](https://www.sqlite.org/quirks.html) here.
@@ -103,11 +105,17 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 	`CREATE TABLE t(value TIMMYSTAMP);`
 
-	There is no `TIMMYSTAMP` type, but SQLite accepts this happily. It has five types: `NULL`, `INTEGER`, `REAL`, `TEXT`, `BLOB`. Want to know something cursed? The type affinity works by [substring match](https://www.sqlite.org/datatype3.html#determination_of_column_affinity)!
+	There is no `TIMMYSTAMP` type, but SQLite accepts this happily. 
+
+	SQLite has five types: `NULL`, `INTEGER`, `REAL`, `TEXT`, `BLOB`. Want to know something cursed? The type affinity works by [substring match](https://www.sqlite.org/datatype3.html#determination_of_column_affinity)!
 
 	```sql
 	CREATE TABLE t(value SPONGEBLOB) --- This is BLOB type!
 	```
+
+	So yeah, this happens too:
+
+	> Note that a declared type of "FLOATING POINT" would give INTEGER affinity, not REAL affinity, due to the "INT" at the end of "POINT".
 
 1. This is one my [favorite lore](https://x.com/iavins/status/1865746403072389612). SQLite had to change the default prefix from `sqlite_` to `etilqs_` when users started calling developers in the middle of the night
 
@@ -129,7 +137,7 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 1. DRH wrote the B-Tree based on the algorithm in the book TAOCP by Donald Knuth, coding it on a plane while traveling (super based)
 
-1. SQLite is pronounced as "Ess-Cue-El-Lite". There is no official guideline though. DRH mentioned in the [SQLite forums](https://web.archive.org/web/20201126110450/http://sqlite.1065341.n5.nabble.com/SQLite-Pronunciation-td88186.html#message88194):
+1. SQLite is pronounced as "Ess-Cue-El-Ite". There is no official guideline though. DRH mentioned in the [SQLite forums](https://web.archive.org/web/20201126110450/http://sqlite.1065341.n5.nabble.com/SQLite-Pronunciation-td88186.html#message88194):
 
 	> I wrote SQLite, and I think it should be pronounced "S-Q-L-ite". Like a mineral. But I'm cool with y'all pronouncing it any way you want. 
 	>
@@ -140,4 +148,4 @@ That's it for today! If I missed any, let me know. Happy holidays and Happy New 
 ---
 
 <small>1. Sources: [Most Deployed](https://www.sqlite.org/mostdeployed.html), [Public Domain and Contributions](https://www.sqlite.org/copyright.html), [Testing](https://www.sqlite.org/testing.html), [Paid support](https://www.sqlite.org/prosupport.html), [Faster than filesystem](https://www.sqlite.org/fasterthanfs.html), [SQLite History](https://corecursive.com/066-sqlite-with-richard-hipp/).</small><br>
-<small>2. I posted this as thread on Twitter, where bunch of people provided more sources. Thanks to them: [1](https://x.com/nomsolence/status/1873416106922402060), [2](https://x.com/motherwell/status/1873678651616829949), [3](https://x.com/eriklangille/status/1873737893057122400).</small>
+<small>2. I posted this as thread on Twitter, where bunch of people provided more sources. Thanks to them: [1](https://x.com/nomsolence/status/1873416106922402060), [2](https://x.com/motherwell/status/1873678651616829949), [3](https://x.com/eriklangille/status/1873737893057122400), [4](https://old.reddit.com/r/programming/comments/1hpowxh/collection_of_insane_and_fun_facts_about_sqlite/m4ktv35/).</small>
