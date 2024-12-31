@@ -96,7 +96,7 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 	There is a whole [list of quirks](https://www.sqlite.org/quirks.html) here.
 
-1. I hate that it doesn't have types. It's totally YOLO:
+1. I hate that it doesn't enforce types. It's totally YOLO:
 
 	```sql
 	CREATE TABLE user(id INTEGER);
