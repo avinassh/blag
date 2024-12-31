@@ -29,11 +29,13 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 	> Why do we even need a server? Why can’t I pull this directly off the disk drive? That way if the computer is healthy enough, it can run our application at all, we don’t have dependencies that can fail and cause us to fail, and I looked around and there were no SQL database engines that would do that, and one of the guys I was working with says, “Richard, why don’t you just write one?” “Okay, I’ll give it a try.” I didn’t do that right away, but later on, it was a funding hiatus. This was back in 2000, and if I recall correctly, Newt Gingrich and Bill Clinton were having a fight of some sort, so all government contracts got shut down, so I was out of work for a few months, and I thought, “Well, I’ll just write that database engine now.”
 
-1. SQLite is not open source in the legal sense, as "open source" has a specific definition and requires licenses approved by the Open Source Initiative (OSI). 
+1. Unlike most open source project that uses standard licenses (like MIT or GPL), SQLite does not come with a OSI-approved license.
 
 	<img src="/blag/images/2024/sqlite-fact-4.png" style="width: 75%;"/>
 
-	Instead, SQLite is in the public domain, which means it has even fewer restrictions than any open source license.
+	Instead, SQLite is released into the public domain and it has even fewer restrictions.
+
+	Also note that this can be a [problem](https://opensource.org/blog/public-domain-is-not-open-source) in some countries/jurisdictions where public domain is not recognized. Hence, SQLite [sells licenses](https://www.sqlite.org/purchase/license), called 'Warranty of Title'.
 
 1. They don't allow outside contributions. You *cannot* just send a pull request and hope the patch will be accepted.
 
@@ -59,7 +61,7 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 	In order to get access, one needs to be part of SQLite Consortium, which costs $120K/yearly. 
 
-1. It's an interesting business model. They generate revenue through paid support, maintenance services, consortium membership, and commercial extensions. 
+1. It's an interesting business model. They generate revenue through licenses, paid support, maintenance services, consortium membership, and commercial extensions. 
 
 1. SQLite does not have a Code of Conduct (CoC), rather [Code of Ethics](https://sqlite.org/codeofethics.html) derived from "instruments of good works" from chapter 4 of The Rule of St. Benedict
 
@@ -137,7 +139,7 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 1. DRH wrote the B-Tree based on the algorithm in the book TAOCP by Donald Knuth, coding it on a plane while traveling (super based)
 
-1. SQLite is pronounced as "Ess-Cue-El-Ite". There is no official guideline though. DRH mentioned in the [SQLite forums](https://web.archive.org/web/20201126110450/http://sqlite.1065341.n5.nabble.com/SQLite-Pronunciation-td88186.html#message88194):
+1. SQLite is pronounced as "Ess-Cue-El-ite". There is no official guideline though. DRH mentioned in the [SQLite forums](https://web.archive.org/web/20201126110450/http://sqlite.1065341.n5.nabble.com/SQLite-Pronunciation-td88186.html#message88194):
 
 	> I wrote SQLite, and I think it should be pronounced "S-Q-L-ite". Like a mineral. But I'm cool with y'all pronouncing it any way you want. 
 	>
@@ -148,4 +150,6 @@ That's it for today! If I missed any, let me know. Happy holidays and Happy New 
 ---
 
 <small>1. Sources: [Most Deployed](https://www.sqlite.org/mostdeployed.html), [Public Domain and Contributions](https://www.sqlite.org/copyright.html), [Testing](https://www.sqlite.org/testing.html), [Paid support](https://www.sqlite.org/prosupport.html), [Faster than filesystem](https://www.sqlite.org/fasterthanfs.html), [SQLite History](https://corecursive.com/066-sqlite-with-richard-hipp/).</small><br>
-<small>2. I posted this as thread on Twitter, where bunch of people provided more sources. Thanks to them: [1](https://x.com/nomsolence/status/1873416106922402060), [2](https://x.com/motherwell/status/1873678651616829949), [3](https://x.com/eriklangille/status/1873737893057122400), [4](https://old.reddit.com/r/programming/comments/1hpowxh/collection_of_insane_and_fun_facts_about_sqlite/m4ktv35/).</small>
+<small>2. I posted this as thread on Twitter, where bunch of people provided more sources. Thanks to them: [1](https://x.com/nomsolence/status/1873416106922402060), [2](https://x.com/motherwell/status/1873678651616829949), [3](https://x.com/eriklangille/status/1873737893057122400), [4](https://old.reddit.com/r/programming/comments/1hpowxh/collection_of_insane_and_fun_facts_about_sqlite/m4ktv35/).</small><br>
+<small>3. After following the discussions on Reddit and HN, I have rephrased the license section (#6). Previously, it read: <i>SQLite is not open source in the legal sense, as “open source” has a specific definition and requires licenses approved by the Open Source Initiative (OSI).</i>
+</small>
