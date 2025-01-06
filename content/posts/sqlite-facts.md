@@ -51,6 +51,8 @@ summary: "Some of the interesting and insane facts I learned about SQLite"
 
 	There are over 600 lines of test code for every line of code in SQLite. Tests cover 100% of branches (and 100% [MC/DC](https://en.wikipedia.org/wiki/Modified_condition/decision_coverage)) in the library. The test suite is extremely diverse, including fuzz tests, boundary value tests, regression tests, and tests that simulate operating system crashes, power losses, I/O errors, and out-of-memory errors.
 
+	SQLite first began as a [Tcl extension](https://www.sqlite.org/tclsqlite.html), and its primary test suite is written in Tcl.
+
 1. Interestingly, some SQLite tests are proprietary. The test suite called [TH3 (Test Harness 3)](https://www.sqlite.org/th3.html), which achieves 100% branch coverage of the code, is proprietary and is not open to access.
 
 	I don't know any other project which has made code free, but test suites are paid.
@@ -150,6 +152,6 @@ That's it for today! If I missed any, let me know. Happy holidays and Happy New 
 ---
 
 <small>1. Sources: [Most Deployed](https://www.sqlite.org/mostdeployed.html), [Public Domain and Contributions](https://www.sqlite.org/copyright.html), [Testing](https://www.sqlite.org/testing.html), [Paid support](https://www.sqlite.org/prosupport.html), [Faster than filesystem](https://www.sqlite.org/fasterthanfs.html), [SQLite History](https://corecursive.com/066-sqlite-with-richard-hipp/).</small><br>
-<small>2. I posted this as thread on Twitter, where bunch of people provided more sources. Thanks to them: [1](https://x.com/nomsolence/status/1873416106922402060), [2](https://x.com/motherwell/status/1873678651616829949), [3](https://x.com/eriklangille/status/1873737893057122400), [4](https://old.reddit.com/r/programming/comments/1hpowxh/collection_of_insane_and_fun_facts_about_sqlite/m4ktv35/).</small><br>
+<small>2. I posted this as thread on Twitter, where bunch of people provided more sources. Thanks to them: [1](https://x.com/nomsolence/status/1873416106922402060), [2](https://x.com/motherwell/status/1873678651616829949), [3](https://x.com/eriklangille/status/1873737893057122400), [4](https://old.reddit.com/r/programming/comments/1hpowxh/collection_of_insane_and_fun_facts_about_sqlite/m4ktv35/), [5](https://attractive.space/@Setok/113762362684067877).</small><br>
 <small>3. After following the discussions on Reddit and HN, I have rephrased the license section (#6). Previously, it read: <i>SQLite is not open source in the legal sense, as “open source” has a specific definition and requires licenses approved by the Open Source Initiative (OSI).</i>
 </small>
