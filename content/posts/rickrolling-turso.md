@@ -157,7 +157,7 @@ This runs the simulator till it finds a bug or till the end of time. But unfortu
 
 Finally, here is the demo. You can share this special build with your frens and whatever song they insert, they will always get their favourite song back ;)
 
-<img src="/blag/images/2024/sqlite-rick-roll.gif"/>
+<img src="/blag/images/2025/sqlite-rick-roll.gif"/>
 
 Here are [all my changes](https://github.com/avinassh/limbo/pull/1) to run and play this.
 
