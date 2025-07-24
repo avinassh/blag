@@ -1,0 +1,64 @@
+<svg width="800" height="250" xmlns="http://www.w3.org/2000/svg">
+  <!-- Frame 1 -->
+  <rect x="30" y="50" width="180" height="120" fill="#f0f8ff" stroke="#4a90e2" stroke-width="2"/>
+  
+  <!-- Frame 1 header fields - horizontal layout -->
+  <rect x="40" y="60" width="65" height="20" fill="#fff2e6" stroke="#d4a574" stroke-width="1"/>
+  <text x="72" y="73" text-anchor="middle" font-family="Arial" font-size="10" fill="#333">Frame No: 1</text>
+  
+  <rect x="115" y="60" width="85" height="20" fill="#ffebee" stroke="#e57373" stroke-width="2"/>
+  <text x="157" y="73" text-anchor="middle" font-family="Arial" font-size="10" fill="#333">Checksum: A</text>
+  
+  <!-- Frame 1 page data -->
+  <rect x="40" y="90" width="160" height="70" fill="#e6f3ff" stroke="#4a90e2" stroke-width="1"/>
+  <text x="120" y="130" text-anchor="middle" font-family="Arial" font-size="12" fill="#333">Page Data 1</text>
+  
+  <!-- Arrow from Frame 1 to Frame 2 -->
+  <path d="M220 110 L280 110" stroke="#e57373" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Frame 2 -->
+  <rect x="290" y="50" width="180" height="120" fill="#f0f8ff" stroke="#4a90e2" stroke-width="2"/>
+  
+  <!-- Frame 2 header fields - horizontal layout -->
+  <rect x="300" y="60" width="65" height="20" fill="#fff2e6" stroke="#d4a574" stroke-width="1"/>
+  <text x="332" y="73" text-anchor="middle" font-family="Arial" font-size="10" fill="#333">Frame No: 2</text>
+  
+  <rect x="375" y="60" width="85" height="20" fill="#ffebee" stroke="#e57373" stroke-width="2"/>
+  <text x="417" y="73" text-anchor="middle" font-family="Arial" font-size="10" fill="#333">Checksum: B</text>
+  
+  <!-- Frame 2 page data -->
+  <rect x="300" y="90" width="160" height="70" fill="#e6f3ff" stroke="#4a90e2" stroke-width="1"/>
+  <text x="380" y="130" text-anchor="middle" font-family="Arial" font-size="12" fill="#333">Page Data 2</text>
+  
+  <!-- Arrow from Frame 2 to Frame 3 -->
+  <path d="M480 110 L540 110" stroke="#e57373" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Frame 3 -->
+  <rect x="550" y="50" width="180" height="120" fill="#f0f8ff" stroke="#4a90e2" stroke-width="2"/>
+  
+  <!-- Frame 3 header fields - horizontal layout -->
+  <rect x="560" y="60" width="65" height="20" fill="#fff2e6" stroke="#d4a574" stroke-width="1"/>
+  <text x="592" y="73" text-anchor="middle" font-family="Arial" font-size="10" fill="#333">Frame No: 3</text>
+  
+  <rect x="635" y="60" width="85" height="20" fill="#ffebee" stroke="#e57373" stroke-width="2"/>
+  <text x="677" y="73" text-anchor="middle" font-family="Arial" font-size="10" fill="#333">Checksum: C</text>
+  
+  <!-- Frame 3 page data -->
+  <rect x="560" y="90" width="160" height="70" fill="#e6f3ff" stroke="#4a90e2" stroke-width="1"/>
+  <text x="640" y="130" text-anchor="middle" font-family="Arial" font-size="12" fill="#333">Page Data 3</text>
+  
+  <!-- Title -->
+  <text x="400" y="25" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#333">SQLite WAL Rolling Checksums</text>
+  
+  <!-- Explanation -->
+  <text x="400" y="200" text-anchor="middle" font-family="Arial" font-size="12" fill="#666">Checksum B = f(Checksum A, Frame 2 data)</text>
+  <text x="400" y="220" text-anchor="middle" font-family="Arial" font-size="12" fill="#666">Checksum C = f(Checksum B, Frame 3 data)</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="6" markerHeight="5" 
+            refX="5" refY="2.5" orient="auto">
+      <polygon points="0 0, 6 2.5, 0 5" fill="#e57373"/>
+    </marker>
+  </defs>
+</svg>
