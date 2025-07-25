@@ -9,6 +9,8 @@ summary: "SQLite WAL has checksums, but on corruption it drops all the data and 
 
 This is a follow-up post to my [PSA: SQLite does not do checksums](https://avi.im/blag/2024/sqlite-bit-flip) and [PSA: Most databases do not do checksums by default](https://avi.im/blag/2024/databases-checksum). In the previous posts I mentioned that SQLite does not do checksums by default, but it has checksums in WAL mode. However, on checksum errors, instead of raising error, it drops all the subsequent frames. Even if they are not corrupt. This is not a bug; it's intentional.
 
+<small>Disclosure: I work at Turso, which maintains a SQLite fork, libSQL. Since libSQL is a fork, it also has the same issue.</small>
+
 ## SQLite WAL
 
 SQLite introduced WAL in 2010. It’s not the default mode, but you’re likely using it if you want higher write throughput. Whenever you make writes, they are first written to the WAL file. Then, during checkpoint operations, the database pages are written from the WAL to the main DB file. Each page in the WAL is called a frame. Each frame has a header, which comprises the frame number, page number, commit marker, and checksums.
@@ -70,6 +72,9 @@ What I want: throw an error when corruption is detected and let the code handle 
 
 In the demo, I corrupted a frame that belonged to an older version of a page. Meaning no new transactions can ever read that data. That frame is practically useless, yet it caused data loss. There are pages like belonging to an index or maybe some table that we don’t care about at all. With sophisticated recovery mechanisms, we could sometimes able to recover all the data.
 
-Overall, I don’t like this as a default. However, [Pekka Enberg](https://x.com/penberg) offered a different perspective that SQLite runs in embedded environments where there’s no server, and maybe core developers decided it may be better to limp along than crash.
+Overall, I don’t like the default that it does not raise an error. However, [Pekka Enberg](https://x.com/penberg) offered a different perspective that SQLite runs in embedded environments where there’s no server, and maybe core developers decided it may be better to limp along than crash.
 
 I would guess that other databases behave the same way, but I haven’t verified it myself. I was discussing this with [Alex Miller](https://transactional.blog), and he raised an interesting point: SQLite mostly runs on mobile devices with cheap SD cards (as opposed to running on enterprise-grade SSDs), and corruptions are more common. So, it’s more important for SQLite to have corruption detection than other databases.
+
+Update:
+The paper [Redundancy Does Not Imply Fault Tolerance: Analysis of Distributed Storage Reactions to Single Errors and Corruptions](https://www.usenix.org/conference/fast17/technical-sessions/presentation/ganesan) is worth a read. Here is a [tweet from one of the authors](https://x.com/AishwaryaGanlat/status/1948473336717345115) in response to this article.
