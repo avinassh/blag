@@ -51,7 +51,7 @@ What needs to happen to close the gap?
 
 If we look at this from another angle, we could use an IVM engine to populate and update an external cache service; but that might be a topic for another day.
 
-<small><i>Thanks to Gautam for reading a draft of this.</i></small>
+<small><i>Thanks to Gowtham for reading a draft of this.</i></small>
 
 ---
 

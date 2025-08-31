@@ -50,4 +50,4 @@ Check the [errata]({{< ref "posts/hekaton-paper-typo" >}}) blog post to read the
 
 Have comments? Share your thoughts here on [the Twitter thread](https://twitter.com/iavins/status/1650890780121399296).
 
-<small><i>Thanks to Bhargav, Hari, Satan, Saad, Sumesh, Piyush, and Gautam for reading a draft of this.</i></small>
+<small><i>Thanks to Bhargav, Hari, Satan, Saad, Sumesh, Piyush, and Gowtham for reading a draft of this.</i></small>
