@@ -1,6 +1,6 @@
 ---
 title: "Oldest recorded transaction"
-date: "2025-09-05T13:13:34+05:30"
+date: "2025-09-06T19:53:34+05:30"
 categories: ["database", "transaction"]
 tags: ["database", "transaction", "tablet", "rocks db"]
 slug: "oldest-txn"
