@@ -41,7 +41,7 @@ ERROR:  date out of range: "4714-01-01 BC"
 
 I wonder how people store dates older than this. Maybe if I'm a British Museum manager, and I want to keep ~theft~ inventory details. How do I do it? As an epoch? Store it as text? Use some custom system? How do I get it to support all the custom operations that a typical `TIMESTAMP` supports?
 
-<small><i>Thanks to aku, happy_shady and Mr. Bhat for reading an early draft of this post.</i></small>
+<small><i>Thanks to aku, happy_shady, Mr. Bhat, and General Bruh for reading an early draft of this post.</i></small>
 
 ---
 <small>1. Source of the image: [Sumer  civilization](https://en.wikipedia.org/wiki/Sumer#Language_and_writing)</small><br>
