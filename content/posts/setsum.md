@@ -100,6 +100,7 @@ Let's simplify: instead of 8 columns, let's use just one. The prime number for t
 | pomegranate | 18   | 11      |
 | watermelon  | 26   | 3       |
 
+<br>
 Notice that all hash values stay below the prime. If a hash exceeds it, we take the remainder. For example, if `guava` hashes to 33, the final value would be 4 (33 mod 29). Also, hash + inverse always equals the prime.
 
 Let's add some items:
@@ -167,3 +168,10 @@ Setsum also uses SHA3-256 as its hash function, though the hash algorithm is rep
 ## Code
 
 The original Rust implementation is [here](https://github.com/rescrv/blue/tree/main/setsum). I ported it to Go, with all the same tests - [setsum](https://github.com/avinassh/setsum).
+
+---
+
+<small>1. I found out about setsum from Chroma's excellent post [wal3: A Write-Ahead Log for Chroma, Built on Object Storage](https://trychroma.com/engineering/wal3) and got nerd sniped into writing this blog post</small><br>
+<small>2. This is a good post: [Using Merkle trees to detect inconsistencies in Cassandra](https://distributeddatastore.blogspot.com/2013/07/cassandra-using-merkle-trees-to-detect.html)
+
+<small><i>Thanks to toc2, and General Bruh for reading an early draft of this post.</i></small>
