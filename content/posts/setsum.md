@@ -23,11 +23,11 @@ After the replica processes these changes (add two apples, remove an orange), ho
 
 One naive (rather horrible) approach is to dump both states and compare them directly. It's expensive, impractical, and doesn't scale. Instead, you can maintain checksums that update with each operation. When you're done, just compare the checksums; if they match, you're in sync. That's why distributed databases like Cassandra use Merkle trees for the same purpose.
 
-Setsums are similar but have some nice properties that make them attractive over Merkle trees. They can be computed incrementally; the cost only depends on the change being applied, not the whole dataset. I also find them attractive because they let you remove items as well.
+Setsum is similar but has some nice properties that make it attractive over Merkle trees. They can be computed incrementally; the cost only depends on the change being applied, not the whole dataset. I also find them attractive because they let you remove items as well.
 
 ## Properties
 
-Setsums have some interesting properties:
+Setsum has some interesting properties:
 
 **1. Order doesn't matter.** Both of these yield the same result:
 ```rust
@@ -138,7 +138,7 @@ s = 18 (add pomegranate)
 s = 25 (add chikoo) // whoa 🤯
 ```
 
-I cherry-picked these examples to demonstrate setsums, but there's a flaw in the above examples. Can you spot it?
+I cherry-picked these examples to demonstrate setsum, but there's a flaw in the above examples. Can you spot it?
 
 Consider this collision:
 ```rust
