@@ -1,6 +1,6 @@
 ---
 title: "Setsum - order agnostic, additive, subtractive checksum"
-date: "2025-09-12T22:49:24+05:30"
+date: "2025-09-13T19:49:24+05:30"
 categories: ["correctness"]
 tags: ["databases", "correctness", "verification", "checksum", "replication"]
 slug: "setsum"
