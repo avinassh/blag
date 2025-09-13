@@ -7,7 +7,7 @@ slug: "setsum"
 summary: "A brief introduction to Setsum - order agnostic, additive, subtractive checksum"
 ---
 
-Setsum is order agnostic, commutative checksums. It was developed by [Robert Escriva](https://rescrv.net) at Dropbox metadata team. In this short post, I will explain why they are used and the math behind them. Jump to the end if you'd like to see the code.
+Setsum is an order agnostic, commutative checksum. It was developed by [Robert Escriva](https://rescrv.net) at Dropbox's metadata team. In this short post, I'll explain why they're used and the math behind them. Jump to the end if you'd like to see the code.
 
 ## Introduction
 
@@ -20,9 +20,10 @@ Say you're building a database replication system. The primary sends logical ope
 ```
 
 After the replica processes these changes (add two apples, remove an orange), how do you verify both nodes ended up in the same state?
-One naive (rather horrible) approach is to dump both states and compare them directly. It is expensive, impractical and doesn't scale. Instead, you can maintain checksums that update with each operation. When you're done, just compare the checksums; if they match, you're in sync. That's why distributed databases like Cassandra uses Merkle trees for the same purpose.
 
-Setsums are similar but have some nice properties that make them attractive over Merkle trees. They can be computed incrementally the cost only depends on the change being applied, not the whole dataset.
+One naive (rather horrible) approach is to dump both states and compare them directly. It's expensive, impractical, and doesn't scale. Instead, you can maintain checksums that update with each operation. When you're done, just compare the checksums; if they match, you're in sync. That's why distributed databases like Cassandra use Merkle trees for the same purpose.
+
+Setsums are similar but have some nice properties that make them attractive over Merkle trees. They can be computed incrementally; the cost only depends on the change being applied, not the whole dataset. I also find them attractive because they let you remove items as well.
 
 ## Properties
 
@@ -31,38 +32,38 @@ Setsums have some interesting properties:
 **1. Order doesn't matter.** Both of these yield the same result:
 ```rust
 s1 = New()
-s1.add('apple')
-s1.add('banana')
+s1.add("apple")
+s1.add("banana")
 
 s2 = New()
-s2.add('banana')
-s2.add('apple')
+s2.add("banana")
+s2.add("apple")
 
 assert_eq(s1, s2)
 ```
 
 **2. You can remove items.** These are equivalent:
 ```rust
-s1.add('apple')
-s1.add('banana')
-s1.remove('apple')
+s1.add("apple")
+s1.add("banana")
+s1.remove("apple")
 
-s2.add('banana')
-s2.add('banana')
-s2.remove('banana')
+s2.add("banana")
+s2.add("banana")
+s2.remove("banana")
 
 assert_eq(s1, s2)
 ```
 
 **3. You can combine setsums.** As you guessed already, these are equal:
 ```rust
-s1.add('apple')
-s1.add('banana')
-s2.add('chikoo')
+s1.add("apple")
+s1.add("banana")
+s2.add("chikoo")
 
-s3.add('banana')
-s3.add('chikoo')
-s3.add('apple')
+s3.add("banana")
+s3.add("chikoo")
+s3.add("apple")
 
 assert_eq(s1+s2, s3)
 ```
@@ -75,19 +76,19 @@ Each Setsum is an array of 8 unsigned 32-bit integers (u32), called "columns". E
 
 When you add an item:
 
-* Compute the SHA3-256 hash of the item (produces 32 bytes).
-* Split the hash into 8 chunks of 4 bytes each.
-* Interpret each chunk as a little-endian `u32`.
-* Add each number to its corresponding column.
-* If the sum exceeds the column’s prime, store the remainder (mod prime).
+* Compute the SHA3-256 hash of the item (produces 32 bytes)
+* Split the hash into 8 chunks of 4 bytes each
+* Interpret each chunk as a little-endian `u32`
+* Add each number to its corresponding column
+* If the sum exceeds the column's prime, store the remainder (mod prime)
 
-As I mentioned, you can also remove an item that was previously added. The magic is in computing the inverse. The magic is in computing its inverse: first, derive the inverse of the item's hashed value, then add that inverse to the setsum. This effectively cancels out the original, removing the item from the set!
+You can also remove an item that was previously added. The magic is in computing the inverse: first, derive the inverse of the item's hashed value, then add that inverse to the setsum. This effectively cancels out the original, removing the item from the set!
 
 To compute the inverse, we use modular arithmetic: it's simply the prime minus the value.
 
 ## The math behind setsum
 
-Disclaimer: If we're friends, you already know I'm no math person. If not, hey there, new friend! You can probably skip this if you understand modulo arithmetic, chinese remainder theorem, and bit of probability.
+Disclaimer: If we're friends, you already know I'm no math person. If not, hey there, new friend! You can probably skip this if you understand modulo arithmetic, the Chinese remainder theorem, and a bit of probability.
 
 Let's simplify: instead of 8 columns, let's use just one. The prime number for this column is 29. Consider adding these items with their hash and inverse values:
 
@@ -119,7 +120,7 @@ s = 22 (add apple - 15)
 s = 16 (add banana - 23) // see, this ends up same!
 ```
 
-Let's try removal. Note that in removal we consider inverse values.
+Let's try removal. Note that for removal we add the inverse values:
 
 ```rust
 s = 0
@@ -133,13 +134,13 @@ s = 25 (add chikoo - 7)
 
 ```rust
 s = 0
-s = 18 (add pomegranate - 18)
-s = 25 (add chikoo - 7) whoa 🤯
+s = 18 (add pomegranate)
+s = 25 (add chikoo) // whoa 🤯
 ```
 
-I cherry picked these examples to demonstrate setsums, but there's a flaw in the above examples. Can you spot it?
+I cherry-picked these examples to demonstrate setsums, but there's a flaw in the above examples. Can you spot it?
 
-Consider this:
+Consider this collision:
 ```rust
 s = 0
 s = 15  (add apple - 15)
@@ -151,7 +152,7 @@ s = 18  (add pomegranate - 18)
 s = 22  (add guava - 4)
 ```
 
-Both sets of completely different items sum to 22! This happens because we're only using one column and a very smoll prime number. But add another column and the collision probability drops dramatically. With 8 columns, the probability of collision drops to 2^-256.
+Both sets of completely different items sum to 22! This happens because we're only using one column and a very small prime number. But add another column and the collision probability drops dramatically. With 8 columns, the probability of collision drops to 2^-256.
 
 Setsum also uses SHA3-256 as its hash function, though the hash algorithm is replaceable. SHA3-256 is fast, has fewer collisions, and produces well-distributed hashes, so we can avoid the collision problem I showed above.
 
@@ -165,4 +166,4 @@ Setsum also uses SHA3-256 as its hash function, though the hash algorithm is rep
 
 ## Code
 
-I ported the setsum Rust crate to Go. The original Rust implementation is by Robert Escriva, who created the setsum algorithm.
+The original Rust implementation is [here](https://github.com/rescrv/blue/tree/main/setsum). I ported it to Go, with all the same tests - [setsum](https://github.com/avinassh/setsum).
