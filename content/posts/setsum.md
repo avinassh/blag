@@ -78,7 +78,7 @@ When you add an item:
 
 * Compute the SHA3-256 hash of the item (produces 32 bytes)
 * Split the hash into 8 chunks of 4 bytes each
-* Interpret each chunk as a little-endian `u32`
+* Interpret each chunk as a little-endian u32
 * Add each number to its corresponding column
 * If the sum exceeds the column's prime, store the remainder (mod prime)
 
@@ -153,7 +153,7 @@ s = 18  (add pomegranate - 18)
 s = 22  (add guava - 4)
 ```
 
-Both sets of completely different items sum to 22! This happens because we're only using one column and a very small prime number. But add another column and the collision probability drops dramatically. With 8 columns, the probability of collision drops to 2^-256.
+Both sets of completely different items sum to 22! This happens because we're only using one column and a very small prime number. But add another column and the collision probability drops dramatically. With 8 columns, the probability of collision drops to <sup>1</sup>/<sub>2<sup>256</sup></sub>.
 
 Setsum also uses SHA3-256 as its hash function, though the hash algorithm is replaceable. SHA3-256 is fast, has fewer collisions, and produces well-distributed hashes, so we can avoid the collision problem I showed above.
 
