@@ -62,5 +62,5 @@ The truncated variants perform as well as (or slightly better than) the full 64-
 
 ---
 
-<small>1. All the measurements done on my M4 Macbook Pro. </small>
-<small>1. The truncation throuhput code is here and hashevals code is here.</small>
+<small>1. All the measurements done on my M4 Macbook Pro. </small><br />
+<small>2. The truncation throuhput code is here and hashevals code is here.</small>
