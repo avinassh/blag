@@ -1,5 +1,5 @@
 ---
-title: "It is faster to compute 64 bit hash and truncate it to 32 bit than computing 32 bit hash in twox hash"
+title: "Want a Fast 32-bit Hash? Compute 64 bits"
 date: "2025-09-20T10:13:10+05:30"
 categories: ["", ""]
 tags: ["", ""]
@@ -103,10 +103,13 @@ XXH32          baseline
 
 ## Why
 
-- 64 bit hardware
-- m
+- My guess is that these algorithms are optimised for modern hardware, i.e. 64 bit
 
 ## Lessons
 
 1. Listen to your frens
 1. Always measure and use what's suitable for your needs
+
+---
+
+<small>1. All the measurements done on my M4 Macbook Pro, they took awful lot of time for quality test</small>
