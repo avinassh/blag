@@ -7,7 +7,7 @@ slug: "64-bit-hash"
 summary: ""
 ---
 
-My good fren [Alex Miller] mentioned to me once that it's faster to compute a 64-bit hash and truncate it to 32 bits than to compute the 32-bit hash directly in the xxHash algorithm. I finally got around to benchmarking it, and here's what I found.
+My good fren [Alex Miller] mentioned to me once that it's faster to compute a 64-bit hash and truncate it to 32 bits than to compute the 32-bit hash directly (in the xxHash algorithm). I finally got around to benchmarking it, and here's what I found.
 
 ## Numbers
 
@@ -20,7 +20,7 @@ Here's throughput on 1MB of data. `XXH64 → 32` means `XXH64` used to generate 
 | XXH3-64 → 32 | 45,950 MB/s | 3.8x |
 | XXH3-128 → 32 | 45,982 MB/s | 3.9x |
 
-XXH64 is twice as fast as XXH32. And the XXH3 variant is Nearly 4x faster.
+XXH64 is twice as fast as XXH32. And the XXH3 variant is nearly 4x faster.
 
 Here are some latency numbers with different datasizes:
 
@@ -38,7 +38,21 @@ After talking with some experts, here is what I learned: These algorithms are op
 
 ## Quality (and safety)
 
-xxhash is a non cryptographic hash, so it is truncation safe.
+xxHash is a non-cryptographic hash, so truncation is safe. But I wanted to check how truncation affects the hash quality. A good hash should have strong avalanche behavior: flipping any single input bit should flip each output bit with 50% probability. Avalanche bias measures deviation from this ideal; lower is better.
+
+I ran [HashEvals](https://github.com/ashvardanian/HashEvals) to check:
+
+| Hash | Avg Bias | Worst Bias |
+|------|----------|------------|
+| XXH3-64 → upper 32 | 0.14% | 3.3% |
+| FoldHash | 0.20% | 4.9% |
+| XXH3-64 → lower 32 | 0.20% | 5.1% |
+| XXH3 (full 64-bit) | 0.20% | 5.1% |
+| StringZilla | 0.22% | 5.5% |
+| aHash | 0.26% | 6.6% |
+| CRC32 (for reference) | 15.9% | 37.5% |
+
+The truncated variants perform as well as (or slightly better than) the full 64-bit hash and other popular alternatives. CRC32 is included to show what poor avalanche looks like (it's designed for error detection, not general hashing).
 
 ## Lessons
 
