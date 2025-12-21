@@ -34,7 +34,7 @@ Here are some latency numbers with different datasizes:
 
 ## Why
 
-After talking with some experts, here is what I learned: These algorithms are optimised for modern 64-bit hardware. XXH64 processes 32 bytes per loop iteration using 64-bit arithmetic, while XXH32 processes 16 bytes with 32-bit ops. XXH3, the fastest of them, goes further with SIMD instructions (AVX2/NEON), processing even larger chunks in parallel. The algorithm is doing more work per cycle, so you get more throughput—even if you throw away half the bits at the end.
+After talking with some experts, here is what I learned: These algorithms are optimised for modern 64-bit hardware. XXH64 processes 32 bytes per loop iteration using 64-bit arithmetic, while XXH32 processes 16 bytes with 32-bit ops. XXH3, the fastest of them, goes further with SIMD instructions (AVX2/NEON), so processing even larger chunks in parallel. The algorithm is doing more work per cycle, so you get more throughput: even if you throw away half the bits at the end.
 
 ## Quality (and safety)
 
@@ -57,9 +57,10 @@ The truncated variants perform as well as (or slightly better than) the full 64-
 ## Lessons
 
 1. Use XXH3 and truncate, it is fine most of the time™️
-1. Listen to your frens
 1. Always measure and use what's suitable for your needs
+1. Listen to your frens
 
 ---
 
-<small>1. All the measurements done on my M4 Macbook Pro, they took awful lot of time for quality test</small>
+<small>1. All the measurements done on my M4 Macbook Pro. </small>
+<small>1. The truncation throuhput code is here and hashevals code is here.</small>
