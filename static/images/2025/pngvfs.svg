@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="900" height="550" fill="white"/>
+  
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#333">SQLite Pages Stored in PNG Chunks</text>
+  
+  <!-- SQLite DB Section -->
+  <g transform="translate(50, 70)">
+    <text x="100" y="0" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">SQLite Database</text>
+    
+    <!-- DB File container -->
+    <rect x="0" y="15" width="200" height="320" fill="#e6f3ff" stroke="#333" stroke-width="2"/>
+    <text x="100" y="40" text-anchor="middle" font-family="monospace" font-size="12" fill="#333">database.db</text>
+    
+    <!-- Pages -->
+    <g transform="translate(15, 55)">
+      <!-- Page 1 -->
+      <rect x="0" y="0" width="170" height="50" fill="#fff0e6" stroke="#333" stroke-width="1.5"/>
+      <text x="85" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">Page 1</text>
+      <text x="85" y="36" text-anchor="middle" font-family="monospace" font-size="9" fill="#666">4096 bytes</text>
+      
+      <!-- Page 2 -->
+      <rect x="0" y="60" width="170" height="50" fill="#fff0e6" stroke="#333" stroke-width="1.5"/>
+      <text x="85" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">Page 2</text>
+      <text x="85" y="96" text-anchor="middle" font-family="monospace" font-size="9" fill="#666">4096 bytes</text>
+      
+      <!-- Page 3 -->
+      <rect x="0" y="120" width="170" height="50" fill="#fff0e6" stroke="#333" stroke-width="1.5"/>
+      <text x="85" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">Page 3</text>
+      <text x="85" y="156" text-anchor="middle" font-family="monospace" font-size="9" fill="#666">4096 bytes</text>
+      
+      <!-- Ellipsis -->
+      <circle cx="85" cy="185" r="2" fill="#333"/>
+      <circle cx="85" cy="195" r="2" fill="#333"/>
+      <circle cx="85" cy="205" r="2" fill="#333"/>
+      
+      <!-- Page N -->
+      <rect x="0" y="220" width="170" height="50" fill="#fff0e6" stroke="#333" stroke-width="1.5"/>
+      <text x="85" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">Page N</text>
+      <text x="85" y="256" text-anchor="middle" font-family="monospace" font-size="9" fill="#666">4096 bytes</text>
+    </g>
+  </g>
+  
+  <!-- VFS Layer -->
+  <g transform="translate(300, 85)">
+    <rect x="0" y="0" width="120" height="80" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+    <text x="60" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Custom VFS</text>
+    <text x="60" y="45" text-anchor="middle" font-family="monospace" font-size="10" fill="#666">xRead()</text>
+    <text x="60" y="60" text-anchor="middle" font-family="monospace" font-size="10" fill="#666">xWrite()</text>
+    <text x="60" y="75" text-anchor="middle" font-family="monospace" font-size="9" fill="#999">↔ PNG I/O</text>
+  </g>
+  
+  <!-- Arrows from SQLite to VFS -->
+  <path d="M 255 125 L 295 125" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- Arrow from VFS to PNG -->
+  <path d="M 425 125 L 465 125" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <!-- PNG File Section -->
+  <g transform="translate(480, 70)">
+    <text x="190" y="0" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">PNG File Structure</text>
+    
+    <!-- PNG container -->
+    <rect x="0" y="15" width="380" height="460" fill="#e6ffe6" stroke="#333" stroke-width="2"/>
+    <text x="190" y="40" text-anchor="middle" font-family="monospace" font-size="12" fill="#333">screenshot.png</text>
+    
+    <!-- PNG Signature -->
+    <rect x="15" y="55" width="350" height="35" fill="#ffe6e6" stroke="#333" stroke-width="1.5"/>
+    <text x="190" y="72" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">PNG Signature</text>
+    <text x="190" y="85" text-anchor="middle" font-family="monospace" font-size="9" fill="#666">89 50 4E 47 0D 0A 1A 0A</text>
+    
+    <!-- IHDR Chunk -->
+    <g transform="translate(15, 98)">
+      <rect x="0" y="0" width="350" height="38" fill="#e6f3ff" stroke="#333" stroke-width="1.5"/>
+      <text x="175" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">IHDR Chunk</text>
+      <text x="175" y="30" text-anchor="middle" font-family="monospace" font-size="8" fill="#666">Length | Type | Width, Height, Bit depth... | CRC</text>
+    </g>
+    
+    <!-- IDAT Chunk -->
+    <g transform="translate(15, 144)">
+      <rect x="0" y="0" width="350" height="38" fill="#e6f3ff" stroke="#333" stroke-width="1.5"/>
+      <text x="175" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">IDAT Chunk</text>
+      <text x="175" y="30" text-anchor="middle" font-family="monospace" font-size="8" fill="#666">Compressed image data (the actual screenshot)</text>
+    </g>
+    
+    <!-- sQLs Chunk (Custom - Page 1) -->
+    <g transform="translate(15, 195)">
+      <rect x="0" y="0" width="350" height="45" fill="#ffe6f0" stroke="#333" stroke-width="1.5"/>
+      <rect x="5" y="5" width="40" height="14" fill="#ffcce0" stroke="#333" stroke-width="1"/>
+      <text x="25" y="14" text-anchor="middle" font-family="monospace" font-size="8" fill="#333">sQLs</text>
+      <text x="195" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">sQLs Chunk (Page 1)</text>
+      <text x="175" y="34" text-anchor="middle" font-family="monospace" font-size="8" fill="#666">Length | "sQLs" | Page 1 Data | Checksum | CRC</text>
+    </g>
+    
+    <!-- sQLs Chunk (Page 2) -->
+    <g transform="translate(15, 248)">
+      <rect x="0" y="0" width="350" height="45" fill="#ffe6f0" stroke="#333" stroke-width="1.5"/>
+      <rect x="5" y="5" width="40" height="14" fill="#ffcce0" stroke="#333" stroke-width="1"/>
+      <text x="25" y="14" text-anchor="middle" font-family="monospace" font-size="8" fill="#333">sQLs</text>
+      <text x="195" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">sQLs Chunk (Page 2)</text>
+      <text x="175" y="34" text-anchor="middle" font-family="monospace" font-size="8" fill="#666">Length | "sQLs" | Page 2 Data | Checksum | CRC</text>
+    </g>
+    
+    <!-- sQLs Chunk (Page 3) -->
+    <g transform="translate(15, 301)">
+      <rect x="0" y="0" width="350" height="45" fill="#ffe6f0" stroke="#333" stroke-width="1.5"/>
+      <rect x="5" y="5" width="40" height="14" fill="#ffcce0" stroke="#333" stroke-width="1"/>
+      <text x="25" y="14" text-anchor="middle" font-family="monospace" font-size="8" fill="#333">sQLs</text>
+      <text x="195" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">sQLs Chunk (Page 3)</text>
+      <text x="175" y="34" text-anchor="middle" font-family="monospace" font-size="8" fill="#666">Length | "sQLs" | Page 3 Data | Checksum | CRC</text>
+    </g>
+    
+    <!-- Ellipsis -->
+    <circle cx="190" cy="360" r="2" fill="#333"/>
+    <circle cx="190" cy="370" r="2" fill="#333"/>
+    <circle cx="190" cy="380" r="2" fill="#333"/>
+    
+    <!-- sQLs Chunk (Page N) -->
+    <g transform="translate(15, 393)">
+      <rect x="0" y="0" width="350" height="45" fill="#ffe6f0" stroke="#333" stroke-width="1.5"/>
+      <rect x="5" y="5" width="40" height="14" fill="#ffcce0" stroke="#333" stroke-width="1"/>
+      <text x="25" y="14" text-anchor="middle" font-family="monospace" font-size="8" fill="#333">sQLs</text>
+      <text x="195" y="16" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">sQLs Chunk (Page N)</text>
+      <text x="175" y="34" text-anchor="middle" font-family="monospace" font-size="8" fill="#666">Length | "sQLs" | Page N Data | Checksum | CRC</text>
+    </g>
+    
+    <!-- IEND Chunk -->
+    <g transform="translate(15, 446)">
+      <rect x="0" y="0" width="350" height="22" fill="#e6f3ff" stroke="#333" stroke-width="1.5"/>
+      <text x="175" y="15" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">IEND Chunk</text>
+    </g>
+  </g>
+  
+  <!-- Curved arrows connecting pages to chunks -->
+  <path d="M 235 145 Q 350 100 490 282" stroke="#333" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <path d="M 235 205 Q 360 160 490 335" stroke="#333" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <path d="M 235 265 Q 370 220 490 388" stroke="#333" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+  <path d="M 235 355 Q 380 340 490 480" stroke="#333" stroke-width="1.5" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowhead)"/>
+</svg>
