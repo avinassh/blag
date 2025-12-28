@@ -38,15 +38,7 @@ So the key idea is that we will write our own VFS shim, which intercepts these r
 
 We will use a PNG file to store the DB pages. Internally, a PNG file is just a sequence of well defined chunks. Each chunk has: 4-byte length, 4-byte type, length bytes of payload, 4-byte CRC of the type + payload.
 
-```
-chunk
-+----------------+
-|  Length (4B)   |
-|  Type (4B)     |
-|  Data (n bytes)|
-|  CRC  (4B)     |
-+----------------+
-```
+<img src="/blag/images/2025/png-chunk-structure.svg" alt="png chunk structure" style="width: 60%;"/>
 
 The accepted types are `IHDR`, `PLTE`, `IDAT`, and `IEND`. The file must start with an 8-byte signature: `89 50 4E 47 0D 0A 1A 0A` immediately followed by an `IHDR` chunk. Then any number of `IDAT` chunks and must end with an `IEND` chunk. `PLTE` is an optional chunk; it must come before `IDAT` chunks. Typically, you have a single `IDAT` chunk instead of multiple ones. This consumes less storage space too.
 

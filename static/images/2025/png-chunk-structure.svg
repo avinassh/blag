@@ -1,0 +1,36 @@
+<svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="250" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold">PNG Chunk Structure</text>
+
+  <!-- Main chunk container -->
+  <rect x="125" y="70" width="250" height="280" fill="none" stroke="#333" stroke-width="3"/>
+
+  <!-- Length section -->
+  <rect x="125" y="70" width="250" height="70" fill="#e6f3ff" stroke="#333" stroke-width="2"/>
+  <text x="250" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Length</text>
+  <text x="250" y="118" text-anchor="middle" font-family="monospace" font-size="14" fill="#666">(4 bytes)</text>
+
+  <!-- Type section -->
+  <rect x="125" y="140" width="250" height="70" fill="#e6ffe6" stroke="#333" stroke-width="2"/>
+  <text x="250" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Type</text>
+  <text x="250" y="188" text-anchor="middle" font-family="monospace" font-size="14" fill="#666">(4 bytes)</text>
+
+  <!-- Data section -->
+  <rect x="125" y="210" width="250" height="70" fill="#fff0e6" stroke="#333" stroke-width="2"/>
+  <text x="250" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold">Data</text>
+  <text x="250" y="258" text-anchor="middle" font-family="monospace" font-size="14" fill="#666">(n bytes)</text>
+
+  <!-- CRC section -->
+  <rect x="125" y="280" width="250" height="70" fill="#ffe6f0" stroke="#333" stroke-width="2"/>
+  <text x="250" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold">CRC</text>
+  <text x="250" y="328" text-anchor="middle" font-family="monospace" font-size="14" fill="#666">(4 bytes)</text>
+
+  <!-- Side annotations -->
+  <text x="390" y="105" font-family="Arial, sans-serif" font-size="12" fill="#666">Size of data</text>
+  <text x="390" y="175" font-family="Arial, sans-serif" font-size="12" fill="#666">Chunk type</text>
+  <text x="390" y="245" font-family="Arial, sans-serif" font-size="12" fill="#666">Chunk payload</text>
+  <text x="390" y="315" font-family="Arial, sans-serif" font-size="12" fill="#666">Checksum</text>
+
+  <!-- Note at bottom -->
+  <text x="250" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">CRC is computed over Type + Data fields</text>
+</svg>
