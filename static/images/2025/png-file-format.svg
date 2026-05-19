@@ -1,0 +1,73 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold">PNG File Format Structure</text>
+  
+  <!-- PNG Signature -->
+  <rect x="150" y="70" width="500" height="50" fill="#ffe6e6" stroke="#333" stroke-width="2"/>
+  <text x="400" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">PNG Signature</text>
+  <text x="400" y="108" text-anchor="middle" font-family="monospace" font-size="12">89 50 4E 47 0D 0A 1A 0A</text>
+  <text x="700" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">(8 bytes)</text>
+  
+  <!-- IHDR Chunk -->
+  <rect x="150" y="140" width="500" height="50" fill="#e6f3ff" stroke="#333" stroke-width="2"/>
+  <text x="400" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">IHDR Chunk</text>
+  <text x="400" y="178" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Image Header (width, height, bit depth, color type, etc.)</text>
+  <text x="700" y="165" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">Critical</text>
+  
+  <!-- PLTE Chunk (Optional) -->
+  <rect x="150" y="210" width="500" height="50" fill="#fff0e6" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="400" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">PLTE Chunk</text>
+  <text x="400" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Palette (for indexed color images)</text>
+  <text x="700" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">Optional</text>
+  
+  <!-- Ancillary Chunks (Optional) -->
+  <rect x="150" y="280" width="500" height="50" fill="#f0f0f0" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="400" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Ancillary Chunks</text>
+  <text x="400" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">tEXt, zTXt, tIME, pHYs, etc.</text>
+  <text x="700" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">Optional</text>
+  
+  <!-- IDAT Chunks -->
+  <rect x="150" y="350" width="500" height="50" fill="#e6ffe6" stroke="#333" stroke-width="2"/>
+  <text x="400" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">IDAT Chunk(s)</text>
+  <text x="400" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Compressed image data</text>
+  <text x="700" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">Critical</text>
+  
+  <!-- More IDAT indication -->
+  <circle cx="375" cy="415" r="3" fill="#333"/>
+  <circle cx="400" cy="415" r="3" fill="#333"/>
+  <circle cx="425" cy="415" r="3" fill="#333"/>
+  <text x="400" y="435" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">(multiple IDAT chunks allowed)</text>
+  
+  <!-- More Ancillary Chunks (Optional) -->
+  <rect x="150" y="440" width="500" height="50" fill="#f0f0f0" stroke="#333" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="400" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">Ancillary Chunks</text>
+  <text x="400" y="478" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Additional metadata</text>
+  <text x="700" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">Optional</text>
+  
+  <!-- IEND Chunk -->
+  <rect x="150" y="510" width="500" height="50" fill="#ffe6f0" stroke="#333" stroke-width="2"/>
+  <text x="400" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold">IEND Chunk</text>
+  <text x="400" y="548" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">End of PNG datastream</text>
+  <text x="700" y="535" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#666">Critical</text>
+  
+  <!-- Arrows showing flow -->
+  <path d="M 80 95 L 130 95" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="60" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Start</text>
+  
+  <path d="M 670 545 L 730 545" fill="none" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="760" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">End</text>
+  
+  <!-- Legend -->
+  <rect x="50" y="580" width="15" height="15" fill="#e6f3ff" stroke="#333" stroke-width="1"/>
+  <text x="70" y="592" font-family="Arial, sans-serif" font-size="12">Critical chunk</text>
+  
+  <rect x="200" y="580" width="15" height="15" fill="#f0f0f0" stroke="#333" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="220" y="592" font-family="Arial, sans-serif" font-size="12">Optional chunk</text>
+  
+  <!-- Arrow marker definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+</svg>
